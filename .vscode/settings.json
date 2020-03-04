@@ -1,0 +1,16 @@
+{
+    "files.exclude": {
+        ".vs":true,
+        "res":true,
+        "Resource":true,
+        "Maps":true,
+        "x64":true,
+        "**/*.h":true,
+        "**/*.pdb":true,
+        "**/*.obj":true,
+        "**/*.rc":true,
+        "**/*.sln":true,
+        "**/*.APS":true,
+        "TXZ.vcx**":true
+    },
+}
