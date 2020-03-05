@@ -6,6 +6,12 @@
 #include "CSELECTION.h"
 #include "afxdialogex.h"
 
+const int PREVIEW_SIZE = 300;
+/*
+xht:
+关于控件大小、位置常量的代码，迟早得统统重构
+*/
+
 
 // CSELECTION 对话框
 
@@ -28,8 +34,8 @@ void CSELECTION::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CSELECTION, CDialogEx)
-	ON_BN_CLICKED(IDC_CANCEL, &CSELECTION::OnBnClickedCancel)
-	ON_BN_CLICKED(IDC_OK, &CSELECTION::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_CONFIRMBUTTON, &CSELECTION::OnBnClickedConfirmbutton)
+	ON_BN_CLICKED(IDC_CANCELBUTTON, &CSELECTION::OnBnClickedCancelbutton)
 END_MESSAGE_MAP()
 
 
@@ -57,10 +63,10 @@ BOOL CSELECTION::OnInitDialog()
 	MessageBox(str, _T("xht"));
 	*/
 
-	// 设置窗口按钮和文本
+	// 设置窗口控件
 	/*
 	字体、文字大小、文字内容
-	按钮和文本大小、按钮和文本位置
+	大小、位置
 	焦点位置
 	*/
 
@@ -68,7 +74,7 @@ BOOL CSELECTION::OnInitDialog()
 	CFont* f;
 	f = new CFont;
 	f->CreateFont(
-		32, // nHeight 
+		42, // nHeight 
 		0, // nWidth 
 		0, // nEscapement 
 		0, // nOrientation 
@@ -91,29 +97,45 @@ BOOL CSELECTION::OnInitDialog()
 	建议字体：
 	中文用黑体、隶书、华文琥珀、华文行楷
 	*/
-	GetDlgItem(IDC_CANCEL)->SetFont(f);
-	GetDlgItem(IDC_CANCEL)->SetWindowText(_T("返回"));
-	GetDlgItem(IDC_OK)->SetFont(f);
-	GetDlgItem(IDC_OK)->SetWindowText(_T("确认"));
+	GetDlgItem(IDC_CANCELBUTTON)->SetFont(f);
+	GetDlgItem(IDC_CANCELBUTTON)->SetWindowText(_T("返回"));
+	GetDlgItem(IDC_CONFIRMBUTTON)->SetFont(f);
+	GetDlgItem(IDC_CONFIRMBUTTON)->SetWindowText(_T("确认"));
 	GetDlgItem(IDC_TEXT1)->SetFont(f);
-	GetDlgItem(IDC_TEXT1)->SetWindowText(_T("请输入关卡编号："));
-
+	GetDlgItem(IDC_TEXT1)->SetWindowText(_T("请输入关卡编号：我1111111"));
 	GetDlgItem(IDC_IDINPUT)->SetFont(f);
 	GetDlgItem(IDC_IDINPUT)->SetWindowText(_T("0"));
-	CSELECTION::updatePreview(_T("1"));//MYSHIT
+
+	// 设置大小、位置
+	const int TEXT_OFFSETX = 75;
+	const int TEXT_OFFSETY = 120;
+	const int TEXT_HEIGHT = 36;
+	const int TEXT_WIDTH = 340;
+	const int INPUT_HEIGHT = 40;
+	const int INPUT_WIDTH = 80;
+	GetDlgItem(IDC_TEXT1)->MoveWindow(TEXT_OFFSETY, TEXT_OFFSETX, TEXT_WIDTH, TEXT_HEIGHT, TRUE);
+	GetDlgItem(IDC_IDINPUT)->MoveWindow(TEXT_OFFSETY + TEXT_WIDTH, TEXT_OFFSETX, INPUT_WIDTH, INPUT_HEIGHT, TRUE);
+
+	const int BUTTON_OFFSETX = 520;
+	const int BUTTON_HEIGHT = 70;
+	const int BUTTON_WIDTH = 140;
+	GetDlgItem(IDC_CONFIRMBUTTON)->MoveWindow(DIALOG_WIDTH / 3 - BUTTON_WIDTH / 2, BUTTON_OFFSETX, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_CANCELBUTTON)->MoveWindow(DIALOG_WIDTH / 3 * 2 - BUTTON_WIDTH / 2, BUTTON_OFFSETX, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+
+	CSELECTION::updatePreview(_T("0"));
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
 
 
-void CSELECTION::OnBnClickedCancel()
+void CSELECTION::OnBnClickedCancelbutton()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	GetParent()->PostMessage(WM_TOHOMEPAGE);
 }
 
 
-void CSELECTION::OnBnClickedOk()
+void CSELECTION::OnBnClickedConfirmbutton()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	/*
@@ -148,14 +170,14 @@ BOOL CSELECTION::PreTranslateMessage(MSG* pMsg)
 #ifdef MYDEBUG
 			MessageBox(_T("ESC"), _T("From xht"));
 #endif // MYDEBUG
-			OnBnClickedCancel();
+			OnBnClickedCancelbutton();
 			return TRUE;
 			break;
 		case VK_RETURN:
 			HWND hwnd1 = ((CEdit*)GetDlgItem(IDC_IDINPUT))->m_hWnd;
 			if (pMsg->hwnd == hwnd1)
 			{
-				OnBnClickedOk();
+				OnBnClickedConfirmbutton();
 				return TRUE;
 			}
 			break;
@@ -164,24 +186,47 @@ BOOL CSELECTION::PreTranslateMessage(MSG* pMsg)
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
-void CSELECTION::updatePreview(CString name)//显示mapname的缩略图
+void CSELECTION::updatePreview(CString name) // 显示mapname的缩略图
 {
-	CStatic* pic=(CStatic*)GetDlgItem(IDC_STATIC);//预览图的控件
-	CString previewImageDir;//位图位置
-	HBITMAP hBMP;//载入的bmp
+	CStatic* pic = (CStatic*)GetDlgItem(IDC_PREVIEWIMAGE); // 预览图的控件
+	pic->ShowWindow(SW_HIDE);
 
-	name = "0";
+	CString previewImageDir; // 位图位置
+	HBITMAP hBMP; // 载入的bmp
+
 	previewImageDir = mapPath + _T("map") + name + _T(".bmp");
 	hBMP = (HBITMAP)LoadImage(NULL, previewImageDir, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-	
-	if (hBMP == NULL) {
-		//没有缩略图就显示一个默认的defaultmap.bmp
+	if (hBMP == NULL)
+	{
+		// 没有缩略图就显示一个默认的defaultmap.bmp
 		previewImageDir = mapPath + _T("defaultmap.bmp");
 		hBMP = (HBITMAP)LoadImage(NULL, previewImageDir, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 	}
 
 	pic->SetBitmap(hBMP);
-	
-	
 
+	double tempRatio;
+	CRect tempRect;
+	pic->GetClientRect(tempRect);
+	tempRatio = (double)tempRect.Height() / (double)tempRect.Width();
+
+	int tempHeight, tempWidth;
+	if (tempRatio > 1)
+	{
+		tempHeight = PREVIEW_SIZE;
+		tempWidth = (int)(PREVIEW_SIZE / tempRatio);
+	}
+	else
+	{
+		tempHeight = (int)(PREVIEW_SIZE * tempRatio);
+		tempWidth = PREVIEW_SIZE;
+	}
+	GetClientRect(tempRect);
+	const int PREVIEW_OFFSETX = 180;
+	pic->MoveWindow((tempRect.Width() - tempWidth) / 2, PREVIEW_OFFSETX, tempWidth, tempHeight, TRUE);
+	pic->ShowWindow(SW_SHOW);
 }
+/*
+xht:
+picturecontrol是会随图片改变大小的，要读图，就要隐藏、重定位后再显现，不然炸图。
+*/

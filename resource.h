@@ -20,10 +20,11 @@
 #define IDC_STARTGAME                   1000
 #define IDC_EXITGAME                    1001
 #define IDC_RETURN                      1004
-#define IDC_CANCEL                      1009
-#define IDC_OK                          1010
+#define IDC_CANCELBUTTON                1009
+#define IDC_CONFIRMBUTTON               1010
 #define IDC_IDINPUT                     1011
 #define IDC_TEXT1                       1012
+#define IDC_PREVIEWIMAGE                1013
 
 // Next default values for new objects
 // 
@@ -31,7 +32,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        156
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1013
+#define _APS_NEXT_CONTROL_VALUE         1014
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

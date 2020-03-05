@@ -22,7 +22,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnBnClickedCancel();
-	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedConfirmbutton();
+	afx_msg void OnBnClickedCancelbutton();
 	virtual void updatePreview(CString name);
 };

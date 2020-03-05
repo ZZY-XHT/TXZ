@@ -75,7 +75,7 @@ BOOL CGAME::OnInitDialog()
 	CFont* f;
 	f = new CFont;
 	f->CreateFont(
-		32, // nHeight 
+		42, // nHeight 
 		0, // nWidth 
 		0, // nEscapement 
 		0, // nOrientation 
@@ -102,8 +102,8 @@ BOOL CGAME::OnInitDialog()
 	GetDlgItem(IDC_RETURN)->SetWindowText(_T("返回"));
 
 	// 设置按钮大小、位置
-	const int BUTTON_HEIGHT = 80;
-	const int BUTTON_WIDTH = 160;
+	const int BUTTON_HEIGHT = 70;
+	const int BUTTON_WIDTH = 140;
 	GetDlgItem(IDC_RETURN)->MoveWindow(DIALOG_WIDTH - BUTTON_WIDTH, DIALOG_HEIGHT - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
 
 
