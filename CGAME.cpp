@@ -5,9 +5,9 @@
 #include "TXZ.h"
 #include "CGAME.h"
 #include "afxdialogex.h"
-#include "CDisplay.h"
+#include "CGAME_Display.h"
 
-CDisplay* myDisplay;
+CGAME_Display* myDisplay;
 
 // CGAME 对话框
 
@@ -68,7 +68,7 @@ BOOL CGAME::OnInitDialog()
 	const int BUTTON_WIDTH = BUTTON_HEIGHT * 2;
 	GetDlgItem(IDC_RETURN)->MoveWindow(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
 
-	myDisplay = new CDisplay;
+	myDisplay = new CGAME_Display;
 	myDisplay->Create(IDD_DISPLAY, this);
 	myDisplay->MoveWindow(0, (int)(DIALOG_HEIGHT * 0.1), DIALOG_WIDTH, (int)(DIALOG_HEIGHT * 0.9));
 	myDisplay->ShowWindow(SW_SHOW);

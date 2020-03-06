@@ -1,40 +1,40 @@
-﻿// CDisplay.cpp: 实现文件
+﻿// CGAME_Display.cpp: 实现文件
 //
 
 #include "pch.h"
 #include "TXZ.h"
-#include "CDisplay.h"
+#include "CGAME_Display.h"
 #include "afxdialogex.h"
 
 
-// CDisplay 对话框
+// CGAME_Display 对话框
 
-IMPLEMENT_DYNAMIC(CDisplay, CDialogEx)
+IMPLEMENT_DYNAMIC(CGAME_Display, CDialogEx)
 
-CDisplay::CDisplay(CWnd* pParent /*=nullptr*/)
+CGAME_Display::CGAME_Display(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DISPLAY, pParent),
 	m_size(1), m_offsetX(0), m_offsetY(0)
 {
 	Clear();
 }
 
-CDisplay::~CDisplay()
+CGAME_Display::~CGAME_Display()
 {
 }
 
-void CDisplay::DoDataExchange(CDataExchange* pDX)
+void CGAME_Display::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
 
-BEGIN_MESSAGE_MAP(CDisplay, CDialogEx)
+BEGIN_MESSAGE_MAP(CGAME_Display, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CDisplay 消息处理程序
+// CGAME_Display 消息处理程序
 
-BOOL CDisplay::OnInitDialog()
+BOOL CGAME_Display::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -52,14 +52,14 @@ BOOL CDisplay::OnInitDialog()
 				  // 异常: OCX 属性页应返回 FALSE
 }
 
-BOOL CDisplay::DestroyWindow()
+BOOL CGAME_Display::DestroyWindow()
 {
 	// TODO: 在此添加专用代码和/或调用基类
 	Clear();
 	return CDialogEx::DestroyWindow();
 }
 
-void CDisplay::Clear()
+void CGAME_Display::Clear()
 {
 	// 释放控件数组
 	for (int i = 0; i < MAXMAPSIZE + 2; i++)
@@ -71,7 +71,7 @@ void CDisplay::Clear()
 			}
 }
 
-BOOL CDisplay::Reset(int n, int m)
+BOOL CGAME_Display::Reset(int n, int m)
 {
 	Clear();
 	CRect tempRect;
@@ -96,7 +96,7 @@ BOOL CDisplay::Reset(int n, int m)
 	return TRUE;
 }
 
-void CDisplay::Update(int x, int y, UINT picTag)
+void CGAME_Display::Update(int x, int y, UINT picTag)
 {
 	m_pPictureMap[x][y]->ShowWindow(SW_HIDE);
 	m_pPictureMap[x][y]->SetBitmap((HBITMAP)m_bitmap[picTag].GetSafeHandle());

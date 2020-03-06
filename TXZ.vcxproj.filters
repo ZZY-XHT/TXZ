@@ -42,7 +42,7 @@
     <ClInclude Include="CSELECTION.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CDisplay.h">
+    <ClInclude Include="CGAME_Display.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -65,7 +65,7 @@
     <ClCompile Include="CSELECTION.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CDisplay.cpp">
+    <ClCompile Include="CGAME_Display.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

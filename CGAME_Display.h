@@ -1,15 +1,15 @@
 ﻿#pragma once
 
 
-// CDisplay 对话框
+// CGAME_Display 对话框
 
-class CDisplay : public CDialogEx
+class CGAME_Display : public CDialogEx
 {
-	DECLARE_DYNAMIC(CDisplay)
+	DECLARE_DYNAMIC(CGAME_Display)
 
 public:
-	CDisplay(CWnd* pParent = nullptr);   // 标准构造函数
-	virtual ~CDisplay();
+	CGAME_Display(CWnd* pParent = nullptr);   // 标准构造函数
+	virtual ~CGAME_Display();
 
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
