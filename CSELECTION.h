@@ -25,4 +25,6 @@ public:
 	afx_msg void OnBnClickedConfirmbutton();
 	afx_msg void OnBnClickedCancelbutton();
 	virtual void updatePreview(CString name);
+private:
+	CFont m_font;
 };

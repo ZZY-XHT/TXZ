@@ -66,9 +66,7 @@ BOOL CHOMEPAGE::OnInitDialog()
 	*/
 
 	// 字体、文字大小、文字内容
-	CFont* f;
-	f = new CFont;
-	f->CreateFont(
+	m_font.CreateFont(
 		56, // nHeight 
 		0, // nWidth 
 		0, // nEscapement 
@@ -92,9 +90,9 @@ BOOL CHOMEPAGE::OnInitDialog()
 	建议字体：
 	中文用黑体、隶书、华文琥珀、华文行楷
 	*/
-	GetDlgItem(IDC_STARTGAME)->SetFont(f);
+	GetDlgItem(IDC_STARTGAME)->SetFont(&m_font);
 	GetDlgItem(IDC_STARTGAME)->SetWindowText(_T("开始游戏"));
-	GetDlgItem(IDC_EXITGAME)->SetFont(f);
+	GetDlgItem(IDC_EXITGAME)->SetFont(&m_font);
 	GetDlgItem(IDC_EXITGAME)->SetWindowText(_T("结束游戏"));
 
 	// 设置按钮大小、位置

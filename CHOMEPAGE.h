@@ -24,4 +24,6 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedStartgame();
 	afx_msg void OnBnClickedExitgame();
+private:
+	CFont m_font;
 };

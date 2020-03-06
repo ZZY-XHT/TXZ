@@ -66,4 +66,5 @@ private:
 	CBitmap m_bitmap[PICNUM];
 	int m_size, m_offsetX, m_offsetY;
 	bool m_isFinished;
+	CFont m_font;
 };

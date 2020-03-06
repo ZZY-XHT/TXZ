@@ -72,9 +72,7 @@ BOOL CGAME::OnInitDialog()
 	*/
 
 	// 字体、文字大小、文字内容
-	CFont* f;
-	f = new CFont;
-	f->CreateFont(
+	m_font.CreateFont(
 		42, // nHeight 
 		0, // nWidth 
 		0, // nEscapement 
@@ -98,7 +96,7 @@ BOOL CGAME::OnInitDialog()
 	建议字体：
 	中文用黑体、隶书、华文琥珀、华文行楷
 	*/
-	GetDlgItem(IDC_RETURN)->SetFont(f);
+	GetDlgItem(IDC_RETURN)->SetFont(&m_font);
 	GetDlgItem(IDC_RETURN)->SetWindowText(_T("返回"));
 
 	// 设置按钮大小、位置
@@ -187,6 +185,10 @@ BOOL CGAME::PreTranslateMessage(MSG* pMsg)
 #endif // MYDEBUG
 			OnBnClickedReturn();
 			break;
+		case VK_RETURN:
+#ifdef MYDEBUG
+			MessageBox(_T("RETURN"), _T("From xht"));
+#endif // MYDEBUG
 		default:
 			return CDialogEx::PreTranslateMessage(pMsg);
 		}
@@ -280,12 +282,12 @@ char myInputBuffer[MAXINPUTBUFFERSIZE], *icp = myInputBuffer;
 BOOL getNoneNegativeInteger(int &x, const int LOWERBOUND, const int UPPERBOUND)
 {
 	long long tempValue = 0LL;
-	while (!isdigit(*icp))
+	while (!isdigit(static_cast<unsigned char>(*icp)))
 	{
 		if (*icp == '\n' || *icp == '\r' || *icp == ' ') icp++;
 		else return FALSE;
 	}
-	while (isdigit(*icp))
+	while (isdigit(static_cast<unsigned char>(*icp)))
 	{
 		tempValue = tempValue * 10 + *icp - '0';
 		if (tempValue <= UPPERBOUND) icp++;

@@ -71,9 +71,7 @@ BOOL CSELECTION::OnInitDialog()
 	*/
 
 	// 字体、文字大小、文字内容
-	CFont* f;
-	f = new CFont;
-	f->CreateFont(
+	m_font.CreateFont(
 		42, // nHeight 
 		0, // nWidth 
 		0, // nEscapement 
@@ -97,13 +95,13 @@ BOOL CSELECTION::OnInitDialog()
 	建议字体：
 	中文用黑体、隶书、华文琥珀、华文行楷
 	*/
-	GetDlgItem(IDC_CANCELBUTTON)->SetFont(f);
+	GetDlgItem(IDC_CANCELBUTTON)->SetFont(&m_font);
 	GetDlgItem(IDC_CANCELBUTTON)->SetWindowText(_T("返回"));
-	GetDlgItem(IDC_CONFIRMBUTTON)->SetFont(f);
+	GetDlgItem(IDC_CONFIRMBUTTON)->SetFont(&m_font);
 	GetDlgItem(IDC_CONFIRMBUTTON)->SetWindowText(_T("确认"));
-	GetDlgItem(IDC_TEXT1)->SetFont(f);
+	GetDlgItem(IDC_TEXT1)->SetFont(&m_font);
 	GetDlgItem(IDC_TEXT1)->SetWindowText(_T("请输入关卡编号：我1111111"));
-	GetDlgItem(IDC_IDINPUT)->SetFont(f);
+	GetDlgItem(IDC_IDINPUT)->SetFont(&m_font);
 	GetDlgItem(IDC_IDINPUT)->SetWindowText(_T("0"));
 
 	// 设置大小、位置
@@ -111,7 +109,7 @@ BOOL CSELECTION::OnInitDialog()
 	const int TEXT_OFFSETY = 120;
 	const int TEXT_HEIGHT = 36;
 	const int TEXT_WIDTH = 340;
-	const int INPUT_HEIGHT = 40;
+	const int INPUT_HEIGHT = 50;
 	const int INPUT_WIDTH = 80;
 	GetDlgItem(IDC_TEXT1)->MoveWindow(TEXT_OFFSETY, TEXT_OFFSETX, TEXT_WIDTH, TEXT_HEIGHT, TRUE);
 	GetDlgItem(IDC_IDINPUT)->MoveWindow(TEXT_OFFSETY + TEXT_WIDTH, TEXT_OFFSETX, INPUT_WIDTH, INPUT_HEIGHT, TRUE);
