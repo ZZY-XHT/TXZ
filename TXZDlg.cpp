@@ -308,3 +308,15 @@ BOOL CTXZDlg::PreTranslateMessage(MSG* pMsg)
 	}
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
+
+BOOL CTXZDlg::DestroyWindow()
+{
+	// TODO: 在此添加专用代码和/或调用基类
+	myHomepage->DestroyWindow();
+	delete myHomepage;
+	myGame->DestroyWindow();
+	delete myGame;
+	mySelection->DestroyWindow();
+	delete mySelection;
+	return CDialogEx::DestroyWindow();
+}

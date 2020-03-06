@@ -36,4 +36,5 @@ public:
 	afx_msg LRESULT ToGame(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT ToHomepage(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT ToSelection(WPARAM wParam, LPARAM lParam);
+	virtual BOOL DestroyWindow();
 };

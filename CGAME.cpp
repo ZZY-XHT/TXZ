@@ -5,7 +5,9 @@
 #include "TXZ.h"
 #include "CGAME.h"
 #include "afxdialogex.h"
+#include "CDisplay.h"
 
+CDisplay* myDisplay;
 
 // CGAME 对话框
 
@@ -15,13 +17,9 @@ CGAME::CGAME(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_GAME, pParent),
 	m_mapSizeX(0), m_mapSizeY(0),
 	m_playerX(0), m_playerY(0),
-	m_offsetX(0), m_offsetY(0),
-	m_map(), m_pPictureMap(),
-	m_size(SZ_NORMAL), m_isFinished(FALSE)
+	m_map(), m_isFinished(FALSE)
 {
-	for (int i = 0; i < MAXMAPSIZE + 2; i++)
-		for (int j = 0; j < MAXMAPSIZE + 2; j++)
-			m_pPictureMap[i][j] = NULL;
+
 }
 
 CGAME::~CGAME()
@@ -58,11 +56,23 @@ BOOL CGAME::OnInitDialog()
 	const int DIALOG_HEIGHT = ClientRect.Height();
 	const int DIALOG_WIDTH = ClientRect.Width();
 
+	this->SetBackgroundColor(RGB(255, 255, 0), TRUE);
 	/*
 	CString str;
 	str.Format(_T("Height is %d, Weight is %d"), DIALOG_HEIGHT, DIALOG_WIDTH);
 	MessageBox(str, _T("xht"));
 	*/
+
+	// 设置控件大小、位置
+	const int BUTTON_HEIGHT = (int)(DIALOG_HEIGHT * 0.1);
+	const int BUTTON_WIDTH = BUTTON_HEIGHT * 2;
+	GetDlgItem(IDC_RETURN)->MoveWindow(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+
+	myDisplay = new CDisplay;
+	myDisplay->Create(IDD_DISPLAY, this);
+	myDisplay->MoveWindow(0, (int)(DIALOG_HEIGHT * 0.1), DIALOG_WIDTH, (int)(DIALOG_HEIGHT * 0.9));
+	myDisplay->ShowWindow(SW_SHOW);
+
 
 	// 设置窗口按钮
 	/*
@@ -73,7 +83,7 @@ BOOL CGAME::OnInitDialog()
 
 	// 字体、文字大小、文字内容
 	m_font.CreateFont(
-		42, // nHeight 
+		(int)(BUTTON_HEIGHT * 0.6), // nHeight 
 		0, // nWidth 
 		0, // nEscapement 
 		0, // nOrientation 
@@ -99,20 +109,6 @@ BOOL CGAME::OnInitDialog()
 	GetDlgItem(IDC_RETURN)->SetFont(&m_font);
 	GetDlgItem(IDC_RETURN)->SetWindowText(_T("返回"));
 
-	// 设置按钮大小、位置
-	const int BUTTON_HEIGHT = 70;
-	const int BUTTON_WIDTH = 140;
-	GetDlgItem(IDC_RETURN)->MoveWindow(DIALOG_WIDTH - BUTTON_WIDTH, DIALOG_HEIGHT - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
-
-
-	// 载入位图
-	m_bitmap[PIC_NULL].LoadBitmap(IDB_P_NULL);
-	m_bitmap[PIC_BOX].LoadBitmap(IDB_P_BOX);
-	m_bitmap[PIC_GOAL].LoadBitmap(IDB_P_GOAL);
-	m_bitmap[PIC_FINISH].LoadBitmap(IDB_P_FINISH);
-	m_bitmap[PIC_WALL].LoadBitmap(IDB_P_WALL);
-	m_bitmap[PIC_PLAYER].LoadBitmap(IDB_P_PLAYER);
-
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -120,7 +116,7 @@ BOOL CGAME::OnInitDialog()
 void CGAME::OnBnClickedReturn()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	Clear();
+	myDisplay->Clear();
 	GetParent()->PostMessage(WM_TOSELECTION);
 }
 
@@ -206,15 +202,6 @@ LRESULT CGAME::StartGame(WPARAM wParam, LPARAM lParam)
 	return SetMap(s);
 }
 
-int GetSize(int v)
-{
-	if (v <= NUM_EXTRALARGE) return SZ_EXTRALARGE;
-	if (v <= NUM_LARGE) return SZ_LARGE;
-	if (v <= NUM_NORMAL) return SZ_NORMAL;
-	if (v <= NUM_SMALL) return SZ_SMALL;
-	return SZ_EXTRASMALL;
-}
-
 BOOL CGAME::SetMap(CString path)
 {
 	// 根据路径载入地图
@@ -229,31 +216,16 @@ BOOL CGAME::SetMap(CString path)
 #endif // MYDEBUG
 
 		// 开始绘制
-		
-		m_size = GetSize(max(m_mapSizeX, m_mapSizeY));
-		CRect tempRect;
-		this->GetWindowRect(tempRect);
-		m_offsetX = (tempRect.Height() - m_size * m_mapSizeX) / 2;
-		m_offsetY = (tempRect.Width() - m_size * m_mapSizeY) / 2;
+		myDisplay->Reset(m_mapSizeX, m_mapSizeY);
 
 		for(int i = 1; i <= m_mapSizeX; i++)
 			for (int j = 1; j <= m_mapSizeY; j++)
 			{
-				CStatic* &p = m_pPictureMap[i][j];
-				if (p != NULL)
-				{
-					MessageBox(_T("SERIOUS ERROR: Game指针初始非空"), _T("From xht"));
-					GetParent()->PostMessage(WM_CLOSE);
-					return FALSE;
-				}
-				p = new CStatic();
-				p->Create(NULL, SS_BITMAP, CRect(0, 0, m_size, m_size), this);
-
-				PaintMap(i, j, m_map[i][j]);
+				myDisplay->Update(i, j, m_map[i][j]);
 			}
 
-		PaintMap(m_playerX, m_playerY, PIC_PLAYER);
-
+		myDisplay->Update(m_playerX, m_playerY, PIC_PLAYER);
+		
 		UpdateWindow();
 
 		// 完成绘制
@@ -261,20 +233,6 @@ BOOL CGAME::SetMap(CString path)
 	}
 	else return FALSE;
 }
-
-BOOL CGAME::Clear()
-{
-	// 释放控件数组
-	for(int i = 0; i < MAXMAPSIZE + 2; i++)
-		for(int j = 0; j < MAXMAPSIZE + 2; j++)
-			if (m_pPictureMap[i][j] != NULL)
-			{
-				delete m_pPictureMap[i][j];
-				m_pPictureMap[i][j] = NULL;
-			}
-	return TRUE;
-}
-
 
 // 自定义的读取非负整数函数
 const int MAXINPUTBUFFERSIZE = 100000;
@@ -400,24 +358,9 @@ BOOL CGAME::ReadMap(CString path)
 BOOL CGAME::DestroyWindow()
 {
 	// TODO: 在此添加专用代码和/或调用基类
-	// 释放控件数组
-	for (int i = 0; i < MAXMAPSIZE + 2; i++)
-		for (int j = 0; j < MAXMAPSIZE + 2; j++)
-			if (m_pPictureMap[i][j] != NULL)
-			{
-				delete m_pPictureMap[i][j];
-				m_pPictureMap[i][j] = NULL;
-			}
+	myDisplay->DestroyWindow();
+	delete myDisplay;
 	return CDialogEx::DestroyWindow();
-}
-
-BOOL CGAME::PaintMap(int x, int y, UINT picTag)
-{
-	m_pPictureMap[x][y]->ShowWindow(SW_HIDE);
-	m_pPictureMap[x][y]->SetBitmap((HBITMAP)m_bitmap[picTag].GetSafeHandle());
-	m_pPictureMap[x][y]->MoveWindow(m_offsetY + (y - 1) * m_size, m_offsetX + (x - 1) * m_size, m_size, m_size);
-	m_pPictureMap[x][y]->ShowWindow(SW_SHOW);
-	return TRUE;
 }
 
 BOOL CGAME::CanMoveOn(int x, int y)
@@ -440,8 +383,8 @@ BOOL CGAME::MovePlayer(UINT dir)
 		case MP_NULL:
 		case MP_GOAL:
 			m_playerX = xx; m_playerY = yy;
-			PaintMap(x, y, m_map[x][y]);
-			PaintMap(xx, yy, PIC_PLAYER);
+			myDisplay->Update(x, y, m_map[x][y]);
+			myDisplay->Update(xx, yy, PIC_PLAYER);
 			UpdateWindow();
 			return TRUE;
 			break;
@@ -452,9 +395,9 @@ BOOL CGAME::MovePlayer(UINT dir)
 				m_playerX = xx; m_playerY = yy;
 				m_map[xx][yy] &= ~MP_BOX;
 				m_map[xxx][yyy] |= MP_BOX;
-				PaintMap(x, y, m_map[x][y]);
-				PaintMap(xx, yy, PIC_PLAYER);
-				PaintMap(xxx, yyy, m_map[xxx][yyy]);
+				myDisplay->Update(x, y, m_map[x][y]);
+				myDisplay->Update(xx, yy, PIC_PLAYER);
+				myDisplay->Update(xxx, yyy, m_map[xxx][yyy]);
 				UpdateWindow();
 				CheckFinished();
 				return TRUE;

@@ -183,6 +183,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CDisplay.h" />
     <ClInclude Include="CGAME.h" />
     <ClInclude Include="CHOMEPAGE.h" />
     <ClInclude Include="CSELECTION.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="TXZDlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CDisplay.cpp" />
     <ClCompile Include="CGAME.cpp" />
     <ClCompile Include="CHOMEPAGE.cpp" />
     <ClCompile Include="CSELECTION.cpp" />

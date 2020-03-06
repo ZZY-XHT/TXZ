@@ -122,7 +122,6 @@ void CHOMEPAGE::OnBnClickedExitgame()
 	// TODO: 在此添加控件通知处理程序代码
 	MessageBox(_T("Byebye"), _T("From xht"));
 	GetParent()->PostMessage(WM_CLOSE);
-	//GetParent()->DestroyWindow();
 }
 
 BOOL CHOMEPAGE::PreTranslateMessage(MSG* pMsg)

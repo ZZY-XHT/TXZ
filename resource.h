@@ -17,6 +17,8 @@
 #define IDB_P_PLAYER                    149
 #define IDB_P_WALL                      150
 #define IDD_SELECTION                   154
+#define IDD_DIALOG1                     156
+#define IDD_DISPLAY                     156
 #define IDC_STARTGAME                   1000
 #define IDC_EXITGAME                    1001
 #define IDC_RETURN                      1004
@@ -30,7 +32,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        156
+#define _APS_NEXT_RESOURCE_VALUE        158
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1014
 #define _APS_NEXT_SYMED_VALUE           101

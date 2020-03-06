@@ -33,13 +33,15 @@
 // #define MYDEBUG
 #endif // DEBUG
 
+// 自定义常量
+#define MAXMAPSIZE 30
 
 // 自定义消息
 #define WM_TOGAME WM_USER+1
 #define WM_TOHOMEPAGE WM_USER+2
 #define WM_STARTGAME WM_USER+3
 #define WM_TOSELECTION WM_USER+4
-
+#define WM_UPDATE WM_USER+5
 
 // 自定义地图格子状态
 #define MP_NULL 0
