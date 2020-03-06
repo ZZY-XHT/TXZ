@@ -185,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="CGAME_Display.h" />
     <ClInclude Include="CGAME.h" />
+    <ClInclude Include="CGAME_Map.h" />
     <ClInclude Include="CHOMEPAGE.h" />
     <ClInclude Include="CSELECTION.h" />
     <ClInclude Include="framework.h" />
@@ -205,6 +206,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="CGAME_Map.cpp" />
     <ClCompile Include="TXZ.cpp" />
     <ClCompile Include="TXZDlg.cpp" />
   </ItemGroup>

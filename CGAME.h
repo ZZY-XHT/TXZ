@@ -6,6 +6,7 @@
 #define NUM_SMALL 18
 #define NUM_EXTRASMALL 30
 
+/*
 #define DIR_UP 0
 #define DIR_DOWN 1
 #define DIR_LEFT 2
@@ -15,7 +16,7 @@
 
 const int dx[4] = { -1, 1, 0, 0 };
 const int dy[4] = { 0, 0, -1, 1 };
-
+*/
 
 // CGAME 对话框
 
@@ -42,16 +43,7 @@ public:
 	afx_msg void OnBnClickedReturn();
 	afx_msg LRESULT StartGame(WPARAM wParam, LPARAM lParam);
 protected:
-	virtual BOOL SetMap(CString path);
-	virtual BOOL ReadMap(CString path);
-	virtual BOOL MovePlayer(UINT dir);
-	virtual BOOL CanMoveOn(int x, int y);
-	virtual BOOL CheckFinished();
-	virtual BOOL IsFinished();
+
 private:
-	int m_map[MAXMAPSIZE + 2][MAXMAPSIZE + 2];
-	int m_mapSizeX, m_mapSizeY;
-	int m_playerX, m_playerY;
-	bool m_isFinished;
 	CFont m_font;
 };

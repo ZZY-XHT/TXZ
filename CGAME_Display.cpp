@@ -96,6 +96,7 @@ BOOL CGAME_Display::Reset(int n, int m)
 	return TRUE;
 }
 
+//我觉得UpdateWindow应该归Display管
 void CGAME_Display::Update(int x, int y, UINT picTag)
 {
 	m_pPictureMap[x][y]->ShowWindow(SW_HIDE);

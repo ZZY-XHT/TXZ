@@ -6,18 +6,17 @@
 #include "CGAME.h"
 #include "afxdialogex.h"
 #include "CGAME_Display.h"
+#include "CGAME_Map.h"
 
 CGAME_Display* myDisplay;
+CGAME_Map* myMap;
 
 // CGAME 对话框
 
 IMPLEMENT_DYNAMIC(CGAME, CDialogEx)
 
 CGAME::CGAME(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_GAME, pParent),
-	m_mapSizeX(0), m_mapSizeY(0),
-	m_playerX(0), m_playerY(0),
-	m_map(), m_isFinished(FALSE)
+	: CDialogEx(IDD_GAME, pParent)
 {
 
 }
@@ -73,7 +72,9 @@ BOOL CGAME::OnInitDialog()
 	myDisplay->MoveWindow(0, (int)(DIALOG_HEIGHT * 0.1), DIALOG_WIDTH, (int)(DIALOG_HEIGHT * 0.9));
 	myDisplay->ShowWindow(SW_SHOW);
 
-
+	//创建Map
+	myMap = new CGAME_Map(myDisplay);
+	
 	// 设置窗口按钮
 	/*
 	字体、文字大小、文字内容
@@ -152,28 +153,28 @@ BOOL CGAME::PreTranslateMessage(MSG* pMsg)
 #ifdef MYDEBUG
 			MessageBox(_T("UP"), _T("From xht"));
 #endif // MYDEBUG
-			MovePlayer(DIR_UP);
+			myMap->MovePlayer(DIR_UP);
 			break;
 		case 'S':
 		case VK_DOWN:
 #ifdef MYDEBUG
 			MessageBox(_T("DOWN"), _T("From xht"));
 #endif // MYDEBUG
-			MovePlayer(DIR_DOWN);
+			myMap->MovePlayer(DIR_DOWN);
 			break;
 		case 'A':
 		case VK_LEFT:
 #ifdef MYDEBUG
 			MessageBox(_T("LEFT"), _T("From xht"));
 #endif // MYDEBUG
-			MovePlayer(DIR_LEFT);
+			myMap->MovePlayer(DIR_LEFT);
 			break;
 		case 'D':
 		case VK_RIGHT:
 #ifdef MYDEBUG
 			MessageBox(_T("RIGHT"), _T("From xht"));
 #endif // MYDEBUG
-			MovePlayer(DIR_RIGHT);
+			myMap->MovePlayer(DIR_RIGHT);
 			break;
 		case VK_ESCAPE:
 #ifdef MYDEBUG
@@ -199,161 +200,10 @@ LRESULT CGAME::StartGame(WPARAM wParam, LPARAM lParam)
 	BSTR b = (BSTR)wParam;
 	CString s(b);
 	SysFreeString(b);
-	return SetMap(s);
+	return myMap->SetMap(s);
 }
 
-BOOL CGAME::SetMap(CString path)
-{
-	// 根据路径载入地图
-#ifdef MYDEBUG
-	MessageBox(path, _T("From xht"));
-#endif // MYDEBUG
-	
-	if (ReadMap(path))
-	{
-#ifdef MYDEBUG
-		MessageBox(_T("读取地图成功"), _T("From xht"));
-#endif // MYDEBUG
 
-		// 开始绘制
-		myDisplay->Reset(m_mapSizeX, m_mapSizeY);
-
-		for(int i = 1; i <= m_mapSizeX; i++)
-			for (int j = 1; j <= m_mapSizeY; j++)
-			{
-				myDisplay->Update(i, j, m_map[i][j]);
-			}
-
-		myDisplay->Update(m_playerX, m_playerY, PIC_PLAYER);
-		
-		UpdateWindow();
-
-		// 完成绘制
-		return TRUE;
-	}
-	else return FALSE;
-}
-
-// 自定义的读取非负整数函数
-const int MAXINPUTBUFFERSIZE = 100000;
-char myInputBuffer[MAXINPUTBUFFERSIZE], *icp = myInputBuffer;
-BOOL getNoneNegativeInteger(int &x, const int LOWERBOUND, const int UPPERBOUND)
-{
-	long long tempValue = 0LL;
-	while (!isdigit(static_cast<unsigned char>(*icp)))
-	{
-		if (*icp == '\n' || *icp == '\r' || *icp == ' ') icp++;
-		else return FALSE;
-	}
-	while (isdigit(static_cast<unsigned char>(*icp)))
-	{
-		tempValue = tempValue * 10 + *icp - '0';
-		if (tempValue <= UPPERBOUND) icp++;
-		else return FALSE;
-	}
-	if (LOWERBOUND <= tempValue && tempValue <= UPPERBOUND)
-	{
-		x = (int)tempValue;
-		return TRUE;
-	}
-	else return FALSE;
-}
-
-BOOL CGAME::ReadMap(CString path)
-{
-	if (!PathFileExists(path))
-	{
-		MessageBox(_T("ERROR：地图文件不存在"), _T("From xht"));
-		return FALSE;
-	}
-	USES_CONVERSION; // 为了使用T2A/W2A将Unicode下的CString转为char*，占用栈空间，不宜在循环、递归中使用，以免栈溢出
-	char* pFileName = T2A(path); // 有时间可以把T2A手动实现来替换掉
-
-	FILE* pFile = NULL;
-	if (pFileName != NULL)
-	{
-		fopen_s(&pFile, pFileName, "r");
-		if (pFile != NULL)
-		{
-			int len = (int)fread(myInputBuffer, 1, MAXINPUTBUFFERSIZE, pFile);
-			fclose(pFile);
-			icp = myInputBuffer;
-			if (len == MAXINPUTBUFFERSIZE)
-			{
-				MessageBox(_T("ERROR：地图文件过大"), _T("From xht"));
-				return FALSE;
-			}
-			myInputBuffer[len] = '\0';
-			// 开始读入地图
-			if (!getNoneNegativeInteger(m_mapSizeX, 1, MAXMAPSIZE))
-			{
-				MessageBox(_T("ERROR：地图尺寸越界或缺失"), _T("From xht"));
-				return FALSE;
-			}
-			if (!getNoneNegativeInteger(m_mapSizeY, 1, MAXMAPSIZE))
-			{
-				MessageBox(_T("ERROR：地图尺寸越界或缺失"), _T("From xht"));
-				return FALSE;
-			}
-			for(int i = 1; i <= m_mapSizeX; i++)
-				for (int j = 1; j <= m_mapSizeY; j++)
-				{
-					if (!getNoneNegativeInteger(m_map[i][j], MP_FIRST, MP_LAST))
-					{
-						MessageBox(_T("ERROR：地图元素越界或缺失"), _T("From xht"));
-						return FALSE;
-					}
-				}
-			if (!getNoneNegativeInteger(m_playerX, 1, MAXMAPSIZE))
-			{
-				MessageBox(_T("ERROR：人物初始位置越界或缺失"), _T("From xht"));
-				return FALSE;
-			}
-			if (!getNoneNegativeInteger(m_playerY, 1, MAXMAPSIZE))
-			{
-				MessageBox(_T("ERROR：人物初始位置越界或缺失"), _T("From xht"));
-				return FALSE;
-			}
-			// 完成读入地图
-
-			// 开始补充隐藏边界
-			for (int i = 0; i <= m_mapSizeX + 1; i++)
-				m_map[i][0] = m_map[i][m_mapSizeY + 1] = 4;
-			for (int j = 1; j <= m_mapSizeY; j++)
-				m_map[0][j] = m_map[m_mapSizeX + 1][j] = 4;
-			// 完成补充隐藏边界
-
-			// 开始检查地图
-			if (!CanMoveOn(m_playerX, m_playerY))
-			{
-				MessageBox(_T("ERROR：人物初始位置在箱子或障碍上"), _T("From xht"));
-				return FALSE;
-			}
-			{
-				int tempCount = 0;
-				for (int i = 1; i <= m_mapSizeX; i++)
-					for (int j = 1; j <= m_mapSizeY; j++)
-						if (m_map[i][j] == MP_BOX) tempCount++;
-						else if (m_map[i][j] == MP_GOAL) tempCount--;
-				if (tempCount != 0)
-				{
-					MessageBox(_T("ERROR：箱子与目标数量不一致"), _T("From xht"));
-					return FALSE;
-				}
-			}
-			
-			m_isFinished = FALSE;
-			if (IsFinished())
-			{
-				MessageBox(_T("ERROR：地图初始状态已完成"), _T("From xht"));
-				return FALSE;
-			}
-			// 完成检查地图
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
 
 BOOL CGAME::DestroyWindow()
 {
@@ -361,83 +211,4 @@ BOOL CGAME::DestroyWindow()
 	myDisplay->DestroyWindow();
 	delete myDisplay;
 	return CDialogEx::DestroyWindow();
-}
-
-BOOL CGAME::CanMoveOn(int x, int y)
-{
-	return ((1 <= x && x <= m_mapSizeX && 1 <= y && y <= m_mapSizeY) && !(m_map[x][y] & (MP_BOX | MP_WALL)));
-}
-BOOL CGAME::MovePlayer(UINT dir)
-{
-	if (m_isFinished)
-	{
-		return FALSE;
-	}
-	if (DIR_FIRST <= dir && dir <= DIR_LAST)
-	{
-		int x = m_playerX, y = m_playerY;
-		int xx = x + dx[dir], yy = y + dy[dir];
-		int xxx = xx + dx[dir], yyy = yy + dy[dir];
-		switch (m_map[xx][yy])
-		{
-		case MP_NULL:
-		case MP_GOAL:
-			m_playerX = xx; m_playerY = yy;
-			myDisplay->Update(x, y, m_map[x][y]);
-			myDisplay->Update(xx, yy, PIC_PLAYER);
-			UpdateWindow();
-			return TRUE;
-			break;
-		case MP_BOX:
-		case MP_FINISH:
-			if (CanMoveOn(xxx, yyy))
-			{
-				m_playerX = xx; m_playerY = yy;
-				m_map[xx][yy] &= ~MP_BOX;
-				m_map[xxx][yyy] |= MP_BOX;
-				myDisplay->Update(x, y, m_map[x][y]);
-				myDisplay->Update(xx, yy, PIC_PLAYER);
-				myDisplay->Update(xxx, yyy, m_map[xxx][yyy]);
-				UpdateWindow();
-				CheckFinished();
-				return TRUE;
-			}
-			else
-			{
-				return FALSE;
-			}
-			break;
-		case MP_WALL:
-		default:
-			break;
-		}
-		return FALSE;
-	}
-	else
-	{
-		MessageBox(_T("ERROR：人物移动方向非法"), _T("From xht"));
-		return FALSE;
-	}
-	return FALSE;
-}
-
-BOOL CGAME::IsFinished()
-{
-	for(int i = 1; i <= m_mapSizeX; i++)
-		for (int j = 1; j <= m_mapSizeY; j++)
-			if (m_map[i][j] == MP_BOX || m_map[i][j] == MP_GOAL)
-			{
-				return m_isFinished = FALSE;
-			}
-	return m_isFinished = TRUE;
-}
-
-BOOL CGAME::CheckFinished()
-{
-	if (IsFinished())
-	{
-		MessageBox(_T("恭喜闯关成功！"), _T("From xht"));
-		return TRUE;
-	}
-	else return FALSE;
 }
