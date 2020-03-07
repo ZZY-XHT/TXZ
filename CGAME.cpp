@@ -32,8 +32,9 @@ void CGAME::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CGAME, CDialogEx)
-	ON_BN_CLICKED(IDC_RETURN, &CGAME::OnBnClickedReturn)
 	ON_MESSAGE(WM_STARTGAME, &CGAME::StartGame)
+	ON_BN_CLICKED(IDC_RESTARTBUTTON, &CGAME::OnBnClickedRestartbutton)
+	ON_BN_CLICKED(IDC_RETURNBUTTON, &CGAME::OnBnClickedReturnbutton)
 END_MESSAGE_MAP()
 
 
@@ -65,14 +66,16 @@ BOOL CGAME::OnInitDialog()
 	// 设置控件大小、位置
 	const int BUTTON_HEIGHT = (int)(DIALOG_HEIGHT * 0.1);
 	const int BUTTON_WIDTH = BUTTON_HEIGHT * 2;
-	GetDlgItem(IDC_RETURN)->MoveWindow(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_RETURNBUTTON)->MoveWindow(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_RESTARTBUTTON)->MoveWindow(BUTTON_WIDTH, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
 
+	// 创建Display
 	myDisplay = new CGAME_Display;
 	myDisplay->Create(IDD_DISPLAY, this);
 	myDisplay->MoveWindow(0, (int)(DIALOG_HEIGHT * 0.1), DIALOG_WIDTH, (int)(DIALOG_HEIGHT * 0.9));
 	myDisplay->ShowWindow(SW_SHOW);
 
-	//创建Map
+	// 创建Map
 	myMap = new CGAME_Map(myDisplay);
 	
 	// 设置窗口按钮
@@ -107,18 +110,25 @@ BOOL CGAME::OnInitDialog()
 	建议字体：
 	中文用黑体、隶书、华文琥珀、华文行楷
 	*/
-	GetDlgItem(IDC_RETURN)->SetFont(&m_font);
-	GetDlgItem(IDC_RETURN)->SetWindowText(_T("返回"));
-
+	GetDlgItem(IDC_RETURNBUTTON)->SetFont(&m_font);
+	GetDlgItem(IDC_RETURNBUTTON)->SetWindowText(_T("返回"));
+	GetDlgItem(IDC_RESTARTBUTTON)->SetFont(&m_font);
+	GetDlgItem(IDC_RESTARTBUTTON)->SetWindowText(_T("重玩"));
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
 
-void CGAME::OnBnClickedReturn()
+void CGAME::OnBnClickedReturnbutton()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	myDisplay->Clear();
 	GetParent()->PostMessage(WM_TOSELECTION);
+}
+
+void CGAME::OnBnClickedRestartbutton()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	myMap->Restart();
 }
 
 BOOL CGAME::PreTranslateMessage(MSG* pMsg)
@@ -180,7 +190,7 @@ BOOL CGAME::PreTranslateMessage(MSG* pMsg)
 #ifdef MYDEBUG
 				MessageBox(_T("ESC"), _T("From xht"));
 #endif // MYDEBUG
-			OnBnClickedReturn();
+			OnBnClickedReturnbutton();
 			break;
 		case VK_RETURN:
 #ifdef MYDEBUG
@@ -203,12 +213,11 @@ LRESULT CGAME::StartGame(WPARAM wParam, LPARAM lParam)
 	return myMap->SetMap(s);
 }
 
-
-
 BOOL CGAME::DestroyWindow()
 {
 	// TODO: 在此添加专用代码和/或调用基类
 	myDisplay->DestroyWindow();
 	delete myDisplay;
+	delete myMap;
 	return CDialogEx::DestroyWindow();
 }

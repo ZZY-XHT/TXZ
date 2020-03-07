@@ -1,11 +1,5 @@
 ﻿#pragma once
 
-#define NUM_EXTRALARGE 6
-#define NUM_LARGE 9
-#define NUM_NORMAL 12
-#define NUM_SMALL 18
-#define NUM_EXTRASMALL 30
-
 /*
 #define DIR_UP 0
 #define DIR_DOWN 1
@@ -40,7 +34,8 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 	virtual BOOL DestroyWindow();
-	afx_msg void OnBnClickedReturn();
+	afx_msg void OnBnClickedRestartbutton();
+	afx_msg void OnBnClickedReturnbutton();
 	afx_msg LRESULT StartGame(WPARAM wParam, LPARAM lParam);
 protected:
 

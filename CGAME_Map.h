@@ -27,6 +27,7 @@ public:
 	virtual ~CGAME_Map();
 
 protected:
+	virtual BOOL GetMap(char *s);
 	virtual BOOL ReadMap(CString path);
 	virtual BOOL CanMoveOn(int x, int y);
 	virtual BOOL CheckFinished();
@@ -34,6 +35,7 @@ protected:
 
 public:
 	virtual BOOL SetMap(CString path);
+	virtual BOOL Restart();
 	virtual BOOL MovePlayer(UINT dir);
 
 private:
@@ -43,4 +45,6 @@ private:
 	bool m_isFinished;
 	CGAME_Display* m_Display;
 
+	int m_bk_map[MAXMAPSIZE + 2][MAXMAPSIZE + 2];
+	int m_bk_playerX, m_bk_playerY;
 };

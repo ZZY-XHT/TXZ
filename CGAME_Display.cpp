@@ -96,11 +96,13 @@ BOOL CGAME_Display::Reset(int n, int m)
 	return TRUE;
 }
 
-//我觉得UpdateWindow应该归Display管
+// 我觉得UpdateWindow应该归Display管
+// 有道理
 void CGAME_Display::Update(int x, int y, UINT picTag)
 {
 	m_pPictureMap[x][y]->ShowWindow(SW_HIDE);
 	m_pPictureMap[x][y]->SetBitmap((HBITMAP)m_bitmap[picTag].GetSafeHandle());
 	m_pPictureMap[x][y]->MoveWindow(m_offsetY + (y - 1) * m_size, m_offsetX + (x - 1) * m_size, m_size, m_size);
 	m_pPictureMap[x][y]->ShowWindow(SW_SHOW);
+	UpdateWindow();
 }
