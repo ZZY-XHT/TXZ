@@ -32,13 +32,19 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	DECLARE_MESSAGE_MAP()
 public:
+	virtual void OnTimer(UINT_PTR nIdEvent);
 	virtual BOOL OnInitDialog();
 	virtual BOOL DestroyWindow();
 	afx_msg void OnBnClickedRestartbutton();
 	afx_msg void OnBnClickedReturnbutton();
 	afx_msg LRESULT StartGame(WPARAM wParam, LPARAM lParam);
 protected:
-
+	virtual void CGAME::InitStepAndTimer();
+	virtual void CGAME::IncrementStep(BOOL moved);
 private:
 	CFont m_font;
+	int m_step,m_mm,m_ss;
+	UINT_PTR m_Timer;
+public:
+	
 };

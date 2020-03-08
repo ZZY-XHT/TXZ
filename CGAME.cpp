@@ -16,7 +16,8 @@ CGAME_Map* myMap;
 IMPLEMENT_DYNAMIC(CGAME, CDialogEx)
 
 CGAME::CGAME(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_GAME, pParent)
+	: CDialogEx(IDD_GAME, pParent),
+	m_step(0), m_ss(0), m_mm(0), m_Timer(NULL)
 {
 
 }
@@ -25,21 +26,65 @@ CGAME::~CGAME()
 {
 }
 
+//步数
+
+void CGAME::InitStepAndTimer()
+{
+	m_step = 0;
+	m_ss = 0;
+	m_mm = 0;
+	if (m_Timer != NULL) KillTimer(m_Timer);
+	m_Timer = SetTimer(0, 1000, NULL);
+	GetDlgItem(IDC_TEXT_STEP)->SetWindowTextW(_T("步数：0"));
+	GetDlgItem(IDC_TEXT_TIME)->SetWindowTextW(_T("时间：0s"));
+}
+
+void CGAME::IncrementStep(BOOL moved)
+{
+	if (moved)
+	{
+		CString text;
+		text.Format(_T("步数：%d"), ++m_step);
+		GetDlgItem(IDC_TEXT_STEP)->SetWindowTextW(text);
+	}
+}
+
 void CGAME::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
-
 BEGIN_MESSAGE_MAP(CGAME, CDialogEx)
 	ON_MESSAGE(WM_STARTGAME, &CGAME::StartGame)
 	ON_BN_CLICKED(IDC_RESTARTBUTTON, &CGAME::OnBnClickedRestartbutton)
 	ON_BN_CLICKED(IDC_RETURNBUTTON, &CGAME::OnBnClickedReturnbutton)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
-
 
 // CGAME 消息处理程序
 
+void CGAME::OnTimer(UINT_PTR nIdEvent)
+{
+	if (myMap->IsFinished())
+	{
+		KillTimer(m_Timer);
+	}
+	else
+	{
+		CString text;
+		m_ss++;
+		if (m_ss == 60)
+		{
+			m_mm++;
+			m_ss = 0;
+		}
+
+		if (m_mm > 0) text.Format(_T("时间：%dmin%ds"), m_mm, m_ss);
+		else text.Format(_T("时间：%ds"), m_ss);
+
+		GetDlgItem(IDC_TEXT_TIME)->SetWindowTextW(text);
+	}
+}
 
 BOOL CGAME::OnInitDialog()
 {
@@ -68,7 +113,8 @@ BOOL CGAME::OnInitDialog()
 	const int BUTTON_WIDTH = BUTTON_HEIGHT * 2;
 	GetDlgItem(IDC_RETURNBUTTON)->MoveWindow(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
 	GetDlgItem(IDC_RESTARTBUTTON)->MoveWindow(BUTTON_WIDTH, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
-
+	GetDlgItem(IDC_TEXT_STEP)->MoveWindow(2 * BUTTON_WIDTH, 0, 1.5 * BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_TEXT_TIME)->MoveWindow(3.5 *BUTTON_WIDTH, 0, 1.5 * BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
 	// 创建Display
 	myDisplay = new CGAME_Display;
 	myDisplay->Create(IDD_DISPLAY, this);
@@ -107,6 +153,8 @@ BOOL CGAME::OnInitDialog()
 	GetDlgItem(IDC_RETURNBUTTON)->SetWindowText(_T("返回"));
 	GetDlgItem(IDC_RESTARTBUTTON)->SetFont(&m_font);
 	GetDlgItem(IDC_RESTARTBUTTON)->SetWindowText(_T("重玩"));
+	GetDlgItem(IDC_TEXT_STEP)->SetFont(&m_font);
+	GetDlgItem(IDC_TEXT_TIME)->SetFont(&m_font);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -121,6 +169,7 @@ void CGAME::OnBnClickedReturnbutton()
 void CGAME::OnBnClickedRestartbutton()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	InitStepAndTimer();
 	myMap->Restart();
 }
 
@@ -153,42 +202,24 @@ BOOL CGAME::PreTranslateMessage(MSG* pMsg)
 #endif // MYDEBUG
 		case 'W':
 		case VK_UP:
-#ifdef MYDEBUG
-			MessageBox(_T("UP"), _T("From xht"));
-#endif // MYDEBUG
-			myMap->MovePlayer(DIR_UP);
+			IncrementStep(myMap->MovePlayer(DIR_UP));
 			break;
 		case 'S':
 		case VK_DOWN:
-#ifdef MYDEBUG
-			MessageBox(_T("DOWN"), _T("From xht"));
-#endif // MYDEBUG
-			myMap->MovePlayer(DIR_DOWN);
+			IncrementStep(myMap->MovePlayer(DIR_DOWN));
 			break;
 		case 'A':
 		case VK_LEFT:
-#ifdef MYDEBUG
-			MessageBox(_T("LEFT"), _T("From xht"));
-#endif // MYDEBUG
-			myMap->MovePlayer(DIR_LEFT);
+			IncrementStep(myMap->MovePlayer(DIR_LEFT));
 			break;
 		case 'D':
 		case VK_RIGHT:
-#ifdef MYDEBUG
-			MessageBox(_T("RIGHT"), _T("From xht"));
-#endif // MYDEBUG
-			myMap->MovePlayer(DIR_RIGHT);
+			IncrementStep(myMap->MovePlayer(DIR_RIGHT));
 			break;
 		case VK_ESCAPE:
-#ifdef MYDEBUG
-				MessageBox(_T("ESC"), _T("From xht"));
-#endif // MYDEBUG
 			OnBnClickedReturnbutton();
 			break;
 		case VK_RETURN:
-#ifdef MYDEBUG
-			MessageBox(_T("RETURN"), _T("From xht"));
-#endif // MYDEBUG
 		default:
 			return CDialogEx::PreTranslateMessage(pMsg);
 		}
@@ -196,10 +227,12 @@ BOOL CGAME::PreTranslateMessage(MSG* pMsg)
 	}
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
+
 LRESULT CGAME::StartGame(WPARAM wParam, LPARAM lParam)
 {
 	// 根据指令开始游戏
 	// 释放wParam的内存
+	InitStepAndTimer();
 	BSTR b = (BSTR)wParam;
 	CString s(b);
 	SysFreeString(b);
@@ -212,5 +245,7 @@ BOOL CGAME::DestroyWindow()
 	myDisplay->DestroyWindow();
 	delete myDisplay;
 	delete myMap;
+	if(m_Timer != NULL)
+		KillTimer(m_Timer);
 	return CDialogEx::DestroyWindow();
 }

@@ -31,12 +31,13 @@ protected:
 	virtual BOOL ReadMap(CString path);
 	virtual BOOL CanMoveOn(int x, int y);
 	virtual BOOL CheckFinished();
-	virtual BOOL IsFinished();
+	
 
 public:
 	virtual BOOL SetMap(CString path);
 	virtual BOOL Restart();
 	virtual BOOL MovePlayer(UINT dir);
+	virtual BOOL IsFinished();
 
 private:
 	int m_map[MAXMAPSIZE + 2][MAXMAPSIZE + 2];
