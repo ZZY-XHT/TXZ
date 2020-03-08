@@ -28,4 +28,6 @@ public:
 	virtual void InitList();
 private:
 	CFont m_buttonFont, m_listFont;
+public:
+	afx_msg void OnLbnSelchangeMaplist();
 };

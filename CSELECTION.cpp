@@ -35,6 +35,7 @@ void CSELECTION::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSELECTION, CDialogEx)
 	ON_BN_CLICKED(IDC_CONFIRMBUTTON, &CSELECTION::OnBnClickedConfirmbutton)
 	ON_BN_CLICKED(IDC_CANCELBUTTON, &CSELECTION::OnBnClickedCancelbutton)
+	ON_LBN_SELCHANGE(IDC_MAPLIST, &CSELECTION::OnLbnSelchangeMaplist)
 END_MESSAGE_MAP()
 
 
@@ -114,11 +115,9 @@ BOOL CSELECTION::OnInitDialog()
 	); // lpszFac 
 	GetDlgItem(IDC_MAPLIST)->SetFont(&m_listFont);
 	
-	CSELECTION::InitList();
-
+	InitList();
 	GetDlgItem(IDC_MAPLIST)->ShowWindow(SW_SHOW);
 
-	CSELECTION::UpdatePreview(_T("0"));
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -169,7 +168,7 @@ BOOL CSELECTION::PreTranslateMessage(MSG* pMsg)
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
-void CSELECTION::UpdatePreview(CString name) // 显示mapname的缩略图
+void CSELECTION::UpdatePreview(CString mapName) // 显示mapName的缩略图
 {
 	CStatic* pic = (CStatic*)GetDlgItem(IDC_PREVIEWIMAGE); // 预览图的控件
 	pic->ShowWindow(SW_HIDE);
@@ -177,7 +176,7 @@ void CSELECTION::UpdatePreview(CString name) // 显示mapname的缩略图
 	CString previewImageDir; // 位图位置
 	HBITMAP hBMP; // 载入的bmp
 
-	previewImageDir = mapPath + _T("map") + name + _T(".bmp");
+	previewImageDir = mapPath + mapName + _T(".bmp");
 	hBMP = (HBITMAP)LoadImage(NULL, previewImageDir, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 	if (hBMP == NULL)
 	{
@@ -235,9 +234,19 @@ void CSELECTION::InitList()
 	if (myList->GetCount() > 0)
 	{
 		myList->SetCurSel(0);
+		OnLbnSelchangeMaplist();
 	}
 	else
 	{
 		GetDlgItem(IDC_CONFIRMBUTTON)->EnableWindow(FALSE);
 	}
+}
+
+void CSELECTION::OnLbnSelchangeMaplist()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CListBox* myList = (CListBox*)GetDlgItem(IDC_MAPLIST);
+	CString tempStr;
+	myList->GetText(myList->GetCurSel(), tempStr);
+	UpdatePreview(tempStr);
 }
