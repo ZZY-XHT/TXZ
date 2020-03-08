@@ -6,7 +6,6 @@
 #include "CSELECTION.h"
 #include "afxdialogex.h"
 
-const int PREVIEW_SIZE = 300;
 /*
 xht:
 关于控件大小、位置常量的代码，迟早得统统重构
@@ -57,22 +56,20 @@ BOOL CSELECTION::OnInitDialog()
 	const int DIALOG_HEIGHT = ClientRect.Height();
 	const int DIALOG_WIDTH = ClientRect.Width();
 
-	/*
-	CString str;
-	str.Format(_T("Height is %d, Weight is %d"), DIALOG_HEIGHT, DIALOG_WIDTH);
-	MessageBox(str, _T("xht"));
-	*/
-
 	// 设置窗口控件
-	/*
-	字体、文字大小、文字内容
-	大小、位置
-	焦点位置
-	*/
+	
+	const int BUTTON_HEIGHT = (int)(DIALOG_HEIGHT * 0.1);
+	const int BUTTON_WIDTH = (int)(DIALOG_WIDTH * 0.4);
+	GetDlgItem(IDC_CONFIRMBUTTON)->MoveWindow((int)(DIALOG_WIDTH * 0.55), (int)(DIALOG_HEIGHT * 0.6), BUTTON_WIDTH, BUTTON_HEIGHT);
+	GetDlgItem(IDC_CANCELBUTTON)->MoveWindow((int)(DIALOG_WIDTH * 0.55), (int)(DIALOG_HEIGHT * 0.75), BUTTON_WIDTH, BUTTON_HEIGHT);
+
+	const int LIST_HEIGHT = (int)(DIALOG_HEIGHT * 0.7);
+	const int LIST_WIDTH = (int)(DIALOG_WIDTH * 0.45);
+	GetDlgItem(IDC_MAPLIST)->MoveWindow((int)(DIALOG_WIDTH * 0.05), (int)(DIALOG_HEIGHT * 0.05), LIST_WIDTH, LIST_HEIGHT);
 
 	// 字体、文字大小、文字内容
-	m_font.CreateFont(
-		42, // nHeight 
+	m_buttonFont.CreateFont(
+		(int)(BUTTON_HEIGHT * 0.6), // nHeight 
 		0, // nWidth 
 		0, // nEscapement 
 		0, // nOrientation 
@@ -89,38 +86,39 @@ BOOL CSELECTION::OnInitDialog()
 		DEFAULT_PITCH | FF_SWISS, // nPitchAndFamily 
 		_T("隶书")
 	); // lpszFac 
-	/*
-	字符集：
-	中文用GB2312_CHARSET，或谨慎地使用DEFAULT_CHARSET
-	建议字体：
-	中文用黑体、隶书、华文琥珀、华文行楷
-	*/
-	GetDlgItem(IDC_CANCELBUTTON)->SetFont(&m_font);
+	GetDlgItem(IDC_CANCELBUTTON)->SetFont(&m_buttonFont);
 	GetDlgItem(IDC_CANCELBUTTON)->SetWindowText(_T("返回"));
-	GetDlgItem(IDC_CONFIRMBUTTON)->SetFont(&m_font);
+	GetDlgItem(IDC_CANCELBUTTON)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_CONFIRMBUTTON)->SetFont(&m_buttonFont);
 	GetDlgItem(IDC_CONFIRMBUTTON)->SetWindowText(_T("确认"));
-	GetDlgItem(IDC_TEXT1)->SetFont(&m_font);
-	GetDlgItem(IDC_TEXT1)->SetWindowText(_T("请输入关卡编号：我1111111"));
-	GetDlgItem(IDC_IDINPUT)->SetFont(&m_font);
-	GetDlgItem(IDC_IDINPUT)->SetWindowText(_T("0"));
+	GetDlgItem(IDC_CONFIRMBUTTON)->ShowWindow(SW_SHOW);
+	
 
-	// 设置大小、位置
-	const int TEXT_OFFSETX = 75;
-	const int TEXT_OFFSETY = 120;
-	const int TEXT_HEIGHT = 36;
-	const int TEXT_WIDTH = 340;
-	const int INPUT_HEIGHT = 50;
-	const int INPUT_WIDTH = 80;
-	GetDlgItem(IDC_TEXT1)->MoveWindow(TEXT_OFFSETY, TEXT_OFFSETX, TEXT_WIDTH, TEXT_HEIGHT, TRUE);
-	GetDlgItem(IDC_IDINPUT)->MoveWindow(TEXT_OFFSETY + TEXT_WIDTH, TEXT_OFFSETX, INPUT_WIDTH, INPUT_HEIGHT, TRUE);
+	m_listFont.CreateFont(
+		(int)(LIST_HEIGHT * 0.1), // nHeight 
+		0, // nWidth 
+		0, // nEscapement 
+		0, // nOrientation 
+		//FW_BOLD, // nWeight 
+		FW_NORMAL, // nWeight 
+		FALSE, // bItalic 
+		FALSE, // bUnderline 
+		FALSE, // cStrikeOut 
+		//ANSI_CHARSET, // nCharSet 
+		GB2312_CHARSET, // nCharSet 
+		OUT_DEFAULT_PRECIS, // nOutPrecision 
+		CLIP_DEFAULT_PRECIS, // nClipPrecision 
+		DEFAULT_QUALITY, // nQuality 
+		DEFAULT_PITCH | FF_SWISS, // nPitchAndFamily 
+		_T("黑体")
+	); // lpszFac 
+	GetDlgItem(IDC_MAPLIST)->SetFont(&m_listFont);
+	
+	CSELECTION::InitList();
 
-	const int BUTTON_OFFSETX = 520;
-	const int BUTTON_HEIGHT = 70;
-	const int BUTTON_WIDTH = 140;
-	GetDlgItem(IDC_CONFIRMBUTTON)->MoveWindow(DIALOG_WIDTH / 3 - BUTTON_WIDTH / 2, BUTTON_OFFSETX, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
-	GetDlgItem(IDC_CANCELBUTTON)->MoveWindow(DIALOG_WIDTH / 3 * 2 - BUTTON_WIDTH / 2, BUTTON_OFFSETX, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_MAPLIST)->ShowWindow(SW_SHOW);
 
-	CSELECTION::updatePreview(_T("0"));
+	CSELECTION::UpdatePreview(_T("0"));
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -136,25 +134,10 @@ void CSELECTION::OnBnClickedCancelbutton()
 void CSELECTION::OnBnClickedConfirmbutton()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	/*
-	// TEST
-	CFileFind tempFind;
-	BOOL IsFind = tempFind.FindFile(_T("/*.*"));
-	MessageBox(_T(""), _T("From xht"));
-	while (IsFind)
-	{
-		IsFind = tempFind.FindNextFile(); // 找到最后一个文件时返回FALSE
-		if (tempFind.IsDots())
-		{
-			continue;
-		}
-		CString filename = tempFind.GetFileName();
-		MessageBox(filename, _T("From xht"));
-	}
-	*/
-	CString tempStr;;
-	int ID = GetDlgItemText(IDC_IDINPUT, tempStr);
-	tempStr = mapPath + _T("map") + tempStr + _T(".map");
+	CListBox* myList = (CListBox*)GetDlgItem(IDC_MAPLIST);
+	CString tempStr;
+	myList->GetText(myList->GetCurSel(), tempStr);
+	tempStr = mapPath + tempStr + _T(".txm");
 	GetParent()->PostMessage(WM_TOGAME, (WPARAM)tempStr.AllocSysString());
 }
 
@@ -171,6 +154,7 @@ BOOL CSELECTION::PreTranslateMessage(MSG* pMsg)
 			OnBnClickedCancelbutton();
 			return TRUE;
 			break;
+			/*
 		case VK_RETURN:
 			HWND hwnd1 = ((CEdit*)GetDlgItem(IDC_IDINPUT))->m_hWnd;
 			if (pMsg->hwnd == hwnd1)
@@ -179,12 +163,13 @@ BOOL CSELECTION::PreTranslateMessage(MSG* pMsg)
 				return TRUE;
 			}
 			break;
+			*/
 		}
 	}
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
-void CSELECTION::updatePreview(CString name) // 显示mapname的缩略图
+void CSELECTION::UpdatePreview(CString name) // 显示mapname的缩略图
 {
 	CStatic* pic = (CStatic*)GetDlgItem(IDC_PREVIEWIMAGE); // 预览图的控件
 	pic->ShowWindow(SW_HIDE);
@@ -208,6 +193,11 @@ void CSELECTION::updatePreview(CString name) // 显示mapname的缩略图
 	pic->GetClientRect(tempRect);
 	tempRatio = (double)tempRect.Height() / (double)tempRect.Width();
 
+	GetClientRect(tempRect);
+	const int DIALOG_HEIGHT = tempRect.Height();
+	const int DIALOG_WIDTH = tempRect.Width();
+	const int PREVIEW_SIZE = min((int)(DIALOG_HEIGHT * 0.4), (int)(DIALOG_WIDTH * 0.4));
+
 	int tempHeight, tempWidth;
 	if (tempRatio > 1)
 	{
@@ -219,12 +209,35 @@ void CSELECTION::updatePreview(CString name) // 显示mapname的缩略图
 		tempHeight = (int)(PREVIEW_SIZE * tempRatio);
 		tempWidth = PREVIEW_SIZE;
 	}
-	GetClientRect(tempRect);
-	const int PREVIEW_OFFSETX = 180;
-	pic->MoveWindow((tempRect.Width() - tempWidth) / 2, PREVIEW_OFFSETX, tempWidth, tempHeight, TRUE);
+	
+	pic->MoveWindow((int)(DIALOG_WIDTH * 0.55) + (PREVIEW_SIZE - tempWidth) / 2, (int)(DIALOG_HEIGHT * 0.05) + (PREVIEW_SIZE - tempHeight) / 2, tempWidth, tempHeight, TRUE);
 	pic->ShowWindow(SW_SHOW);
 }
-/*
-xht:
-picturecontrol是会随图片改变大小的，要读图，就要隐藏、重定位后再显现，不然炸图。
-*/
+
+void CSELECTION::InitList()
+{
+	CFileFind tempFind;
+	BOOL IsFind = tempFind.FindFile(mapPath + _T("/*.txm"));
+	CListBox* myList = (CListBox*)GetDlgItem(IDC_MAPLIST);
+
+	myList->ResetContent();
+	while (IsFind)
+	{
+		IsFind = tempFind.FindNextFile(); // 找到最后一个文件时返回FALSE
+		if (tempFind.IsDots() || tempFind.IsDirectory())
+		{
+			continue;
+		}
+		CString filename = tempFind.GetFileName();
+		filename = filename.Left(filename.ReverseFind('.'));
+		myList->AddString(filename);
+	}
+	if (myList->GetCount() > 0)
+	{
+		myList->SetCurSel(0);
+	}
+	else
+	{
+		GetDlgItem(IDC_CONFIRMBUTTON)->EnableWindow(FALSE);
+	}
+}

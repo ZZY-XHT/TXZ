@@ -24,7 +24,8 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedConfirmbutton();
 	afx_msg void OnBnClickedCancelbutton();
-	virtual void updatePreview(CString name);
+	virtual void UpdatePreview(CString name);
+	virtual void InitList();
 private:
-	CFont m_font;
+	CFont m_buttonFont, m_listFont;
 };

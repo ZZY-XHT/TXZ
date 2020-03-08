@@ -77,13 +77,6 @@ BOOL CGAME::OnInitDialog()
 
 	// 创建Map
 	myMap = new CGAME_Map(myDisplay);
-	
-	// 设置窗口按钮
-	/*
-	字体、文字大小、文字内容
-	按钮大小、按钮位置
-	焦点位置
-	*/
 
 	// 字体、文字大小、文字内容
 	m_font.CreateFont(
