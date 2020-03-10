@@ -196,7 +196,6 @@ BOOL CGAME_Map::MovePlayer(UINT dir)
 				m_Display->Update(xx, yy, PIC_PLAYER);
 				m_Display->Update(xxx, yyy, m_map[xxx][yyy]);
 				// UpdateWindow();
-				CheckFinished();
 				return TRUE;
 			}
 			else
@@ -220,6 +219,7 @@ BOOL CGAME_Map::MovePlayer(UINT dir)
 
 BOOL CGAME_Map::IsFinished()
 {
+	if (m_isFinished) return TRUE;
 	for (int i = 1; i <= m_mapSizeX; i++)
 		for (int j = 1; j <= m_mapSizeY; j++)
 			if (m_map[i][j] == MP_BOX || m_map[i][j] == MP_GOAL)
@@ -227,14 +227,4 @@ BOOL CGAME_Map::IsFinished()
 				return m_isFinished = FALSE;
 			}
 	return m_isFinished = TRUE;
-}
-
-BOOL CGAME_Map::CheckFinished()
-{
-	if (IsFinished())
-	{
-		MessageBox(0,_T("¹§Ï²´³¹Ø³É¹¦£¡"), _T("From xht"),0);
-		return TRUE;
-	}
-	else return FALSE;
 }

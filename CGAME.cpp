@@ -45,7 +45,7 @@ void CGAME::IncrementStep(BOOL moved)
 	{
 		CString text;
 		text.Format(_T("步数：%d"), ++m_step);
-		GetDlgItem(IDC_TEXT_STEP)->SetWindowTextW(text);
+		GetDlgItem(IDC_TEXT_STEP)->SetWindowText(text);
 	}
 }
 
@@ -82,7 +82,7 @@ void CGAME::OnTimer(UINT_PTR nIdEvent)
 		if (m_mm > 0) text.Format(_T("时间：%dmin%ds"), m_mm, m_ss);
 		else text.Format(_T("时间：%ds"), m_ss);
 
-		GetDlgItem(IDC_TEXT_TIME)->SetWindowTextW(text);
+		GetDlgItem(IDC_TEXT_TIME)->SetWindowText(text);
 	}
 }
 
@@ -113,8 +113,8 @@ BOOL CGAME::OnInitDialog()
 	const int BUTTON_WIDTH = BUTTON_HEIGHT * 2;
 	GetDlgItem(IDC_RETURNBUTTON)->MoveWindow(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
 	GetDlgItem(IDC_RESTARTBUTTON)->MoveWindow(BUTTON_WIDTH, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
-	GetDlgItem(IDC_TEXT_STEP)->MoveWindow(2 * BUTTON_WIDTH, 0, 1.5 * BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
-	GetDlgItem(IDC_TEXT_TIME)->MoveWindow(3.5 *BUTTON_WIDTH, 0, 1.5 * BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_TEXT_STEP)->MoveWindow((int)(2 * BUTTON_WIDTH), 0, (int)(1.5 * BUTTON_WIDTH), BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_TEXT_TIME)->MoveWindow((int)(3.5 *BUTTON_WIDTH), 0, (int)(1.5 * BUTTON_WIDTH), BUTTON_HEIGHT, TRUE);
 	// 创建Display
 	myDisplay = new CGAME_Display;
 	myDisplay->Create(IDD_DISPLAY, this);
@@ -177,6 +177,7 @@ BOOL CGAME::PreTranslateMessage(MSG* pMsg)
 {
 	if (pMsg->message == WM_KEYDOWN)
 	{
+		BOOL moved = FALSE;
 		switch (pMsg->wParam)
 		{
 #ifdef MYDEBUG
@@ -202,19 +203,19 @@ BOOL CGAME::PreTranslateMessage(MSG* pMsg)
 #endif // MYDEBUG
 		case 'W':
 		case VK_UP:
-			IncrementStep(myMap->MovePlayer(DIR_UP));
+			IncrementStep(moved = myMap->MovePlayer(DIR_UP));
 			break;
 		case 'S':
 		case VK_DOWN:
-			IncrementStep(myMap->MovePlayer(DIR_DOWN));
+			IncrementStep(moved = myMap->MovePlayer(DIR_DOWN));
 			break;
 		case 'A':
 		case VK_LEFT:
-			IncrementStep(myMap->MovePlayer(DIR_LEFT));
+			IncrementStep(moved = myMap->MovePlayer(DIR_LEFT));
 			break;
 		case 'D':
 		case VK_RIGHT:
-			IncrementStep(myMap->MovePlayer(DIR_RIGHT));
+			IncrementStep(moved = myMap->MovePlayer(DIR_RIGHT));
 			break;
 		case VK_ESCAPE:
 			OnBnClickedReturnbutton();
@@ -222,6 +223,10 @@ BOOL CGAME::PreTranslateMessage(MSG* pMsg)
 		case VK_RETURN:
 		default:
 			return CDialogEx::PreTranslateMessage(pMsg);
+		}
+		if (moved && myMap->IsFinished())
+		{
+			MessageBox(_T("恭喜闯关成功！"), _T("From xht"));
 		}
 		return TRUE;
 	}

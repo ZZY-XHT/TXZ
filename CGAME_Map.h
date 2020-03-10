@@ -30,8 +30,6 @@ protected:
 	virtual BOOL GetMap(char *s);
 	virtual BOOL ReadMap(CString path);
 	virtual BOOL CanMoveOn(int x, int y);
-	virtual BOOL CheckFinished();
-	
 
 public:
 	virtual BOOL SetMap(CString path);
