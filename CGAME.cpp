@@ -116,10 +116,8 @@ BOOL CGAME::OnInitDialog()
 	GetDlgItem(IDC_TEXT_STEP)->MoveWindow((int)(2 * BUTTON_WIDTH), 0, (int)(1.5 * BUTTON_WIDTH), BUTTON_HEIGHT, TRUE);
 	GetDlgItem(IDC_TEXT_TIME)->MoveWindow((int)(3.5 *BUTTON_WIDTH), 0, (int)(1.5 * BUTTON_WIDTH), BUTTON_HEIGHT, TRUE);
 	// 创建Display
-	myDisplay = new CGAME_Display;
+	myDisplay = new CGAME_Display(CRect(0, (int)(DIALOG_HEIGHT * 0.1), DIALOG_WIDTH, DIALOG_HEIGHT));
 	myDisplay->Create(IDD_DISPLAY, this);
-	myDisplay->MoveWindow(0, (int)(DIALOG_HEIGHT * 0.1), DIALOG_WIDTH, (int)(DIALOG_HEIGHT * 0.9));
-	myDisplay->ShowWindow(SW_SHOW);
 
 	// 创建Map
 	myMap = new CGAME_Map(myDisplay);

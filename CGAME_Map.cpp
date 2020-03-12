@@ -7,7 +7,7 @@ CGAME_Map::CGAME_Map(CGAME_Display* currentDisplay):
 	m_mapSizeX(0), m_mapSizeY(0),
 	m_playerX(0), m_playerY(0),
 	m_map(), m_isFinished(FALSE),
-	m_Display(currentDisplay),
+	m_display(currentDisplay),
 	m_bk_map(),
 	m_bk_playerX(0), m_bk_playerY(0)
 {
@@ -31,15 +31,15 @@ BOOL CGAME_Map::SetMap(CString path)
 #endif // MYDEBUG
 
 		// 开始绘制
-		m_Display->Reset(m_mapSizeX, m_mapSizeY);
+		m_display->Reset(m_mapSizeX, m_mapSizeY);
 
 		for (int i = 1; i <= m_mapSizeX; i++)
 			for (int j = 1; j <= m_mapSizeY; j++)
 			{
-				m_Display->Update(i, j, m_map[i][j]);
+				m_display->Update(i, j, m_map[i][j]);
 			}
 
-		m_Display->Update(m_playerX, m_playerY, PIC_PLAYER);
+		m_display->Update(m_playerX, m_playerY, PIC_PLAYER);
 
 		// UpdateWindow();
 
@@ -63,10 +63,9 @@ BOOL CGAME_Map::Restart()
 	for (int i = 1; i <= m_mapSizeX; i++)
 		for (int j = 1; j <= m_mapSizeY; j++)
 		{
-			m_Display->Update(i, j, m_map[i][j]);
+			m_display->Update(i, j, m_map[i][j]);
 		}
-	m_Display->Update(m_playerX, m_playerY, PIC_PLAYER);
-
+	m_display->Update(m_playerX, m_playerY, PIC_PLAYER);
 	return TRUE;
 }
 
@@ -122,7 +121,7 @@ BOOL CGAME_Map::GetMap(char *s)
 		MapAssert(tempCount == 0, _T("ERROR：箱子与目标数量不一致"));
 	}
 	m_isFinished = FALSE;
-	MapAssert(!IsFinished(), _T("ERROR：地图初始状态已完成"));
+	MapAssert(!CheckFinished(), _T("ERROR：地图初始状态已完成"));
 	// 完成检查地图
 	// 开始备份地图
 	for (int i = 1; i <= m_mapSizeX; i++)
@@ -180,8 +179,8 @@ BOOL CGAME_Map::MovePlayer(UINT dir)
 		case MP_NULL:
 		case MP_GOAL:
 			m_playerX = xx; m_playerY = yy;
-			m_Display->Update(x, y, m_map[x][y]);
-			m_Display->Update(xx, yy, PIC_PLAYER);
+			m_display->Update(x, y, m_map[x][y]);
+			m_display->Update(xx, yy, PIC_PLAYER);
 			// UpdateWindow();
 			return TRUE;
 			break;
@@ -192,10 +191,11 @@ BOOL CGAME_Map::MovePlayer(UINT dir)
 				m_playerX = xx; m_playerY = yy;
 				m_map[xx][yy] &= ~MP_BOX;
 				m_map[xxx][yyy] |= MP_BOX;
-				m_Display->Update(x, y, m_map[x][y]);
-				m_Display->Update(xx, yy, PIC_PLAYER);
-				m_Display->Update(xxx, yyy, m_map[xxx][yyy]);
+				m_display->Update(x, y, m_map[x][y]);
+				m_display->Update(xx, yy, PIC_PLAYER);
+				m_display->Update(xxx, yyy, m_map[xxx][yyy]);
 				// UpdateWindow();
+				CheckFinished();
 				return TRUE;
 			}
 			else
@@ -217,9 +217,8 @@ BOOL CGAME_Map::MovePlayer(UINT dir)
 	return FALSE;
 }
 
-BOOL CGAME_Map::IsFinished()
+BOOL CGAME_Map::CheckFinished()
 {
-	if (m_isFinished) return TRUE;
 	for (int i = 1; i <= m_mapSizeX; i++)
 		for (int j = 1; j <= m_mapSizeY; j++)
 			if (m_map[i][j] == MP_BOX || m_map[i][j] == MP_GOAL)
@@ -227,4 +226,9 @@ BOOL CGAME_Map::IsFinished()
 				return m_isFinished = FALSE;
 			}
 	return m_isFinished = TRUE;
+}
+
+BOOL CGAME_Map::IsFinished()
+{
+	return m_isFinished;
 }

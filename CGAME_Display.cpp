@@ -11,9 +11,9 @@
 
 IMPLEMENT_DYNAMIC(CGAME_Display, CDialogEx)
 
-CGAME_Display::CGAME_Display(CWnd* pParent /*=nullptr*/)
+CGAME_Display::CGAME_Display(CRect area, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DISPLAY, pParent),
-	m_size(1), m_offsetX(0), m_offsetY(0)
+	m_size(1), m_area(area)
 {
 	Clear();
 }
@@ -73,12 +73,10 @@ void CGAME_Display::Clear()
 
 BOOL CGAME_Display::Reset(int n, int m)
 {
+	ShowWindow(SW_HIDE);
 	Clear();
-	CRect tempRect;
-	GetClientRect(tempRect);
-	m_size = min(tempRect.Height() / n, tempRect.Width() / m);
-	m_offsetX = (tempRect.Height() - n * m_size) / 2;
-	m_offsetY = (tempRect.Width() - m * m_size) / 2;
+	m_size = min(m_area.Height() / n, m_area.Width() / m);
+	MoveWindow(m_area.left + (m_area.Width() - m * m_size) / 2, m_area.top + (m_area.Height() - n * m_size) / 2, m * m_size, n * m_size);
 	for (int i = 1; i <= n; i++)
 		for (int j = 1; j <= m; j++)
 		{
@@ -90,19 +88,17 @@ BOOL CGAME_Display::Reset(int n, int m)
 				return FALSE;
 			}
 			p = new CStatic();
-			p->Create(NULL, SS_BITMAP, CRect(m_offsetY + (j - 1) * m_size, m_offsetX + (i - 1) * m_size, m_size, m_size), this);
+			p->Create(NULL, SS_BITMAP, CRect((j - 1) * m_size, (i - 1) * m_size, m_size, m_size), this);
 		}
-
+	ShowWindow(SW_SHOW);
 	return TRUE;
 }
 
-// 我觉得UpdateWindow应该归Display管
-// 有道理
 void CGAME_Display::Update(int x, int y, UINT picTag)
 {
 	m_pPictureMap[x][y]->ShowWindow(SW_HIDE);
 	m_pPictureMap[x][y]->SetBitmap((HBITMAP)m_bitmap[picTag].GetSafeHandle());
-	m_pPictureMap[x][y]->MoveWindow(m_offsetY + (y - 1) * m_size, m_offsetX + (x - 1) * m_size, m_size, m_size);
+	m_pPictureMap[x][y]->MoveWindow((y - 1) * m_size, (x - 1) * m_size, m_size, m_size);
 	m_pPictureMap[x][y]->ShowWindow(SW_SHOW);
 	UpdateWindow();
 }

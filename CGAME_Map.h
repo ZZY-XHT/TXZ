@@ -30,6 +30,7 @@ protected:
 	virtual BOOL GetMap(char *s);
 	virtual BOOL ReadMap(CString path);
 	virtual BOOL CanMoveOn(int x, int y);
+	virtual BOOL CheckFinished();
 
 public:
 	virtual BOOL SetMap(CString path);
@@ -42,7 +43,7 @@ private:
 	int m_mapSizeX, m_mapSizeY;
 	int m_playerX, m_playerY;
 	bool m_isFinished;
-	CGAME_Display* m_Display;
+	CGAME_Display* m_display;
 
 	int m_bk_map[MAXMAPSIZE + 2][MAXMAPSIZE + 2];
 	int m_bk_playerX, m_bk_playerY;
