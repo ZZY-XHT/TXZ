@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "CRESOURCE.h"
 
 // CGAME_Display 对话框
 
@@ -27,8 +27,9 @@ public:
 	virtual BOOL Reset(int n, int m);
 	virtual void Update(int x, int y, UINT picTag);
 private:
+	CRESOURCE* myRes;
 	int m_size;
 	CRect m_area;
 	CStatic* m_pPictureMap[MAXMAPSIZE + 2][MAXMAPSIZE + 2];
-	CBitmap m_bitmap[PICNUM];
+	//CBitmap m_bitmap[PICNUM];
 };

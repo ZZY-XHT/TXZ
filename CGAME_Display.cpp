@@ -16,6 +16,7 @@ CGAME_Display::CGAME_Display(CRect area, CWnd* pParent /*=nullptr*/)
 	m_size(1), m_area(area)
 {
 	Clear();
+	myRes = new CRESOURCE();
 }
 
 CGAME_Display::~CGAME_Display()
@@ -37,17 +38,6 @@ END_MESSAGE_MAP()
 BOOL CGAME_Display::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-
-	// TODO:  在此添加额外的初始化
-
-	// 载入位图
-	m_bitmap[PIC_NULL].LoadBitmap(IDB_P_NULL);
-	m_bitmap[PIC_BOX].LoadBitmap(IDB_P_BOX);
-	m_bitmap[PIC_GOAL].LoadBitmap(IDB_P_GOAL);
-	m_bitmap[PIC_FINISH].LoadBitmap(IDB_P_FINISH);
-	m_bitmap[PIC_WALL].LoadBitmap(IDB_P_WALL);
-	m_bitmap[PIC_PLAYER].LoadBitmap(IDB_P_PLAYER);
-	
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -56,6 +46,7 @@ BOOL CGAME_Display::DestroyWindow()
 {
 	// TODO: 在此添加专用代码和/或调用基类
 	Clear();
+	if (myRes != NULL) delete myRes;
 	return CDialogEx::DestroyWindow();
 }
 
@@ -97,7 +88,7 @@ BOOL CGAME_Display::Reset(int n, int m)
 void CGAME_Display::Update(int x, int y, UINT picTag)
 {
 	m_pPictureMap[x][y]->ShowWindow(SW_HIDE);
-	m_pPictureMap[x][y]->SetBitmap((HBITMAP)m_bitmap[picTag].GetSafeHandle());
+	m_pPictureMap[x][y]->SetBitmap(myRes->getPic(picTag));
 	m_pPictureMap[x][y]->MoveWindow((y - 1) * m_size, (x - 1) * m_size, m_size, m_size);
 	m_pPictureMap[x][y]->ShowWindow(SW_SHOW);
 	UpdateWindow();
