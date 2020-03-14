@@ -88,7 +88,7 @@ BOOL CGAME_Display::Reset(int n, int m)
 void CGAME_Display::Update(int x, int y, UINT picTag)
 {
 	m_pPictureMap[x][y]->ShowWindow(SW_HIDE);
-	m_pPictureMap[x][y]->SetBitmap(myRes->getPic(picTag));
+	m_pPictureMap[x][y]->SetBitmap(myRes->GetPic(picTag));
 	m_pPictureMap[x][y]->MoveWindow((y - 1) * m_size, (x - 1) * m_size, m_size, m_size);
 	m_pPictureMap[x][y]->ShowWindow(SW_SHOW);
 	UpdateWindow();
