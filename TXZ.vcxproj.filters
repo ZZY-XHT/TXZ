@@ -51,6 +51,15 @@
     <ClInclude Include="CRESOURCE.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CEDITOR_Display.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CEDITOR.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CEDITOR_Map.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TXZ.cpp">
@@ -78,6 +87,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CRESOURCE.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CEDITOR_Display.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CEDITOR.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CEDITOR_Map.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

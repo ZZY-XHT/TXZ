@@ -183,6 +183,9 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CEDITOR.h" />
+    <ClInclude Include="CEDITOR_Display.h" />
+    <ClInclude Include="CEDITOR_Map.h" />
     <ClInclude Include="CGAME_Display.h" />
     <ClInclude Include="CGAME.h" />
     <ClInclude Include="CGAME_Map.h" />
@@ -197,6 +200,9 @@
     <ClInclude Include="TXZDlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CEDITOR.cpp" />
+    <ClCompile Include="CEDITOR_Display.cpp" />
+    <ClCompile Include="CEDITOR_Map.cpp" />
     <ClCompile Include="CGAME_Display.cpp" />
     <ClCompile Include="CGAME.cpp" />
     <ClCompile Include="CHOMEPAGE.cpp" />

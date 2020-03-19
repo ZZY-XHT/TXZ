@@ -7,9 +7,6 @@
 #include "TXZ.h"
 #include "TXZDlg.h"
 #include "afxdialogex.h"
-#include "CHOMEPAGE.h"
-#include "CGAME.h"
-#include "CSELECTION.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -18,6 +15,7 @@
 CHOMEPAGE* myHomepage;
 CGAME* myGame;
 CSELECTION* mySelection;
+CEDITOR* myEditor;
 
 CString mapPath;
 CString resPath;
@@ -79,6 +77,7 @@ BEGIN_MESSAGE_MAP(CTXZDlg, CDialogEx)
 	ON_MESSAGE(WM_TOGAME, &ToGame)
 	ON_MESSAGE(WM_TOHOMEPAGE, &ToHomepage)
 	ON_MESSAGE(WM_TOSELECTION, &ToSelection)
+	ON_MESSAGE(WM_TOEDITOR, &ToEditor)
 END_MESSAGE_MAP()
 
 
@@ -185,6 +184,10 @@ BOOL CTXZDlg::OnInitDialog()
 	mySelection->Create(IDD_SELECTION, this);
 	mySelection->ShowWindow(SW_HIDE);
 
+	myEditor = new CEDITOR;
+	myEditor->Create(IDD_GAME, this);
+	myEditor->ShowWindow(SW_HIDE);
+
 	myHomepage->SetFocus();
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -257,6 +260,7 @@ LRESULT CTXZDlg::ToHomepage(WPARAM wParam, LPARAM lParam)
 {
 	myGame->ShowWindow(SW_HIDE);
 	mySelection->ShowWindow(SW_HIDE);
+	myEditor->ShowWindow(SW_HIDE);
 	myHomepage->ShowWindow(SW_SHOW);
 	myHomepage->SetFocus();
 	myHomepage->UpdateWindow();
@@ -267,9 +271,21 @@ LRESULT CTXZDlg::ToSelection(WPARAM wParam, LPARAM lParam)
 {
 	myHomepage->ShowWindow(SW_HIDE);
 	myGame->ShowWindow(SW_HIDE);
+	myEditor->ShowWindow(SW_HIDE);
 	mySelection->ShowWindow(SW_SHOW);
 	mySelection->SetFocus();
 	mySelection->UpdateWindow();
+	return 0;
+}
+
+LRESULT CTXZDlg::ToEditor(WPARAM wParam, LPARAM lParam)
+{
+	myHomepage->ShowWindow(SW_HIDE);
+	myGame->ShowWindow(SW_HIDE);
+	mySelection->ShowWindow(SW_HIDE);
+	myEditor->ShowWindow(SW_SHOW);
+	myEditor->SetFocus();
+	myEditor->UpdateWindow();
 	return 0;
 }
 

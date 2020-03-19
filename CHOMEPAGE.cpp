@@ -113,7 +113,8 @@ void CHOMEPAGE::OnBnClickedStartgame()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	MessageBox(_T("Hello"), _T("From xht"));
-	GetParent()->PostMessage(WM_TOSELECTION);
+	//GetParent()->PostMessage(WM_TOSELECTION); 测试CEditor
+	GetParent()->PostMessage(WM_TOEDITOR);
 }
 
 

@@ -79,7 +79,7 @@ BOOL CGAME_Display::Reset(int n, int m)
 				return FALSE;
 			}
 			p = new CStatic();
-			p->Create(NULL, SS_BITMAP, CRect((j - 1) * m_size, (i - 1) * m_size, m_size, m_size), this);
+			p->Create(NULL, SS_BITMAP, CRect((j - 1) * m_size, (i - 1) * m_size, m_size, m_size), this, IDC_D_BMP+i*(MAXMAPSIZE+2)+j);
 		}
 	ShowWindow(SW_SHOW);
 	return TRUE;

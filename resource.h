@@ -1,6 +1,6 @@
 ﻿//{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ 生成的包含文件。
-// 供 TXZ.rc 使用
+// Microsoft Visual C++ generated include file.
+// Used by TXZ.rc
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
@@ -18,6 +18,8 @@
 #define IDB_P_WALL                      150
 #define IDD_SELECTION                   154
 #define IDD_DISPLAY                     156
+#define IDD_GAME1                       157
+#define IDD_EDITOR                      157
 #define IDC_STARTGAME                   1000
 #define IDC_EXITGAME                    1001
 #define IDC_RETURNBUTTON                1004
@@ -34,7 +36,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        158
+#define _APS_NEXT_RESOURCE_VALUE        160
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1019
 #define _APS_NEXT_SYMED_VALUE           101

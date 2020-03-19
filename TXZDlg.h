@@ -1,7 +1,10 @@
 ﻿
 // TXZDlg.h: 头文件
 //
-
+#include "CHOMEPAGE.h"
+#include "CGAME.h"
+#include "CSELECTION.h"
+#include "CEDITOR.h"
 #pragma once
 
 
@@ -36,5 +39,6 @@ public:
 	afx_msg LRESULT ToGame(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT ToHomepage(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT ToSelection(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT ToEditor(WPARAM wParam, LPARAM lParam);
 	virtual BOOL DestroyWindow();
 };
