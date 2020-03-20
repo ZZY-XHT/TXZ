@@ -68,6 +68,8 @@ BOOL CGAME_Display::Reset(int n, int m)
 	Clear();
 	m_size = min(m_area.Height() / n, m_area.Width() / m);
 	MoveWindow(m_area.left + (m_area.Width() - m * m_size) / 2, m_area.top + (m_area.Height() - n * m_size) / 2, m * m_size, n * m_size);
+
+
 	for (int i = 1; i <= n; i++)
 		for (int j = 1; j <= m; j++)
 		{

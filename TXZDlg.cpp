@@ -250,6 +250,7 @@ LRESULT CTXZDlg::ToGame(WPARAM wParam, LPARAM lParam)
 	}
 	myHomepage->ShowWindow(SW_HIDE);
 	mySelection->ShowWindow(SW_HIDE);
+	myEditor->ShowWindow(SW_HIDE);
 	myGame->ShowWindow(SW_SHOW);
 	myGame->SetFocus();
 	myGame->UpdateWindow();

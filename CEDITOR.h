@@ -1,7 +1,7 @@
-#include "CEDITOR_Display.h"
-#include "CEDITOR_Map.h"
 #pragma once
 
+#include "CEDITOR_Display.h"
+#include "CEDITOR_Map.h"
 
 // CEDITOR dialog
 
@@ -25,4 +25,6 @@ protected:
 private:
 	CEDITOR_Display* myDisplay;
 	CEDITOR_Map* myMap;
+public:
+	virtual BOOL DestroyWindow();
 };

@@ -12,7 +12,8 @@
 IMPLEMENT_DYNAMIC(CEDITOR, CDialogEx)
 
 CEDITOR::CEDITOR(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_EDITOR, pParent)
+	: CDialogEx(IDD_EDITOR, pParent),
+	myDisplay(NULL), myMap(NULL)
 {
 
 }
@@ -47,3 +48,14 @@ END_MESSAGE_MAP()
 
 
 // CEDITOR message handlers
+
+
+BOOL CEDITOR::DestroyWindow()
+{
+	// TODO: 在此添加专用代码和/或调用基类
+	myDisplay->DestroyWindow();
+	delete myDisplay;
+	delete myMap;
+
+	return CDialogEx::DestroyWindow();
+}
