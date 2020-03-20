@@ -22,11 +22,6 @@ CEDITOR::~CEDITOR()
 {
 }
 
-void CEDITOR::DoDataExchange(CDataExchange* pDX)
-{
-	CDialogEx::DoDataExchange(pDX);
-}
-
 BOOL CEDITOR::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();

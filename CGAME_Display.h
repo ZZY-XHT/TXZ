@@ -26,7 +26,7 @@ public:
 	virtual void Clear();
 	virtual BOOL Reset(int n, int m);
 	virtual void Update(int x, int y, UINT picTag);
-private:
+protected:
 	CRESOURCE* myRes;
 	int m_size;
 	CRect m_area;

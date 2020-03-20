@@ -11,13 +11,20 @@ CEDITOR_Display::~CEDITOR_Display()
 {
 }
 
-BEGIN_MESSAGE_MAP(CEDITOR_Display, CGAME_Display)
-	ON_COMMAND_RANGE(IDC_D_BMP, IDC_D_BMP + (MAXMAPSIZE+2) * (MAXMAPSIZE+2) + 1, &CEDITOR_Display::OnPictureClick)
-END_MESSAGE_MAP()
-
-afx_msg void CEDITOR_Display::OnPictureClick(UINT uID)
+BOOL CEDITOR_Display::PreTranslateMessage(MSG* pMsg)
 {
-	CString str;
-	str.Format(_T("%d"), uID);
-	MessageBox(str, _T("click"));
+	if (pMsg->message == WM_LBUTTONDOWN)
+	{
+		CPoint mousePoint;
+		GetCursorPos(&mousePoint);
+		CRect displayRect;
+		this->GetWindowRect(&displayRect);
+		int c = (mousePoint.x - displayRect.left) / m_size;
+		int r = (mousePoint.y - displayRect.top) / m_size;
+		CString str;
+		str.Format(_T("%d %d"), r, c);
+		MessageBox(str, _T("我被按了"));
+		//然后Send一个Message给CEditor?
+	}
+	return TRUE;
 }
