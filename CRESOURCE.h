@@ -6,10 +6,14 @@ public:
 	CRESOURCE();   // 标准构造函数
 	virtual ~CRESOURCE();
 public:
-	static BOOL CheckDir(CString dir); // 弄成static到时候换资源界面可以用
+	/*检查dir是否是一个有效的资源目录*/
+	static BOOL CheckDir(CString dir);
+
+	/*获取标号位picTag的图片*/
 	virtual HBITMAP GetPic(int picTag);
 
 private:
+	/*picTag对应的文件名*/
 	static const CString m_idToFilename[10];
 	static const int m_picCount = 6;
 	CString m_dir = _T("./Resource/");

@@ -7,7 +7,9 @@ public:
 	CEDITOR_Map(CEDITOR_Display *currentDisplay);
 	virtual ~CEDITOR_Map();
 public:
+	/*创建一个n*m的空白地图*/
 	virtual void NewMap(int n, int m);
+
 	//virtual void SaveMap();
 
 private:
