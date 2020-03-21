@@ -1,3 +1,4 @@
+#include "CBASE_Map.h"
 #include "CGAME_Display.h"
 #pragma once
 
@@ -12,25 +13,13 @@
 const int dx[4] = { -1, 1, 0, 0 };
 const int dy[4] = { 0, 0, -1, 1 };
 
-#define MapAssert(expr,msg)					\
-	if (!(expr))						    \
-    {										\
-		MessageBox(0,msg,_T("From xht"),0); \
-		return FALSE;						\
-    }
-
-class CGAME_Map
+class CGAME_Map:
+	public CBASE_Map
 {
 
 public:
 	CGAME_Map(CGAME_Display* currentDisplay);   // 标准构造函数
 	virtual ~CGAME_Map();
-
-protected:
-	virtual BOOL GetMap(char *s);
-	virtual BOOL ReadMap(CString path);
-	virtual BOOL CanMoveOn(int x, int y);
-	virtual BOOL CheckFinished();
 
 public:
 	virtual BOOL SetMap(CString path);
@@ -39,12 +28,7 @@ public:
 	virtual BOOL IsFinished();
 
 private:
-	int m_map[MAXMAPSIZE + 2][MAXMAPSIZE + 2];
-	int m_mapSizeX, m_mapSizeY;
-	int m_playerX, m_playerY;
-	bool m_isFinished;
 	CGAME_Display* m_display;
-
 	int m_bk_map[MAXMAPSIZE + 2][MAXMAPSIZE + 2];
 	int m_bk_playerX, m_bk_playerY;
 };

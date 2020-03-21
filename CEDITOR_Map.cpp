@@ -1,10 +1,9 @@
 #include "pch.h"
 #include "CEDITOR_Map.h"
 
-CEDITOR_Map::CEDITOR_Map(CEDITOR_Display* currentDisplay):
-	myDisplay(currentDisplay),
-	m_mapSizeX(0), m_mapSizeY(0),
-	m_map()
+CEDITOR_Map::CEDITOR_Map(CEDITOR_Display* currentDisplay): 
+	CBASE_Map(),
+	myDisplay(currentDisplay)
 {
 
 }

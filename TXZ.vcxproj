@@ -183,6 +183,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CBASE_Map.h" />
     <ClInclude Include="CEDITOR.h" />
     <ClInclude Include="CEDITOR_Display.h" />
     <ClInclude Include="CEDITOR_Map.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="TXZDlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CBASE_Map.cpp" />
     <ClCompile Include="CEDITOR.cpp" />
     <ClCompile Include="CEDITOR_Display.cpp" />
     <ClCompile Include="CEDITOR_Map.cpp" />

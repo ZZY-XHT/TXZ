@@ -1,7 +1,10 @@
 #pragma once
 #include "framework.h"
+#include "CBASE_Map.h"
 #include "CEDITOR_Display.h"
-class CEDITOR_Map
+
+class CEDITOR_Map:
+	public CBASE_Map
 {
 public:
 	CEDITOR_Map(CEDITOR_Display *currentDisplay);
@@ -13,8 +16,6 @@ public:
 	//virtual void SaveMap();
 
 private:
-	int m_map[MAXMAPSIZE + 2][MAXMAPSIZE + 2];
-	int m_mapSizeX, m_mapSizeY;
 	CEDITOR_Display* myDisplay;
 };
 

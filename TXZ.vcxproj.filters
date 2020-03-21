@@ -60,6 +60,9 @@
     <ClInclude Include="CEDITOR_Map.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CBASE_Map.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TXZ.cpp">
@@ -96,6 +99,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CEDITOR_Map.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CBASE_Map.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
