@@ -9,7 +9,7 @@ public:
 	/*检查dir是否是一个有效的资源目录*/
 	static BOOL CheckDir(CString dir);
 
-	/*获取标号位picTag的图片*/
+	/*获取标号为picTag的图片*/
 	virtual HBITMAP GetPic(int picTag);
 
 private:

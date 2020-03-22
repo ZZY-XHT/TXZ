@@ -30,6 +30,7 @@ void CHOMEPAGE::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CHOMEPAGE, CDialogEx)
 	ON_BN_CLICKED(IDC_STARTGAME, &CHOMEPAGE::OnBnClickedStartgame)
 	ON_BN_CLICKED(IDC_EXITGAME, &CHOMEPAGE::OnBnClickedExitgame)
+	ON_BN_CLICKED(IDC_EDITMAP, &CHOMEPAGE::OnBnClickedEditmap)
 END_MESSAGE_MAP()
 
 
@@ -92,14 +93,17 @@ BOOL CHOMEPAGE::OnInitDialog()
 	*/
 	GetDlgItem(IDC_STARTGAME)->SetFont(&m_font);
 	GetDlgItem(IDC_STARTGAME)->SetWindowText(_T("开始游戏"));
+	GetDlgItem(IDC_EDITMAP)->SetFont(&m_font);
+	GetDlgItem(IDC_EDITMAP)->SetWindowText(_T("编辑地图"));
 	GetDlgItem(IDC_EXITGAME)->SetFont(&m_font);
 	GetDlgItem(IDC_EXITGAME)->SetWindowText(_T("结束游戏"));
 
 	// 设置按钮大小、位置
 	const int BUTTON_HEIGHT = 120;
 	const int BUTTON_WIDTH = 250;
-	GetDlgItem(IDC_STARTGAME)->MoveWindow((DIALOG_WIDTH - BUTTON_WIDTH) / 2, DIALOG_HEIGHT / 3 - BUTTON_HEIGHT / 2, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
-	GetDlgItem(IDC_EXITGAME)->MoveWindow((DIALOG_WIDTH - BUTTON_WIDTH) / 2, DIALOG_HEIGHT / 3 * 2 - BUTTON_HEIGHT / 2, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_STARTGAME)->MoveWindow((DIALOG_WIDTH - BUTTON_WIDTH) / 2, DIALOG_HEIGHT / 4 - BUTTON_HEIGHT / 2, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_EDITMAP)->MoveWindow((DIALOG_WIDTH - BUTTON_WIDTH) / 2, DIALOG_HEIGHT / 4 * 2 - BUTTON_HEIGHT / 2, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_EXITGAME)->MoveWindow((DIALOG_WIDTH - BUTTON_WIDTH) / 2, DIALOG_HEIGHT / 4 * 3 - BUTTON_HEIGHT / 2, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
 
 	// 设置焦点
 	// GetDlgItem(IDC_STARTGAME)->SetFocus();
@@ -114,8 +118,6 @@ void CHOMEPAGE::OnBnClickedStartgame()
 	// TODO: 在此添加控件通知处理程序代码
 	MessageBox(_T("Hello"), _T("From xht"));
 	GetParent()->PostMessage(WM_TOSELECTION); 
-	//测试CEditor
-	//GetParent()->PostMessage(WM_TOEDITOR);
 }
 
 
@@ -124,6 +126,13 @@ void CHOMEPAGE::OnBnClickedExitgame()
 	// TODO: 在此添加控件通知处理程序代码
 	MessageBox(_T("Byebye"), _T("From xht"));
 	GetParent()->PostMessage(WM_CLOSE);
+}
+
+void CHOMEPAGE::OnBnClickedEditmap()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	MessageBox(_T("Welcome to the editor"), _T("From xht"));
+	GetParent()->PostMessage(WM_TOEDITOR);
 }
 
 BOOL CHOMEPAGE::PreTranslateMessage(MSG* pMsg)

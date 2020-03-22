@@ -39,8 +39,10 @@ public:
 	afx_msg void OnBnClickedReturnbutton();
 	afx_msg LRESULT StartGame(WPARAM wParam, LPARAM lParam);
 protected:
-	virtual void CGAME::InitStepAndTimer();
-	virtual void CGAME::IncrementStep(BOOL moved);
+	/*初始化计步器和计时器*/
+	virtual void InitStepAndTimer();
+	/*步数加一并更新步数显示*/
+	virtual void IncrementStep(BOOL moved);
 private:
 	CFont m_font;
 	int m_step,m_mm,m_ss;

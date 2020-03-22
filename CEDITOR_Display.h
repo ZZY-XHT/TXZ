@@ -1,8 +1,7 @@
 #pragma once
-#include <utility>
-#include "CGAME_Display.h"
+#include "CBASE_Display.h"
 class CEDITOR_Display :
-	public CGAME_Display
+	public CBASE_Display
 {
 public:
 	CEDITOR_Display(CRect area, CWnd* pParent = nullptr);   // 标准构造函数

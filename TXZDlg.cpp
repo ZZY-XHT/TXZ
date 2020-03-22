@@ -123,7 +123,7 @@ BOOL CTXZDlg::OnInitDialog()
 	
 	// 创建资源路径
 	mapPath = appPath + _T("Maps\\");
-	resPath = appPath + _T("Resources\\");
+	resPath = appPath + _T("Resource\\");
 	CFileFind tempFind;
 	if (tempFind.FindFile(mapPath, FILE_ATTRIBUTE_DIRECTORY) == 0)
 	{

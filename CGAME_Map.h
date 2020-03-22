@@ -22,9 +22,13 @@ public:
 	virtual ~CGAME_Map();
 
 public:
+	/*从路径为path的文件中读取并绘制地图*/
 	virtual BOOL SetMap(CString path);
+	/*重新开始本局游戏*/
 	virtual BOOL Restart();
+	/*尝试向dir方向移动玩家*/
 	virtual BOOL MovePlayer(UINT dir);
+	/*获取本局游戏是否完成的信息*/
 	virtual BOOL IsFinished();
 
 private:

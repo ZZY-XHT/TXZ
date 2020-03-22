@@ -15,9 +15,13 @@ protected:
 	virtual ~CBASE_Map();
 
 protected:
+	/*从字符串s中读取地图*/
 	virtual BOOL GetMap(char* s);
+	/*从路径为path的文件中读取地图*/
 	virtual BOOL ReadMap(CString path);
+	/*判断人和箱子能否移动到格子(x,y)上*/
 	virtual BOOL CanMoveOn(int x, int y);
+	/*检查游戏局面是否完成*/
 	virtual BOOL CheckFinished();
 
 protected:

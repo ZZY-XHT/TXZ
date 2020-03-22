@@ -2,7 +2,7 @@
 #include "CEDITOR_Display.h"
 
 CEDITOR_Display::CEDITOR_Display(CRect area, CWnd* pParent)
-	:CGAME_Display(area, pParent)
+	:CBASE_Display(area, pParent)
 {
 
 }
