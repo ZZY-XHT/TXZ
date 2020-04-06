@@ -41,9 +41,7 @@ BOOL CEDITOR::OnInitDialog()
 BEGIN_MESSAGE_MAP(CEDITOR, CDialogEx)
 END_MESSAGE_MAP()
 
-
 // CEDITOR message handlers
-
 
 BOOL CEDITOR::DestroyWindow()
 {

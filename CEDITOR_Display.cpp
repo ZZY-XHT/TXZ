@@ -25,6 +25,7 @@ BOOL CEDITOR_Display::PreTranslateMessage(MSG* pMsg)
 		str.Format(_T("%d %d"), r, c);
 		MessageBox(str, _T("我被按了"));
 		//然后Send一个Message给CEditor?
+		//要不把这一段放到CEditor里？
 	}
 	return TRUE;
 }

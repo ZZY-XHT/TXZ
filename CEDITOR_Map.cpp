@@ -24,3 +24,27 @@ void CEDITOR_Map::NewMap(int n, int m)
 			myDisplay->Update(i, j, m_map[i][j]);
 		}
 }
+
+void CEDITOR_Map::ChangeMap(int r, int c) {
+	m_map[r][c] = (m_map[r][c] + 1) % 5;
+	myDisplay->Update(r, c, m_map[r][c]);
+	undoHistory.push(1000 * r + c);
+}
+
+void CEDITOR_Map::UndoChangeMap(int r, int c) {
+	m_map[r][c] = (m_map[r][c] + 4) % 5;
+	myDisplay->Update(r, c, m_map[r][c]);
+}
+
+void CEDITOR_Map::Undo() {
+	int tmp = undoHistory.top();
+	undoHistory.pop();
+	redoHistory.push(tmp);
+	UndoChangeMap(tmp / 1000, tmp % 1000);
+}
+
+void CEDITOR_Map::Redo() {
+	int tmp = redoHistory.top();
+	redoHistory.pop();
+	ChangeMap(tmp / 1000, tmp % 1000);
+}
