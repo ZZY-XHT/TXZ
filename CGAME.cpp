@@ -89,7 +89,6 @@ void CGAME::OnTimer(UINT_PTR nIdEvent)
 BOOL CGAME::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-
 	// TODO:  在此添加额外的初始化
 
 	// 设置窗口

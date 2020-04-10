@@ -2,7 +2,8 @@
 #include "CEDITOR_Display.h"
 
 CEDITOR_Display::CEDITOR_Display(CRect area, CWnd* pParent)
-	:CBASE_Display(area, pParent)
+	:CBASE_Display(area, pParent),
+	m_lastClickedR(-1),m_lastClickedC(-1)
 {
 
 }
@@ -19,13 +20,14 @@ BOOL CEDITOR_Display::PreTranslateMessage(MSG* pMsg)
 		GetCursorPos(&mousePoint);
 		CRect displayRect;
 		this->GetWindowRect(&displayRect);
-		int c = (mousePoint.x - displayRect.left) / m_size;
-		int r = (mousePoint.y - displayRect.top) / m_size;
-		CString str;
-		str.Format(_T("%d %d"), r, c);
-		MessageBox(str, _T("我被按了"));
-		//然后Send一个Message给CEditor?
-		//要不把这一段放到CEditor里？
+		m_lastClickedC = (mousePoint.x - displayRect.left) / m_size + 1;
+		m_lastClickedR = (mousePoint.y - displayRect.top) / m_size + 1;
+		GetParent()->PostMessage(WM_EDITORMAPCLICKED);
 	}
 	return TRUE;
+}
+
+int CEDITOR_Display::GetLastClicked() {
+	//这里可以写一些Check
+	return m_lastClickedR * 1024 + m_lastClickedC;
 }

@@ -43,7 +43,7 @@
 #define WM_TOSELECTION WM_USER+4
 #define WM_UPDATE WM_USER+5
 #define WM_TOEDITOR WM_USER+6
-
+#define WM_EDITORMAPCLICKED WM_USER+7
 // 自定义地图格子状态
 #define MP_NULL 0
 #define MP_BOX 1

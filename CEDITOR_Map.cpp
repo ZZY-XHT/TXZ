@@ -25,26 +25,49 @@ void CEDITOR_Map::NewMap(int n, int m)
 		}
 }
 
-void CEDITOR_Map::ChangeMap(int r, int c) {
-	m_map[r][c] = (m_map[r][c] + 1) % 5;
-	myDisplay->Update(r, c, m_map[r][c]);
-	undoHistory.push(1000 * r + c);
-}
-
-void CEDITOR_Map::UndoChangeMap(int r, int c) {
-	m_map[r][c] = (m_map[r][c] + 4) % 5;
+void CEDITOR_Map::ChangeMap(int r, int c, int delta) 
+{
+	m_map[r][c] = (m_map[r][c] + delta + 5) % 5;
 	myDisplay->Update(r, c, m_map[r][c]);
 }
 
-void CEDITOR_Map::Undo() {
-	int tmp = undoHistory.top();
-	undoHistory.pop();
-	redoHistory.push(tmp);
-	UndoChangeMap(tmp / 1000, tmp % 1000);
+void CEDITOR_Map::Change(int r, int c) 
+{
+	ChangeMap(r, c, 1);
+	undoHistory.push(1024 * r + c);
 }
 
-void CEDITOR_Map::Redo() {
-	int tmp = redoHistory.top();
-	redoHistory.pop();
-	ChangeMap(tmp / 1000, tmp % 1000);
+void CEDITOR_Map::Change(int rc) 
+{
+	ChangeMap(rc / 1024, rc % 1024, 1);
+	undoHistory.push(rc);
+}
+
+void CEDITOR_Map::Undo() 
+{
+	if (!undoHistory.empty())
+	{
+		int rc = undoHistory.top();
+		undoHistory.pop();
+		redoHistory.push(rc);
+		ChangeMap(rc / 1024, rc % 1024, -1);
+	}
+	else 
+	{
+		MessageBox(NULL, _T("没有操作了"), _T("无法Undo"), 0);
+	}
+}
+
+void CEDITOR_Map::Redo() 
+{
+	if (!redoHistory.empty())
+	{
+		int rc = redoHistory.top();
+		redoHistory.pop();
+		Change(rc);
+	}
+	else
+	{
+		MessageBox(NULL, _T("没有操作了"), _T("无法Redo"), 0);
+	}
 }

@@ -13,10 +13,14 @@ public:
 	/*创建一个n*m的空白地图*/
 	virtual void NewMap(int n, int m);
 
-	/*修改第r行第c列，并且可以被Undo*/
-	virtual void ChangeMap(int r, int c);
+	/*修改第r行第c列，这个函数不会修改History*/
+	virtual void ChangeMap(int r, int c, int delta);
 
-	virtual void UndoChangeMap(int r, int c);
+	/*将地图第r行第c列变成下一个状态*/
+	virtual void Change(int r, int c);
+
+	/*将rc对应的位置变成下一个状态*/
+	virtual void Change(int rc);
 
 	/*撤销上一次操作*/
 	virtual void Undo();

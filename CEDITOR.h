@@ -20,10 +20,13 @@ public:
 
 protected:
 	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX);
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	DECLARE_MESSAGE_MAP()
 private:
 	CEDITOR_Display* myDisplay;
 	CEDITOR_Map* myMap;
+	BOOL m_ctrlDown;
 public:
 	virtual BOOL DestroyWindow();
 };

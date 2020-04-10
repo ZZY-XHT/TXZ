@@ -13,7 +13,8 @@ IMPLEMENT_DYNAMIC(CEDITOR, CDialogEx)
 
 CEDITOR::CEDITOR(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_EDITOR, pParent),
-	myDisplay(NULL), myMap(NULL)
+	myDisplay(NULL), myMap(NULL),
+	m_ctrlDown(FALSE)
 {
 
 }
@@ -37,6 +38,42 @@ BOOL CEDITOR::OnInitDialog()
 	myMap->NewMap(3, 3);
 	return TRUE;
 }
+
+void CEDITOR::DoDataExchange(CDataExchange* pDX)
+{
+	CDialogEx::DoDataExchange(pDX);
+}
+
+BOOL CEDITOR::PreTranslateMessage(MSG* pMsg)
+{
+	switch (pMsg->message)
+	{
+	case WM_KEYDOWN:
+		if (pMsg->wParam == VK_CONTROL) 
+		{
+			m_ctrlDown = TRUE;
+			return TRUE;
+		} 
+		if (m_ctrlDown)
+			switch (pMsg->wParam) 
+			{
+				case 'Z':
+					myMap->Undo();
+					return TRUE;
+				case 'R':
+					myMap->Redo();
+					return TRUE;
+			}
+	case WM_KEYUP:
+		if (pMsg->wParam == VK_CONTROL) m_ctrlDown = FALSE;
+		return TRUE;
+	case WM_EDITORMAPCLICKED:
+		myMap->Change(myDisplay->GetLastClicked());
+		return TRUE;
+	}
+	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
 
 BEGIN_MESSAGE_MAP(CEDITOR, CDialogEx)
 END_MESSAGE_MAP()
