@@ -26,7 +26,6 @@ protected:
 private:
 	CEDITOR_Display* myDisplay;
 	CEDITOR_Map* myMap;
-	BOOL m_ctrlDown;
 public:
 	virtual BOOL DestroyWindow();
 };
