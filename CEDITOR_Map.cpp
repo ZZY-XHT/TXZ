@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CEDITOR_Map.h"
 
-CEDITOR_Map::CEDITOR_Map(CEDITOR_Display* currentDisplay): 
+CEDITOR_Map::CEDITOR_Map(CEDITOR_Display* currentDisplay) :
 	CBASE_Map(),
 	myDisplay(currentDisplay)
 {
@@ -25,25 +25,25 @@ void CEDITOR_Map::NewMap(int n, int m)
 		}
 }
 
-void CEDITOR_Map::ChangeMap(int r, int c, int delta) 
+void CEDITOR_Map::ChangeMap(int r, int c, int delta)
 {
 	m_map[r][c] = (m_map[r][c] + delta + 5) % 5;
 	myDisplay->Update(r, c, m_map[r][c]);
 }
 
-void CEDITOR_Map::Change(int r, int c) 
+void CEDITOR_Map::Change(int r, int c)
 {
 	ChangeMap(r, c, 1);
 	undoHistory.push(1024 * r + c);
 }
 
-void CEDITOR_Map::Change(int rc) 
+void CEDITOR_Map::Change(int rc)
 {
 	ChangeMap(rc / 1024, rc % 1024, 1);
 	undoHistory.push(rc);
 }
 
-void CEDITOR_Map::Undo() 
+void CEDITOR_Map::Undo()
 {
 	if (!undoHistory.empty())
 	{
@@ -52,13 +52,13 @@ void CEDITOR_Map::Undo()
 		redoHistory.push(rc);
 		ChangeMap(rc / 1024, rc % 1024, -1);
 	}
-	else 
+	else
 	{
 		MessageBox(NULL, _T("没有操作了"), _T("无法Undo"), 0);
 	}
 }
 
-void CEDITOR_Map::Redo() 
+void CEDITOR_Map::Redo()
 {
 	if (!redoHistory.empty())
 	{

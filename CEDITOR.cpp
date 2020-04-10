@@ -1,4 +1,4 @@
-// CEDITOR.cpp : implementation file
+ï»¿// CEDITOR.cpp : implementation file
 //
 
 #include "pch.h"
@@ -49,20 +49,20 @@ BOOL CEDITOR::PreTranslateMessage(MSG* pMsg)
 	switch (pMsg->message)
 	{
 	case WM_KEYDOWN:
-		if (pMsg->wParam == VK_CONTROL) 
+		if (pMsg->wParam == VK_CONTROL)
 		{
 			m_ctrlDown = TRUE;
 			return TRUE;
-		} 
+		}
 		if (m_ctrlDown)
-			switch (pMsg->wParam) 
+			switch (pMsg->wParam)
 			{
-				case 'Z':
-					myMap->Undo();
-					return TRUE;
-				case 'R':
-					myMap->Redo();
-					return TRUE;
+			case 'Z':
+				myMap->Undo();
+				return TRUE;
+			case 'R':
+				myMap->Redo();
+				return TRUE;
 			}
 	case WM_KEYUP:
 		if (pMsg->wParam == VK_CONTROL) m_ctrlDown = FALSE;
@@ -82,7 +82,7 @@ END_MESSAGE_MAP()
 
 BOOL CEDITOR::DestroyWindow()
 {
-	// TODO: ÔÚ´ËÌí¼Ó×¨ÓÃ´úÂëºÍ/»òµ÷ÓÃ»ùÀà
+	// TODO: ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½×¨ï¿½Ã´ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½
 	myDisplay->DestroyWindow();
 	delete myDisplay;
 	delete myMap;

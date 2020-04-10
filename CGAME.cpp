@@ -152,6 +152,12 @@ BOOL CGAME::OnInitDialog()
 	GetDlgItem(IDC_RESTARTBUTTON)->SetWindowText(_T("重玩"));
 	GetDlgItem(IDC_TEXT_STEP)->SetFont(&m_font);
 	GetDlgItem(IDC_TEXT_TIME)->SetFont(&m_font);
+
+	//奇怪按钮的workaround
+	GetDlgItem(IDC_TEXT_TIME)->ShowWindow(TRUE);
+	GetDlgItem(IDC_TEXT_STEP)->ShowWindow(TRUE);
+	GetDlgItem(IDC_RETURNBUTTON)->ShowWindow(TRUE);
+	GetDlgItem(IDC_RESTARTBUTTON)->ShowWindow(TRUE);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }

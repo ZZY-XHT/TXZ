@@ -1,9 +1,9 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CEDITOR_Display.h"
 
 CEDITOR_Display::CEDITOR_Display(CRect area, CWnd* pParent)
 	:CBASE_Display(area, pParent),
-	m_lastClickedR(-1),m_lastClickedC(-1)
+	m_lastClickedR(-1), m_lastClickedC(-1)
 {
 
 }
@@ -28,6 +28,6 @@ BOOL CEDITOR_Display::PreTranslateMessage(MSG* pMsg)
 }
 
 int CEDITOR_Display::GetLastClicked() {
-	//ÕâÀï¿ÉÒÔĞ´Ò»Ğ©Check
+	//è¿™é‡Œå¯ä»¥å†™ä¸€äº›Check
 	return m_lastClickedR * 1024 + m_lastClickedC;
 }

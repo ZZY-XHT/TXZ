@@ -14,4 +14,4 @@ private:
 protected:
 	/*在这里检查是哪个图片被按了*/
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-}; 
+};
