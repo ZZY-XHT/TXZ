@@ -13,7 +13,8 @@ IMPLEMENT_DYNAMIC(CEDITOR, CDialogEx)
 
 CEDITOR::CEDITOR(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_EDITOR, pParent),
-	myDisplay(NULL), myMap(NULL)
+	myDisplay(NULL), myMap(NULL),
+	m_ctrlDown(FALSE)
 {
 
 }
@@ -48,17 +49,24 @@ BOOL CEDITOR::PreTranslateMessage(MSG* pMsg)
 	switch (pMsg->message)
 	{
 	case WM_KEYDOWN:
-		if (GetAsyncKeyState(VK_CONTROL) & 0x8000)
+		if (pMsg->wParam == VK_CONTROL)
+		{
+			m_ctrlDown = TRUE;
+			return TRUE;
+		}
+		if (m_ctrlDown)
 			switch (pMsg->wParam)
 			{
 			case 'Z':
 				myMap->Undo();
 				return TRUE;
-			case 'Y':
+			case 'R':
 				myMap->Redo();
 				return TRUE;
 			}
-		break;
+	case WM_KEYUP:
+		if (pMsg->wParam == VK_CONTROL) m_ctrlDown = FALSE;
+		return TRUE;
 	case WM_EDITORMAPCLICKED:
 		myMap->Change(myDisplay->GetLastClicked());
 		return TRUE;
@@ -74,7 +82,7 @@ END_MESSAGE_MAP()
 
 BOOL CEDITOR::DestroyWindow()
 {
-	// TODO: 在此添加专用代码和/或调用基类
+	// TODO: �ڴ�����ר�ô����/����û���
 	myDisplay->DestroyWindow();
 	delete myDisplay;
 	delete myMap;
