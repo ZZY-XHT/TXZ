@@ -19,7 +19,7 @@ BOOL CEDITOR_Display::PreTranslateMessage(MSG* pMsg)
 		CPoint mousePoint;
 		GetCursorPos(&mousePoint);
 		CRect displayRect;
-		this->GetWindowRect(&displayRect);
+		GetWindowRect(&displayRect);
 		m_lastClickedC = (mousePoint.x - displayRect.left) / m_size + 1;
 		m_lastClickedR = (mousePoint.y - displayRect.top) / m_size + 1;
 		GetParent()->PostMessage(WM_EDITORMAPCLICKED);
