@@ -68,7 +68,7 @@ BOOL CSELECTION::OnInitDialog()
 	const int LIST_WIDTH = (int)(DIALOG_WIDTH * 0.45);
 	GetDlgItem(IDC_SELECTION_MAPLIST)->MoveWindow((int)(DIALOG_WIDTH * 0.05), (int)(DIALOG_HEIGHT * 0.05), LIST_WIDTH, LIST_HEIGHT);
 
-	//开始动态预览图
+	// 开始创建动态预览图
 	myDisplay = new CBASE_Display(CRect((int)(DIALOG_WIDTH * 0.55), (int)(DIALOG_HEIGHT * 0.1), (int)(DIALOG_WIDTH * 0.95), (int)(DIALOG_HEIGHT*0.6)));
 	myDisplay->Create(IDD_DISPLAY, this);
 

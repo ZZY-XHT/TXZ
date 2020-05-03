@@ -131,6 +131,6 @@ void CBASE_Map::doRedraw()
 		{
 			m_display->Update(i, j, m_map[i][j], FALSE);
 		}
-	m_display->Update(m_playerX, m_playerY, PIC_PLAYER);
+	m_display->Update(m_playerX, m_playerY, PIC_PLAYER, FALSE);
 	m_display->UpdateWindow();
 }

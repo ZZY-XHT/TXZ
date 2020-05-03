@@ -30,4 +30,6 @@ private:
 public:
 	virtual BOOL DestroyWindow();
 	afx_msg void OnBnClickedEditorReturnbutton();
+	afx_msg void OnBnClickedEditorNewbutton();
+	afx_msg void OnBnClickedEditorOpenbutton();
 };

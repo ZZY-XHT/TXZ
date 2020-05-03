@@ -192,6 +192,7 @@
     <ClInclude Include="CGAME.h" />
     <ClInclude Include="CGAME_Map.h" />
     <ClInclude Include="CHOMEPAGE.h" />
+    <ClInclude Include="CNEWMAP.h" />
     <ClInclude Include="CRESOURCE.h" />
     <ClInclude Include="CSELECTION.h" />
     <ClInclude Include="framework.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="CGAME_Display.cpp" />
     <ClCompile Include="CGAME.cpp" />
     <ClCompile Include="CHOMEPAGE.cpp" />
+    <ClCompile Include="CNEWMAP.cpp" />
     <ClCompile Include="CRESOURCE.cpp" />
     <ClCompile Include="CSELECTION.cpp" />
     <ClCompile Include="pch.cpp">

@@ -36,4 +36,3 @@ protected:
 	bool m_isFinished;
 	bool m_popup;
 };
-

@@ -5,7 +5,7 @@
 #include "TXZ.h"
 #include "CEDITOR.h"
 #include "afxdialogex.h"
-
+#include "CNEWMAP.h"
 
 // CEDITOR dialog
 
@@ -42,7 +42,7 @@ BOOL CEDITOR::OnInitDialog()
 	GetDlgItem(IDC_EDITOR_RETURNBUTTON)->MoveWindow(4 * BUTTON_WIDTH, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
 
 	// 创建Display
-	myDisplay = new CEDITOR_Display(CRect(0, (int)(DIALOG_HEIGHT * 0.1), DIALOG_WIDTH, DIALOG_HEIGHT));
+	myDisplay = new CEDITOR_Display(CRect(0, (int)(DIALOG_HEIGHT * 0.1), DIALOG_WIDTH, (int)(DIALOG_HEIGHT * 0.9)));
 	myDisplay->Create(IDD_DISPLAY, this);
 
 	// 创建Map
@@ -132,6 +132,8 @@ BOOL CEDITOR::PreTranslateMessage(MSG* pMsg)
 
 BEGIN_MESSAGE_MAP(CEDITOR, CDialogEx)
 	ON_BN_CLICKED(IDC_EDITOR_RETURNBUTTON, &CEDITOR::OnBnClickedEditorReturnbutton)
+	ON_BN_CLICKED(IDC_EDITOR_NEWBUTTON, &CEDITOR::OnBnClickedEditorNewbutton)
+	ON_BN_CLICKED(IDC_EDITOR_OPENBUTTON, &CEDITOR::OnBnClickedEditorOpenbutton)
 END_MESSAGE_MAP()
 
 // CEDITOR message handlers
@@ -151,4 +153,28 @@ void CEDITOR::OnBnClickedEditorReturnbutton()
 	// TODO: 在此添加控件通知处理程序代码
 	myDisplay->Clear();
 	GetParent()->PostMessage(WM_TOHOMEPAGE);
+}
+
+
+void CEDITOR::OnBnClickedEditorNewbutton()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CNEWMAP myDlg;
+	myDlg.DoModal();
+
+}
+
+
+void CEDITOR::OnBnClickedEditorOpenbutton()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CString filter;
+	filter = _T("地图文件(*.txm)|*.txm||");
+	CFileDialog openFileDlg(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_PATHMUSTEXIST, filter);
+	if (openFileDlg.DoModal() == IDOK)
+	{
+		CString filepath = openFileDlg.GetPathName();
+		myMap->SetMap(filepath);
+		MessageBox(_T("666"), _T("From xht"));
+	}
 }
