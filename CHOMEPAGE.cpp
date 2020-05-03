@@ -28,9 +28,9 @@ void CHOMEPAGE::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CHOMEPAGE, CDialogEx)
-	ON_BN_CLICKED(IDC_STARTGAME, &CHOMEPAGE::OnBnClickedStartgame)
-	ON_BN_CLICKED(IDC_EXITGAME, &CHOMEPAGE::OnBnClickedExitgame)
-	ON_BN_CLICKED(IDC_EDITMAP, &CHOMEPAGE::OnBnClickedEditmap)
+	ON_BN_CLICKED(IDC_HOMEPAGE_STARTGAME, &CHOMEPAGE::OnBnClickedHomepageStartgame)
+	ON_BN_CLICKED(IDC_HOMEPAGE_EXITGAME, &CHOMEPAGE::OnBnClickedHomepageExitgame)
+	ON_BN_CLICKED(IDC_HOMEPAGE_EDITMAP, &CHOMEPAGE::OnBnClickedHomepageEditmap)
 END_MESSAGE_MAP()
 
 
@@ -91,19 +91,19 @@ BOOL CHOMEPAGE::OnInitDialog()
 	建议字体：
 	中文用黑体、隶书、华文琥珀、华文行楷
 	*/
-	GetDlgItem(IDC_STARTGAME)->SetFont(&m_font);
-	GetDlgItem(IDC_STARTGAME)->SetWindowText(_T("开始游戏"));
-	GetDlgItem(IDC_EDITMAP)->SetFont(&m_font);
-	GetDlgItem(IDC_EDITMAP)->SetWindowText(_T("编辑地图"));
-	GetDlgItem(IDC_EXITGAME)->SetFont(&m_font);
-	GetDlgItem(IDC_EXITGAME)->SetWindowText(_T("结束游戏"));
+	GetDlgItem(IDC_HOMEPAGE_STARTGAME)->SetFont(&m_font);
+	GetDlgItem(IDC_HOMEPAGE_STARTGAME)->SetWindowText(_T("开始游戏"));
+	GetDlgItem(IDC_HOMEPAGE_EDITMAP)->SetFont(&m_font);
+	GetDlgItem(IDC_HOMEPAGE_EDITMAP)->SetWindowText(_T("编辑地图"));
+	GetDlgItem(IDC_HOMEPAGE_EXITGAME)->SetFont(&m_font);
+	GetDlgItem(IDC_HOMEPAGE_EXITGAME)->SetWindowText(_T("结束游戏"));
 
 	// 设置按钮大小、位置
 	const int BUTTON_HEIGHT = 120;
 	const int BUTTON_WIDTH = 250;
-	GetDlgItem(IDC_STARTGAME)->MoveWindow((DIALOG_WIDTH - BUTTON_WIDTH) / 2, DIALOG_HEIGHT / 4 - BUTTON_HEIGHT / 2, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
-	GetDlgItem(IDC_EDITMAP)->MoveWindow((DIALOG_WIDTH - BUTTON_WIDTH) / 2, DIALOG_HEIGHT / 4 * 2 - BUTTON_HEIGHT / 2, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
-	GetDlgItem(IDC_EXITGAME)->MoveWindow((DIALOG_WIDTH - BUTTON_WIDTH) / 2, DIALOG_HEIGHT / 4 * 3 - BUTTON_HEIGHT / 2, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_HOMEPAGE_STARTGAME)->MoveWindow((DIALOG_WIDTH - BUTTON_WIDTH) / 2, DIALOG_HEIGHT / 4 - BUTTON_HEIGHT / 2, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_HOMEPAGE_EDITMAP)->MoveWindow((DIALOG_WIDTH - BUTTON_WIDTH) / 2, DIALOG_HEIGHT / 4 * 2 - BUTTON_HEIGHT / 2, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_HOMEPAGE_EXITGAME)->MoveWindow((DIALOG_WIDTH - BUTTON_WIDTH) / 2, DIALOG_HEIGHT / 4 * 3 - BUTTON_HEIGHT / 2, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
 
 	// 设置焦点
 	// GetDlgItem(IDC_STARTGAME)->SetFocus();
@@ -113,7 +113,7 @@ BOOL CHOMEPAGE::OnInitDialog()
 				  // 异常: OCX 属性页应返回 FALSE
 }
 
-void CHOMEPAGE::OnBnClickedStartgame()
+void CHOMEPAGE::OnBnClickedHomepageStartgame()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	MessageBox(_T("Hello"), _T("From xht"));
@@ -121,14 +121,14 @@ void CHOMEPAGE::OnBnClickedStartgame()
 }
 
 
-void CHOMEPAGE::OnBnClickedExitgame()
+void CHOMEPAGE::OnBnClickedHomepageExitgame()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	MessageBox(_T("Byebye"), _T("From xht"));
 	GetParent()->PostMessage(WM_CLOSE);
 }
 
-void CHOMEPAGE::OnBnClickedEditmap()
+void CHOMEPAGE::OnBnClickedHomepageEditmap()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	MessageBox(_T("Welcome to the editor"), _T("From xht"));
@@ -142,7 +142,7 @@ BOOL CHOMEPAGE::PreTranslateMessage(MSG* pMsg)
 		switch (pMsg->wParam)
 		{
 		case VK_ESCAPE:
-			OnBnClickedExitgame();
+			OnBnClickedHomepageExitgame();
 			break;
 		default:
 			return CDialogEx::PreTranslateMessage(pMsg);

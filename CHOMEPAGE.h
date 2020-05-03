@@ -22,9 +22,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnBnClickedStartgame();
-	afx_msg void OnBnClickedExitgame();
-	afx_msg void OnBnClickedEditmap();
+	afx_msg void OnBnClickedHomepageStartgame();
+	afx_msg void OnBnClickedHomepageExitgame();
+	afx_msg void OnBnClickedHomepageEditmap();
 private:
 	CFont m_font;
 };

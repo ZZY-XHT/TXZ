@@ -16,7 +16,9 @@ CEDITOR_Map::~CEDITOR_Map()
 void CEDITOR_Map::NewMap(int n, int m)
 {
 	myDisplay->Reset(n, m);
+#ifdef MYDEBUG
 	MessageBox(0, _T("..."), _T("From xht"), 0);
+#endif // MYDEBUG
 	for (int i = 1; i <= n; i++)
 		for (int j = 1; j <= m; j++)
 		{

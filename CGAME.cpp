@@ -5,11 +5,6 @@
 #include "TXZ.h"
 #include "CGAME.h"
 #include "afxdialogex.h"
-#include "CGAME_Display.h"
-#include "CGAME_Map.h"
-
-CGAME_Display* myDisplay;
-CGAME_Map* myMap;
 
 // CGAME 对话框
 
@@ -17,7 +12,8 @@ IMPLEMENT_DYNAMIC(CGAME, CDialogEx)
 
 CGAME::CGAME(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_GAME, pParent),
-	m_step(0), m_ss(0), m_mm(0), m_Timer(NULL)
+	m_step(0), m_ss(0), m_mm(0), m_Timer(NULL),
+	myDisplay(NULL), myMap(NULL)
 {
 
 }
@@ -35,8 +31,8 @@ void CGAME::InitStepAndTimer()
 	m_mm = 0;
 	if (m_Timer != NULL) KillTimer(m_Timer);
 	m_Timer = SetTimer(0, 1000, NULL);
-	GetDlgItem(IDC_TEXT_STEP)->SetWindowTextW(_T("步数：0"));
-	GetDlgItem(IDC_TEXT_TIME)->SetWindowTextW(_T("时间：0s"));
+	GetDlgItem(IDC_GAME_TEXT_STEP)->SetWindowTextW(_T("步数：0"));
+	GetDlgItem(IDC_GAME_TEXT_TIME)->SetWindowTextW(_T("时间：0s"));
 }
 
 void CGAME::IncrementStep(BOOL moved)
@@ -45,7 +41,7 @@ void CGAME::IncrementStep(BOOL moved)
 	{
 		CString text;
 		text.Format(_T("步数：%d"), ++m_step);
-		GetDlgItem(IDC_TEXT_STEP)->SetWindowText(text);
+		GetDlgItem(IDC_GAME_TEXT_STEP)->SetWindowText(text);
 	}
 }
 
@@ -56,8 +52,8 @@ void CGAME::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CGAME, CDialogEx)
 	ON_MESSAGE(WM_STARTGAME, &CGAME::StartGame)
-	ON_BN_CLICKED(IDC_RESTARTBUTTON, &CGAME::OnBnClickedRestartbutton)
-	ON_BN_CLICKED(IDC_RETURNBUTTON, &CGAME::OnBnClickedReturnbutton)
+	ON_BN_CLICKED(IDC_GAME_RESTARTBUTTON, &CGAME::OnBnClickedGameRestartbutton)
+	ON_BN_CLICKED(IDC_GAME_RETURNBUTTON, &CGAME::OnBnClickedGameReturnbutton)
 	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
@@ -82,7 +78,7 @@ void CGAME::OnTimer(UINT_PTR nIdEvent)
 		if (m_mm > 0) text.Format(_T("时间：%dmin%ds"), m_mm, m_ss);
 		else text.Format(_T("时间：%ds"), m_ss);
 
-		GetDlgItem(IDC_TEXT_TIME)->SetWindowText(text);
+		GetDlgItem(IDC_GAME_TEXT_TIME)->SetWindowText(text);
 	}
 }
 
@@ -110,10 +106,10 @@ BOOL CGAME::OnInitDialog()
 	// 设置控件大小、位置
 	const int BUTTON_HEIGHT = (int)(DIALOG_HEIGHT * 0.1);
 	const int BUTTON_WIDTH = BUTTON_HEIGHT * 2;
-	GetDlgItem(IDC_RETURNBUTTON)->MoveWindow(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
-	GetDlgItem(IDC_RESTARTBUTTON)->MoveWindow(BUTTON_WIDTH, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
-	GetDlgItem(IDC_TEXT_STEP)->MoveWindow((int)(2 * BUTTON_WIDTH), 0, (int)(1.5 * BUTTON_WIDTH), BUTTON_HEIGHT, TRUE);
-	GetDlgItem(IDC_TEXT_TIME)->MoveWindow((int)(3.5 *BUTTON_WIDTH), 0, (int)(1.5 * BUTTON_WIDTH), BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_GAME_RETURNBUTTON)->MoveWindow(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_GAME_RESTARTBUTTON)->MoveWindow(BUTTON_WIDTH, 0, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_GAME_TEXT_STEP)->MoveWindow((int)(2 * BUTTON_WIDTH), 0, (int)(1.5 * BUTTON_WIDTH), BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDC_GAME_TEXT_TIME)->MoveWindow((int)(3.5 *BUTTON_WIDTH), 0, (int)(1.5 * BUTTON_WIDTH), BUTTON_HEIGHT, TRUE);
 	// 创建Display
 	myDisplay = new CGAME_Display(CRect(0, (int)(DIALOG_HEIGHT * 0.1), DIALOG_WIDTH, DIALOG_HEIGHT));
 	myDisplay->Create(IDD_DISPLAY, this);
@@ -146,30 +142,29 @@ BOOL CGAME::OnInitDialog()
 	建议字体：
 	中文用黑体、隶书、华文琥珀、华文行楷
 	*/
-	GetDlgItem(IDC_RETURNBUTTON)->SetFont(&m_font);
-	GetDlgItem(IDC_RETURNBUTTON)->SetWindowText(_T("返回"));
-	GetDlgItem(IDC_RESTARTBUTTON)->SetFont(&m_font);
-	GetDlgItem(IDC_RESTARTBUTTON)->SetWindowText(_T("重玩"));
-	GetDlgItem(IDC_TEXT_STEP)->SetFont(&m_font);
-	GetDlgItem(IDC_TEXT_TIME)->SetFont(&m_font);
+	GetDlgItem(IDC_GAME_RETURNBUTTON)->SetFont(&m_font);
+	GetDlgItem(IDC_GAME_RETURNBUTTON)->SetWindowText(_T("返回"));
+	GetDlgItem(IDC_GAME_RESTARTBUTTON)->SetFont(&m_font);
+	GetDlgItem(IDC_GAME_RESTARTBUTTON)->SetWindowText(_T("重玩"));
+	GetDlgItem(IDC_GAME_TEXT_STEP)->SetFont(&m_font);
+	GetDlgItem(IDC_GAME_TEXT_TIME)->SetFont(&m_font);
 
-	//奇怪按钮的workaround
-	GetDlgItem(IDC_TEXT_TIME)->ShowWindow(TRUE);
-	GetDlgItem(IDC_TEXT_STEP)->ShowWindow(TRUE);
-	GetDlgItem(IDC_RETURNBUTTON)->ShowWindow(TRUE);
-	GetDlgItem(IDC_RESTARTBUTTON)->ShowWindow(TRUE);
+	GetDlgItem(IDC_GAME_TEXT_TIME)->ShowWindow(TRUE);
+	GetDlgItem(IDC_GAME_TEXT_STEP)->ShowWindow(TRUE);
+	GetDlgItem(IDC_GAME_RETURNBUTTON)->ShowWindow(TRUE);
+	GetDlgItem(IDC_GAME_RESTARTBUTTON)->ShowWindow(TRUE);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
 
-void CGAME::OnBnClickedReturnbutton()
+void CGAME::OnBnClickedGameReturnbutton()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	myDisplay->Clear();
 	GetParent()->PostMessage(WM_TOSELECTION);
 }
 
-void CGAME::OnBnClickedRestartbutton()
+void CGAME::OnBnClickedGameRestartbutton()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	InitStepAndTimer();
@@ -221,7 +216,7 @@ BOOL CGAME::PreTranslateMessage(MSG* pMsg)
 			IncrementStep(moved = myMap->MovePlayer(DIR_RIGHT));
 			break;
 		case VK_ESCAPE:
-			OnBnClickedReturnbutton();
+			OnBnClickedGameReturnbutton();
 			break;
 		case VK_RETURN:
 		default:

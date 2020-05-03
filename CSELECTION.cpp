@@ -33,9 +33,9 @@ void CSELECTION::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CSELECTION, CDialogEx)
-	ON_BN_CLICKED(IDC_CONFIRMBUTTON, &CSELECTION::OnBnClickedConfirmbutton)
-	ON_BN_CLICKED(IDC_CANCELBUTTON, &CSELECTION::OnBnClickedCancelbutton)
-	ON_LBN_SELCHANGE(IDC_MAPLIST, &CSELECTION::OnLbnSelchangeMaplist)
+	ON_BN_CLICKED(IDC_SELECTION_CONFIRMBUTTON, &CSELECTION::OnBnClickedSelectionConfirmbutton)
+	ON_BN_CLICKED(IDC_SELECTION_CANCELBUTTON, &CSELECTION::OnBnClickedSelectionCancelbutton)
+	ON_LBN_SELCHANGE(IDC_SELECTION_MAPLIST, &CSELECTION::OnLbnSelchangeSelectionMaplist)
 END_MESSAGE_MAP()
 
 
@@ -61,12 +61,12 @@ BOOL CSELECTION::OnInitDialog()
 	
 	const int BUTTON_HEIGHT = (int)(DIALOG_HEIGHT * 0.1);
 	const int BUTTON_WIDTH = (int)(DIALOG_WIDTH * 0.4);
-	GetDlgItem(IDC_CONFIRMBUTTON)->MoveWindow((int)(DIALOG_WIDTH * 0.55), (int)(DIALOG_HEIGHT * 0.6), BUTTON_WIDTH, BUTTON_HEIGHT);
-	GetDlgItem(IDC_CANCELBUTTON)->MoveWindow((int)(DIALOG_WIDTH * 0.55), (int)(DIALOG_HEIGHT * 0.75), BUTTON_WIDTH, BUTTON_HEIGHT);
+	GetDlgItem(IDC_SELECTION_CONFIRMBUTTON)->MoveWindow((int)(DIALOG_WIDTH * 0.55), (int)(DIALOG_HEIGHT * 0.6), BUTTON_WIDTH, BUTTON_HEIGHT);
+	GetDlgItem(IDC_SELECTION_CANCELBUTTON)->MoveWindow((int)(DIALOG_WIDTH * 0.55), (int)(DIALOG_HEIGHT * 0.75), BUTTON_WIDTH, BUTTON_HEIGHT);
 
 	const int LIST_HEIGHT = (int)(DIALOG_HEIGHT * 0.7);
 	const int LIST_WIDTH = (int)(DIALOG_WIDTH * 0.45);
-	GetDlgItem(IDC_MAPLIST)->MoveWindow((int)(DIALOG_WIDTH * 0.05), (int)(DIALOG_HEIGHT * 0.05), LIST_WIDTH, LIST_HEIGHT);
+	GetDlgItem(IDC_SELECTION_MAPLIST)->MoveWindow((int)(DIALOG_WIDTH * 0.05), (int)(DIALOG_HEIGHT * 0.05), LIST_WIDTH, LIST_HEIGHT);
 
 	// 字体、文字大小、文字内容
 	m_buttonFont.CreateFont(
@@ -87,12 +87,12 @@ BOOL CSELECTION::OnInitDialog()
 		DEFAULT_PITCH | FF_SWISS, // nPitchAndFamily 
 		_T("隶书")
 	); // lpszFac 
-	GetDlgItem(IDC_CANCELBUTTON)->SetFont(&m_buttonFont);
-	GetDlgItem(IDC_CANCELBUTTON)->SetWindowText(_T("返回"));
-	GetDlgItem(IDC_CANCELBUTTON)->ShowWindow(SW_SHOW);
-	GetDlgItem(IDC_CONFIRMBUTTON)->SetFont(&m_buttonFont);
-	GetDlgItem(IDC_CONFIRMBUTTON)->SetWindowText(_T("确认"));
-	GetDlgItem(IDC_CONFIRMBUTTON)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_SELECTION_CANCELBUTTON)->SetFont(&m_buttonFont);
+	GetDlgItem(IDC_SELECTION_CANCELBUTTON)->SetWindowText(_T("返回"));
+	GetDlgItem(IDC_SELECTION_CANCELBUTTON)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_SELECTION_CONFIRMBUTTON)->SetFont(&m_buttonFont);
+	GetDlgItem(IDC_SELECTION_CONFIRMBUTTON)->SetWindowText(_T("确认"));
+	GetDlgItem(IDC_SELECTION_CONFIRMBUTTON)->ShowWindow(SW_SHOW);
 	
 
 	m_listFont.CreateFont(
@@ -113,27 +113,27 @@ BOOL CSELECTION::OnInitDialog()
 		DEFAULT_PITCH | FF_SWISS, // nPitchAndFamily 
 		_T("黑体")
 	); // lpszFac 
-	GetDlgItem(IDC_MAPLIST)->SetFont(&m_listFont);
+	GetDlgItem(IDC_SELECTION_MAPLIST)->SetFont(&m_listFont);
 	
 	InitList();
-	GetDlgItem(IDC_MAPLIST)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_SELECTION_MAPLIST)->ShowWindow(SW_SHOW);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
 
 
-void CSELECTION::OnBnClickedCancelbutton()
+void CSELECTION::OnBnClickedSelectionCancelbutton()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	GetParent()->PostMessage(WM_TOHOMEPAGE);
 }
 
 
-void CSELECTION::OnBnClickedConfirmbutton()
+void CSELECTION::OnBnClickedSelectionConfirmbutton()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	CListBox* myList = (CListBox*)GetDlgItem(IDC_MAPLIST);
+	CListBox* myList = (CListBox*)GetDlgItem(IDC_SELECTION_MAPLIST);
 	CString tempStr;
 	myList->GetText(myList->GetCurSel(), tempStr);
 	tempStr = mapPath + tempStr + _T(".txm");
@@ -150,7 +150,7 @@ BOOL CSELECTION::PreTranslateMessage(MSG* pMsg)
 #ifdef MYDEBUG
 			MessageBox(_T("ESC"), _T("From xht"));
 #endif // MYDEBUG
-			OnBnClickedCancelbutton();
+			OnBnClickedSelectionCancelbutton();
 			return TRUE;
 			break;
 			/*
@@ -170,7 +170,7 @@ BOOL CSELECTION::PreTranslateMessage(MSG* pMsg)
 
 void CSELECTION::UpdatePreview(CString mapName) // 显示mapName的缩略图
 {
-	CStatic* pic = (CStatic*)GetDlgItem(IDC_PREVIEWIMAGE); // 预览图的控件
+	CStatic* pic = (CStatic*)GetDlgItem(IDC_SELECTION_PREVIEWIMAGE); // 预览图的控件
 	pic->ShowWindow(SW_HIDE);
 
 	CString previewImageDir; // 位图位置
@@ -217,7 +217,7 @@ void CSELECTION::InitList()
 {
 	CFileFind tempFind;
 	BOOL IsFind = tempFind.FindFile(mapPath + _T("/*.txm"));
-	CListBox* myList = (CListBox*)GetDlgItem(IDC_MAPLIST);
+	CListBox* myList = (CListBox*)GetDlgItem(IDC_SELECTION_MAPLIST);
 
 	myList->ResetContent();
 	while (IsFind)
@@ -234,18 +234,18 @@ void CSELECTION::InitList()
 	if (myList->GetCount() > 0)
 	{
 		myList->SetCurSel(0);
-		OnLbnSelchangeMaplist();
+		OnLbnSelchangeSelectionMaplist();
 	}
 	else
 	{
-		GetDlgItem(IDC_CONFIRMBUTTON)->EnableWindow(FALSE);
+		GetDlgItem(IDC_SELECTION_CONFIRMBUTTON)->EnableWindow(FALSE);
 	}
 }
 
-void CSELECTION::OnLbnSelchangeMaplist()
+void CSELECTION::OnLbnSelchangeSelectionMaplist()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	CListBox* myList = (CListBox*)GetDlgItem(IDC_MAPLIST);
+	CListBox* myList = (CListBox*)GetDlgItem(IDC_SELECTION_MAPLIST);
 	CString tempStr;
 	myList->GetText(myList->GetCurSel(), tempStr);
 	UpdatePreview(tempStr);

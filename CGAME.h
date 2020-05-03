@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#include "CGAME_Display.h"
+#include "CGAME_Map.h"
+
 /*
 #define DIR_UP 0
 #define DIR_DOWN 1
@@ -35,8 +38,8 @@ public:
 	virtual void OnTimer(UINT_PTR nIdEvent);
 	virtual BOOL OnInitDialog();
 	virtual BOOL DestroyWindow();
-	afx_msg void OnBnClickedRestartbutton();
-	afx_msg void OnBnClickedReturnbutton();
+	afx_msg void OnBnClickedGameRestartbutton();
+	afx_msg void OnBnClickedGameReturnbutton();
 	afx_msg LRESULT StartGame(WPARAM wParam, LPARAM lParam);
 protected:
 	/*初始化计步器和计时器*/
@@ -47,6 +50,8 @@ private:
 	CFont m_font;
 	int m_step,m_mm,m_ss;
 	UINT_PTR m_Timer;
+	CGAME_Display* myDisplay;
+	CGAME_Map* myMap;
 public:
 	
 };

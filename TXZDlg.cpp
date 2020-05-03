@@ -185,7 +185,7 @@ BOOL CTXZDlg::OnInitDialog()
 	mySelection->ShowWindow(SW_HIDE);
 
 	myEditor = new CEDITOR;
-	myEditor->Create(IDD_GAME, this);
+	myEditor->Create(IDD_EDITOR, this);
 	myEditor->ShowWindow(SW_HIDE);
 
 	myHomepage->SetFocus();

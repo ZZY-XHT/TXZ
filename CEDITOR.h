@@ -24,8 +24,10 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	DECLARE_MESSAGE_MAP()
 private:
+	CFont m_font;
 	CEDITOR_Display* myDisplay;
 	CEDITOR_Map* myMap;
 public:
 	virtual BOOL DestroyWindow();
+	afx_msg void OnBnClickedEditorReturnbutton();
 };

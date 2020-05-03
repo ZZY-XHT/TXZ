@@ -22,12 +22,12 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnBnClickedConfirmbutton();
-	afx_msg void OnBnClickedCancelbutton();
+	afx_msg void OnBnClickedSelectionConfirmbutton();
+	afx_msg void OnBnClickedSelectionCancelbutton();
 	virtual void UpdatePreview(CString name);
 	virtual void InitList();
 private:
 	CFont m_buttonFont, m_listFont;
 public:
-	afx_msg void OnLbnSelchangeMaplist();
+	afx_msg void OnLbnSelchangeSelectionMaplist();
 };
