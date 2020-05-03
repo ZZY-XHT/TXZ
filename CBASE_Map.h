@@ -10,9 +10,8 @@
 #pragma once
 class CBASE_Map
 {
-protected:
-	CBASE_Map(CBASE_Display* currentDisplay);
-	CBASE_Map(CBASE_Display* currentDisplay,bool doPopUp);
+public:
+	CBASE_Map(CBASE_Display* currentDisplay, bool doPopUp = true);
 	virtual ~CBASE_Map();
 
 protected:

@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "CBASE_Map.h"
 
 // CSELECTION 对话框
 
@@ -28,6 +28,8 @@ public:
 	virtual void InitList();
 private:
 	CFont m_buttonFont, m_listFont;
+	CBASE_Map* myMap;
+	CBASE_Display* myDisplay;
 public:
 	afx_msg void OnLbnSelchangeSelectionMaplist();
 };

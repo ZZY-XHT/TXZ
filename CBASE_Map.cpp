@@ -1,19 +1,13 @@
 #include "pch.h"
 #include "CBASE_Map.h"
 
-CBASE_Map::CBASE_Map(CBASE_Display* currentDisplay):
-	m_popup(TRUE),m_display(currentDisplay),
+CBASE_Map::CBASE_Map(CBASE_Display* currentDisplay,bool doPopUp):
+	m_popup(doPopUp),m_display(currentDisplay),
 	m_mapSizeX(0), m_mapSizeY(0),
 	m_playerX(0), m_playerY(0),
 	m_map(), m_isFinished(FALSE)
 {
 
-}
-
-CBASE_Map::CBASE_Map(CBASE_Display* currentDisplay,bool doPopUp) :
-	CBASE_Map::CBASE_Map(currentDisplay)
-{
-	m_popup = doPopUp;
 }
 
 CBASE_Map::~CBASE_Map()
@@ -135,7 +129,8 @@ void CBASE_Map::doRedraw()
 	for (int i = 1; i <= m_mapSizeX; i++)
 		for (int j = 1; j <= m_mapSizeY; j++)
 		{
-			m_display->Update(i, j, m_map[i][j]);
+			m_display->Update(i, j, m_map[i][j], FALSE);
 		}
 	m_display->Update(m_playerX, m_playerY, PIC_PLAYER);
+	m_display->UpdateWindow();
 }

@@ -7,7 +7,8 @@ const CString CRESOURCE::m_idToFilename[] = {
 	_T("P_goal.bmp"),
 	_T("P_finish.bmp"),
 	_T("P_wall.bmp"),
-	_T("P_player.bmp")
+	_T("P_player.bmp"),
+	_T("P_preview_fail.bmp")
 };
 
 BOOL CRESOURCE::CheckDir(CString dir)

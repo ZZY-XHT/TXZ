@@ -28,7 +28,7 @@ public:
 	/*在显示区域居中重绘n*m的方格*/
 	virtual BOOL Reset(int n, int m);
 	/*更新格子(x,y)的图片显示*/
-	virtual void Update(int x, int y, UINT picTag);
+	virtual void Update(int x, int y, UINT picTag, bool singleUpdate = TRUE);
 protected:
 	CRESOURCE* myRes;
 	int m_size;

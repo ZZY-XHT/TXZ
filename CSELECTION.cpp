@@ -68,6 +68,24 @@ BOOL CSELECTION::OnInitDialog()
 	const int LIST_WIDTH = (int)(DIALOG_WIDTH * 0.45);
 	GetDlgItem(IDC_SELECTION_MAPLIST)->MoveWindow((int)(DIALOG_WIDTH * 0.05), (int)(DIALOG_HEIGHT * 0.05), LIST_WIDTH, LIST_HEIGHT);
 
+	//开始动态预览图
+	myDisplay = new CBASE_Display(CRect((int)(DIALOG_WIDTH * 0.55), (int)(DIALOG_HEIGHT * 0.1), (int)(DIALOG_WIDTH * 0.95), (int)(DIALOG_HEIGHT*0.6)));
+	myDisplay->Create(IDD_DISPLAY, this);
+
+	// 创建Map
+	myMap = new CBASE_Map(myDisplay,false);
+
+	// 失败图片
+	CStatic* pic = (CStatic*)GetDlgItem(IDC_SELECTION_PREVIEWIMAGE);
+	CString failBMP;
+	HBITMAP hBMP; // 载入的bmp
+	//TODO: 把这个加入CRESOURCE，然后把MyRes弄成全局的
+	failBMP = _T("./Resource/P_preview_fail.bmp");
+	hBMP = (HBITMAP)LoadImage(NULL, failBMP, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+	pic->ShowWindow(SW_HIDE);
+	pic->SetBitmap(hBMP);
+	pic->MoveWindow((int)(DIALOG_WIDTH * 0.55), (int)(DIALOG_HEIGHT * 0.05), (int)(DIALOG_WIDTH * 0.4), (int)(DIALOG_HEIGHT * 0.45));
+
 	// 字体、文字大小、文字内容
 	m_buttonFont.CreateFont(
 		(int)(BUTTON_HEIGHT * 0.6), // nHeight 
@@ -117,6 +135,7 @@ BOOL CSELECTION::OnInitDialog()
 	
 	InitList();
 	GetDlgItem(IDC_SELECTION_MAPLIST)->ShowWindow(SW_SHOW);
+
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
@@ -171,6 +190,21 @@ BOOL CSELECTION::PreTranslateMessage(MSG* pMsg)
 void CSELECTION::UpdatePreview(CString mapName) // 显示mapName的缩略图
 {
 	CStatic* pic = (CStatic*)GetDlgItem(IDC_SELECTION_PREVIEWIMAGE); // 预览图的控件
+
+	CString selectedMapDir;
+	selectedMapDir = mapPath + mapName + _T(".txm");
+	myDisplay->ShowWindow(SW_HIDE);
+	if (myMap->SetMap(selectedMapDir))
+	{
+		myDisplay->ShowWindow(SW_SHOW);
+		pic->ShowWindow(SW_HIDE);
+	}
+	else
+	{
+		pic->ShowWindow(SW_SHOW);
+	}
+	/*
+	CStatic* pic = (CStatic*)GetDlgItem(IDC_SELECTION_PREVIEWIMAGE); // 预览图的控件
 	pic->ShowWindow(SW_HIDE);
 
 	CString previewImageDir; // 位图位置
@@ -211,6 +245,7 @@ void CSELECTION::UpdatePreview(CString mapName) // 显示mapName的缩略图
 	
 	pic->MoveWindow((int)(DIALOG_WIDTH * 0.55) + (PREVIEW_SIZE - tempWidth) / 2, (int)(DIALOG_HEIGHT * 0.05) + (PREVIEW_SIZE - tempHeight) / 2, tempWidth, tempHeight, TRUE);
 	pic->ShowWindow(SW_SHOW);
+	*/
 }
 
 void CSELECTION::InitList()
