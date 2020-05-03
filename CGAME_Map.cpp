@@ -4,8 +4,7 @@
 #include "afxdialogex.h"
 
 CGAME_Map::CGAME_Map(CGAME_Display* currentDisplay):
-	CBASE_Map(),
-	m_display(currentDisplay),
+	CBASE_Map(currentDisplay),
 	m_bk_map(),
 	m_bk_playerX(0), m_bk_playerY(0)
 {
@@ -17,42 +16,21 @@ CGAME_Map::~CGAME_Map()
 
 BOOL CGAME_Map::SetMap(CString path)
 {
-	// 根据路径载入地图
-#ifdef MYDEBUG
-	MessageBox(path, _T("From xht"));
-#endif // MYDEBUG
-
-	if (ReadMap(path))
+	if (CBASE_Map::SetMap(path))
 	{
-#ifdef MYDEBUG
-		MessageBox(_T("读取地图成功"), _T("From xht"));
-#endif // MYDEBUG
-
-		// 开始备份地图
-		for (int i = 1; i <= m_mapSizeX; i++)
-			for (int j = 1; j <= m_mapSizeY; j++)
-				m_bk_map[i][j] = m_map[i][j];
-		m_bk_playerX = m_playerX;
-		m_bk_playerY = m_playerY;
-		// 完成备份地图
-
-		// 开始绘制
-		m_display->Reset(m_mapSizeX, m_mapSizeY);
-
-		for (int i = 1; i <= m_mapSizeX; i++)
-			for (int j = 1; j <= m_mapSizeY; j++)
-			{
-				m_display->Update(i, j, m_map[i][j]);
-			}
-
-		m_display->Update(m_playerX, m_playerY, PIC_PLAYER);
-
-		// UpdateWindow();
-
-		// 完成绘制
+		doBackup();
 		return TRUE;
 	}
 	else return FALSE;
+}
+
+void CGAME_Map::doBackup()
+{
+	for (int i = 1; i <= m_mapSizeX; i++)
+		for (int j = 1; j <= m_mapSizeY; j++)
+			m_bk_map[i][j] = m_map[i][j];
+	m_bk_playerX = m_playerX;
+	m_bk_playerY = m_playerY;
 }
 
 BOOL CGAME_Map::Restart()

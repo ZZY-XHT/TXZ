@@ -2,8 +2,7 @@
 #include "CEDITOR_Map.h"
 
 CEDITOR_Map::CEDITOR_Map(CEDITOR_Display* currentDisplay) :
-	CBASE_Map(),
-	myDisplay(currentDisplay)
+	CBASE_Map(currentDisplay)
 {
 
 }
@@ -15,7 +14,7 @@ CEDITOR_Map::~CEDITOR_Map()
 
 void CEDITOR_Map::NewMap(int n, int m)
 {
-	myDisplay->Reset(n, m);
+	m_display->Reset(n, m);
 #ifdef MYDEBUG
 	MessageBox(0, _T("..."), _T("From xht"), 0);
 #endif // MYDEBUG
@@ -23,14 +22,14 @@ void CEDITOR_Map::NewMap(int n, int m)
 		for (int j = 1; j <= m; j++)
 		{
 			m_map[i][j] = PIC_NULL;
-			myDisplay->Update(i, j, m_map[i][j]);
+			m_display->Update(i, j, m_map[i][j]);
 		}
 }
 
 void CEDITOR_Map::ChangeMap(int r, int c, int delta)
 {
 	m_map[r][c] = (m_map[r][c] + delta + 5) % 5;
-	myDisplay->Update(r, c, m_map[r][c]);
+	m_display->Update(r, c, m_map[r][c]);
 }
 
 void CEDITOR_Map::Change(int r, int c)

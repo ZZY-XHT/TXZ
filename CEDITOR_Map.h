@@ -30,7 +30,6 @@ public:
 	//virtual void SaveMap();
 
 private:
-	CEDITOR_Display* myDisplay;
 	std::stack<int> undoHistory, redoHistory;
 
 };

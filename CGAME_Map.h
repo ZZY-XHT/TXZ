@@ -22,8 +22,11 @@ public:
 	virtual ~CGAME_Map();
 
 public:
-	/*从路径为path的文件中读取并绘制地图*/
+	/*从路径为path的文件中读取并绘制地图
+	  在BASE的基础上增加backup*/
 	virtual BOOL SetMap(CString path);
+	/*进行备份，便于之后Restart()*/
+	virtual void doBackup();
 	/*重新开始本局游戏*/
 	virtual BOOL Restart();
 	/*尝试向dir方向移动玩家*/
@@ -32,7 +35,6 @@ public:
 	virtual BOOL IsFinished();
 
 private:
-	CGAME_Display* m_display;
 	int m_bk_map[MAXMAPSIZE + 2][MAXMAPSIZE + 2];
 	int m_bk_playerX, m_bk_playerY;
 };
