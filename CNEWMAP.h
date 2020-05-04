@@ -20,4 +20,13 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
+
+public:
+	int getRow() const;
+	int getColumn() const;
+	virtual BOOL OnInitDialog();
+private:
+	CString m_row_str;
+	CString m_column_str;
+	CFont m_font;
 };

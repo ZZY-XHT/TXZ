@@ -270,6 +270,7 @@ void CSELECTION::InitList()
 	{
 		myList->SetCurSel(0);
 		OnLbnSelchangeSelectionMaplist();
+		GetDlgItem(IDC_SELECTION_CONFIRMBUTTON)->EnableWindow(TRUE);
 	}
 	else
 	{

@@ -15,6 +15,8 @@ public:
 	virtual ~CBASE_Map();
 
 protected:
+	/*检查合法性*/
+	virtual BOOL isValid();
 	/*从字符串s中读取地图*/
 	virtual BOOL GetMap(char* s);
 	/*从路径为path的文件中读取地图*/
@@ -27,7 +29,9 @@ protected:
 	virtual void doRedraw();
 public:
 	/*从路径为path的文件中读取并绘制地图*/
-	virtual BOOL SetMap(CString path);
+	virtual BOOL SetMap(CString path, BOOL checkValidity = TRUE);
+	/*将地图输入至路径为path的文件中*/
+	virtual BOOL WriteMap(CString path);
 protected:
 	CBASE_Display* m_display;
 	int m_mapSizeX, m_mapSizeY;

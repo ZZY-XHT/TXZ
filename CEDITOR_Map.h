@@ -25,12 +25,19 @@ public:
 	/*撤销上一次操作*/
 	virtual void Undo();
 
-	/**/
+	/*重做操作*/
 	virtual void Redo();
-	//virtual void SaveMap();
+
+	/*改变人物初始位置*/
+	virtual void ChangePlayer(int rc);
+
+	/*显示人物*/
+	virtual void ShowPlayer();
+
+	/*隐藏人物*/
+	virtual void HidePlayer();
 
 private:
 	std::stack<int> undoHistory, redoHistory;
-
 };
 

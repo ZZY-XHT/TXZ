@@ -38,6 +38,24 @@ BOOL getNoneNegativeInteger(char*& icp, int& x, const int LOWERBOUND, const int 
 	else return FALSE;
 }
 
+BOOL CBASE_Map::isValid()
+{
+	// 开始检查地图
+	MapAssert(CanMoveOn(m_playerX, m_playerY), _T("ERROR：人物初始位置在箱子或障碍上"));
+	{
+		int tempCount = 0;
+		for (int i = 1; i <= m_mapSizeX; i++)
+			for (int j = 1; j <= m_mapSizeY; j++)
+				if (m_map[i][j] == MP_BOX) tempCount++;
+				else if (m_map[i][j] == MP_GOAL) tempCount--;
+		MapAssert(tempCount == 0, _T("ERROR：箱子与目标数量不一致"));
+	}
+	m_isFinished = FALSE;
+	MapAssert(!CheckFinished(), _T("ERROR：地图初始状态已完成"));
+	// 完成检查地图
+	return TRUE;
+}
+
 BOOL CBASE_Map::GetMap(char* s)
 {
 	// 开始读入地图
@@ -56,19 +74,6 @@ BOOL CBASE_Map::GetMap(char* s)
 	for (int j = 1; j <= m_mapSizeY; j++)
 		m_map[0][j] = m_map[m_mapSizeX + 1][j] = MP_WALL;
 	// 完成补充隐藏边界
-	// 开始检查地图
-	MapAssert(CanMoveOn(m_playerX, m_playerY), _T("ERROR：人物初始位置在箱子或障碍上"));
-	{
-		int tempCount = 0;
-		for (int i = 1; i <= m_mapSizeX; i++)
-			for (int j = 1; j <= m_mapSizeY; j++)
-				if (m_map[i][j] == MP_BOX) tempCount++;
-				else if (m_map[i][j] == MP_GOAL) tempCount--;
-		MapAssert(tempCount == 0, _T("ERROR：箱子与目标数量不一致"));
-	}
-	m_isFinished = FALSE;
-	MapAssert(!CheckFinished(), _T("ERROR：地图初始状态已完成"));
-	// 完成检查地图
 	return TRUE;
 }
 
@@ -82,25 +87,47 @@ BOOL CBASE_Map::ReadMap(CString path)
 	if (pFileName != NULL)
 	{
 		fopen_s(&pFile, pFileName, "r");
-		if (pFile != NULL)
-		{
-			const int MAXINPUTBUFFERSIZE = 100000;
-			static char myInputBuffer[MAXINPUTBUFFERSIZE];
-			int len = (int)fread(myInputBuffer, 1, MAXINPUTBUFFERSIZE, pFile);
-			fclose(pFile);
-			MapAssert(len != MAXINPUTBUFFERSIZE, _T("ERROR：地图文件过大"));
-			myInputBuffer[len] = '\0';
-
-			return GetMap(myInputBuffer);
-		}
+		MapAssert(pFile != NULL, _T("ERROR：地图文件读取失败"));
+		const int MAXINPUTBUFFERSIZE = 100000;
+		static char myInputBuffer[MAXINPUTBUFFERSIZE];
+		int len = (int)fread(myInputBuffer, 1, MAXINPUTBUFFERSIZE, pFile);
+		fclose(pFile);
+		MapAssert(len != MAXINPUTBUFFERSIZE, _T("ERROR：地图文件过大"));
+		myInputBuffer[len] = '\0';
+		return GetMap(myInputBuffer);
 	}
 	return FALSE;
 }
 
-BOOL CBASE_Map::SetMap(CString path)
+BOOL CBASE_Map::WriteMap(CString path)
+{
+	USES_CONVERSION; // 为了使用T2A/W2A将Unicode下的CString转为char*，占用栈空间，不宜在循环、递归中使用，以免栈溢出
+	char* pFileName = T2A(path); // 有时间可以把T2A手动实现来替换掉
+
+	FILE* pFile = NULL;
+	if (pFileName != NULL)
+	{
+		fopen_s(&pFile, pFileName, "w");
+		MapAssert(pFile != NULL, _T("ERROR：地图文件写入失败"));
+		fprintf(pFile, "%d %d\n", m_mapSizeX, m_mapSizeY);
+		for (int i = 1; i <= m_mapSizeX; i++)
+		{
+			for (int j = 1; j <= m_mapSizeY; j++)
+				fprintf(pFile, "%d ", m_map[i][j]);
+			fprintf(pFile, "\n");
+		}
+		fprintf(pFile, "%d %d\n", m_playerX, m_playerY);
+		fclose(pFile);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+BOOL CBASE_Map::SetMap(CString path, BOOL checkValidity)
 {
 	if (ReadMap(path))
 	{
+		if (checkValidity && !isValid()) return FALSE;
 		doRedraw();
 		return TRUE;
 	}

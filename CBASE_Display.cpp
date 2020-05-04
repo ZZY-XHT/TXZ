@@ -50,7 +50,7 @@ BOOL CBASE_Display::DestroyWindow()
 	return CDialogEx::DestroyWindow();
 }
 
-void CBASE_Display::Clear()
+void CBASE_Display::Clear(BOOL hide)
 {
 	// 释放控件数组
 	for (int i = 0; i < MAXMAPSIZE + 2; i++)
@@ -60,6 +60,7 @@ void CBASE_Display::Clear()
 				delete m_pPictureMap[i][j];
 				m_pPictureMap[i][j] = NULL;
 			}
+	if (hide) ShowWindow(SW_HIDE);
 }
 
 BOOL CBASE_Display::Reset(int n, int m)
@@ -87,7 +88,7 @@ BOOL CBASE_Display::Reset(int n, int m)
 	return TRUE;
 }
 
-void CBASE_Display::Update(int x, int y, UINT picTag, bool singleUpdate)
+void CBASE_Display::Update(int x, int y, UINT picTag, BOOL singleUpdate)
 {
 	m_pPictureMap[x][y]->ShowWindow(SW_HIDE);
 	m_pPictureMap[x][y]->SetBitmap(myRes->GetPic(picTag));

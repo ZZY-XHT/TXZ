@@ -27,9 +27,20 @@ private:
 	CFont m_font;
 	CEDITOR_Display* myDisplay;
 	CEDITOR_Map* myMap;
+	CString m_filePath;
+	/*mode{-1:没有打开的地图;0:编辑地图元素中;1:编辑人物位置中}*/
+	int m_mode;
 public:
 	virtual BOOL DestroyWindow();
 	afx_msg void OnBnClickedEditorReturnbutton();
 	afx_msg void OnBnClickedEditorNewbutton();
 	afx_msg void OnBnClickedEditorOpenbutton();
+	afx_msg void OnBnClickedEditorSavebutton();
+	afx_msg void OnBnClickedEditorSaveasbutton();
+	afx_msg void OnBnClickedEditorClosebutton();
+	afx_msg void OnBnClickedEditorUndobutton();
+	afx_msg void OnBnClickedEditorRedobutton();
+	afx_msg void OnBnClickedEditorSwitchbutton();
+	virtual int QuerySave();
+	virtual void Clear();
 };

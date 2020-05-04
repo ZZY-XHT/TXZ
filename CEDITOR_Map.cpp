@@ -14,16 +14,15 @@ CEDITOR_Map::~CEDITOR_Map()
 
 void CEDITOR_Map::NewMap(int n, int m)
 {
-	m_display->Reset(n, m);
 #ifdef MYDEBUG
 	MessageBox(0, _T("..."), _T("From xht"), 0);
 #endif // MYDEBUG
+	m_mapSizeX = n; m_mapSizeY = m;
 	for (int i = 1; i <= n; i++)
 		for (int j = 1; j <= m; j++)
-		{
 			m_map[i][j] = PIC_NULL;
-			m_display->Update(i, j, m_map[i][j]);
-		}
+	m_playerX = 1; m_playerY = 1;
+	doRedraw();
 }
 
 void CEDITOR_Map::ChangeMap(int r, int c, int delta)
@@ -71,4 +70,22 @@ void CEDITOR_Map::Redo()
 	{
 		MessageBox(NULL, _T("没有操作了"), _T("无法Redo"), 0);
 	}
+}
+
+void CEDITOR_Map::ChangePlayer(int rc)
+{
+	int r = rc / 1024, c = rc % 1024;
+	HidePlayer();
+	m_playerX = r; m_playerY = c;
+	ShowPlayer();
+}
+
+void CEDITOR_Map::ShowPlayer()
+{
+	m_display->Update(m_playerX, m_playerY, PIC_PLAYER);
+}
+
+void CEDITOR_Map::HidePlayer()
+{
+	m_display->Update(m_playerX, m_playerY, m_map[m_playerX][m_playerY]);
 }

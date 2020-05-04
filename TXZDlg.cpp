@@ -270,6 +270,8 @@ LRESULT CTXZDlg::ToHomepage(WPARAM wParam, LPARAM lParam)
 
 LRESULT CTXZDlg::ToSelection(WPARAM wParam, LPARAM lParam)
 {
+	if ((BOOL)wParam == TRUE)
+		mySelection->InitList();
 	myHomepage->ShowWindow(SW_HIDE);
 	myGame->ShowWindow(SW_HIDE);
 	myEditor->ShowWindow(SW_HIDE);

@@ -161,7 +161,7 @@ void CGAME::OnBnClickedGameReturnbutton()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	myDisplay->Clear();
-	GetParent()->PostMessage(WM_TOSELECTION);
+	GetParent()->PostMessage(WM_TOSELECTION, (WPARAM)FALSE);
 }
 
 void CGAME::OnBnClickedGameRestartbutton()
