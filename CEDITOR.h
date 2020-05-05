@@ -44,4 +44,6 @@ public:
 	afx_msg void OnBnClickedEditorSwitchbutton();
 	virtual int QuerySave();
 	virtual void Clear();
+	/*根据MyMap是否可以撤销重做更新按钮*/
+	virtual void UpdateUndoRedoButton();
 };

@@ -148,7 +148,10 @@ BOOL CEDITOR::PreTranslateMessage(MSG* pMsg)
 
 	case WM_EDITORMAPCLICKED:
 		if (m_mode == 0)
+		{
 			myMap->Change(myDisplay->GetLastClicked());
+			UpdateUndoRedoButton();
+		}
 		else if(m_mode == 1)
 			myMap->ChangePlayer(myDisplay->GetLastClicked());
 		return TRUE;
@@ -212,6 +215,9 @@ void CEDITOR::OnBnClickedEditorNewbutton()
 		GetDlgItem(IDC_EDITOR_SAVEASBUTTON)->EnableWindow(TRUE);
 		GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->EnableWindow(TRUE);
 		GetDlgItem(IDC_EDITOR_CLOSEBUTTON)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDITOR_UNDOBUTTON)->EnableWindow(FALSE);
+		GetDlgItem(IDC_EDITOR_REDOBUTTON)->EnableWindow(FALSE);
+
 	}
 }
 
@@ -226,7 +232,8 @@ void CEDITOR::OnBnClickedEditorOpenbutton()
 
 	CString filter;
 	filter = _T("地图文件(*.txm)|*.txm||");
-	CFileDialog openFileDlg(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_PATHMUSTEXIST, filter);
+	CFileDialog openFileDlg(TRUE, NULL, NULL, OFN_NOCHANGEDIR | OFN_HIDEREADONLY | OFN_PATHMUSTEXIST, filter);
+	openFileDlg.GetOFN().lpstrInitialDir = mapPath;
 	if (openFileDlg.DoModal() == IDOK)
 	{
 		CString filepath = openFileDlg.GetPathName();
@@ -240,6 +247,9 @@ void CEDITOR::OnBnClickedEditorOpenbutton()
 			GetDlgItem(IDC_EDITOR_SAVEASBUTTON)->EnableWindow(TRUE);
 			GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->EnableWindow(TRUE);
 			GetDlgItem(IDC_EDITOR_CLOSEBUTTON)->EnableWindow(TRUE);
+			GetDlgItem(IDC_EDITOR_UNDOBUTTON)->EnableWindow(FALSE);
+			GetDlgItem(IDC_EDITOR_REDOBUTTON)->EnableWindow(FALSE);
+
 		}
 #ifdef MYDEBUG
 		MessageBox(_T("666"), _T("From xht"));
@@ -303,6 +313,7 @@ void CEDITOR::OnBnClickedEditorUndobutton()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	myMap->Undo();
+	UpdateUndoRedoButton();
 }
 
 
@@ -310,6 +321,7 @@ void CEDITOR::OnBnClickedEditorRedobutton()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	myMap->Redo();
+	UpdateUndoRedoButton();
 }
 
 
@@ -329,16 +341,24 @@ void CEDITOR::OnBnClickedEditorSwitchbutton()
 		m_mode = 0;
 		myMap->HidePlayer();
 		GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->SetWindowText(_T("编辑人物位置"));
-		GetDlgItem(IDC_EDITOR_UNDOBUTTON)->EnableWindow(TRUE);
-		GetDlgItem(IDC_EDITOR_REDOBUTTON)->EnableWindow(TRUE);
+		//GetDlgItem(IDC_EDITOR_UNDOBUTTON)->EnableWindow(TRUE);
+		//GetDlgItem(IDC_EDITOR_REDOBUTTON)->EnableWindow(TRUE);
+		UpdateUndoRedoButton();
 	}
 }
 
 int CEDITOR::QuerySave()
 {
-	int res = MessageBox(_T("是否要保存对当前地图的更改？"), _T("From xht"), MB_YESNOCANCEL);
-	if (res == IDYES) OnBnClickedEditorSavebutton();
-	return res;
+	if (myMap->Modified())
+	{
+		int res = MessageBox(_T("是否要保存对当前地图的更改？"), _T("From xht"), MB_YESNOCANCEL);
+		if (res == IDYES) OnBnClickedEditorSavebutton();
+		return res;
+	}
+	else
+	{
+		return IDYES;
+	}
 }
 
 void CEDITOR::Clear()
@@ -352,4 +372,11 @@ void CEDITOR::Clear()
 	GetDlgItem(IDC_EDITOR_REDOBUTTON)->EnableWindow(FALSE);
 	GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->EnableWindow(FALSE);
 	GetDlgItem(IDC_EDITOR_CLOSEBUTTON)->EnableWindow(FALSE);
+}
+
+void CEDITOR::UpdateUndoRedoButton()
+{
+	assert(m_mode == 0);
+	GetDlgItem(IDC_EDITOR_UNDOBUTTON)->EnableWindow(myMap->CanUndo());
+	GetDlgItem(IDC_EDITOR_REDOBUTTON)->EnableWindow(myMap->CanRedo());
 }

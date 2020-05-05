@@ -10,6 +10,9 @@ public:
 	CEDITOR_Map(CEDITOR_Display* currentDisplay);
 	virtual ~CEDITOR_Map();
 public:
+	/*读取地图，并且人物初始位置*/
+	virtual BOOL SetMap(CString path, BOOL checkValidity = true);
+
 	/*创建一个n*m的空白地图*/
 	virtual void NewMap(int n, int m);
 
@@ -28,6 +31,12 @@ public:
 	/*重做操作*/
 	virtual void Redo();
 
+	/*返回是否可以撤销*/
+	virtual BOOL CanUndo();
+
+	/*返回是否九二一重做*/
+	virtual BOOL CanRedo();
+
 	/*改变人物初始位置*/
 	virtual void ChangePlayer(int rc);
 
@@ -37,7 +46,11 @@ public:
 	/*隐藏人物*/
 	virtual void HidePlayer();
 
+	/*返回地图是否被修改*/
+	virtual BOOL Modified();
 private:
 	std::stack<int> undoHistory, redoHistory;
+	int m_mapChangesMade,m_bk_playerX,m_bk_playerY;
+	
 };
 
