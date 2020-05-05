@@ -1,8 +1,8 @@
 ﻿#include "pch.h"
 #include "CEDITOR_Display.h"
 
-CEDITOR_Display::CEDITOR_Display(CRect area, CWnd* pParent)
-	:CBASE_Display(area, pParent),
+CEDITOR_Display::CEDITOR_Display(CRect area, CRESOURCE* currentRes, CWnd* pParent)
+	:CBASE_Display(area, currentRes, pParent),
 	m_lastClickedR(-1), m_lastClickedC(-1)
 {
 

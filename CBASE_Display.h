@@ -8,7 +8,7 @@ class CBASE_Display : public CDialogEx
 	DECLARE_DYNAMIC(CBASE_Display)
 
 public:
-	CBASE_Display(CRect area, CWnd* pParent = nullptr);   // 标准构造函数
+	CBASE_Display(CRect area, CRESOURCE* currentRes, CWnd* pParent = nullptr);   // 标准构造函数
 	virtual ~CBASE_Display();
 
 	// 对话框数据

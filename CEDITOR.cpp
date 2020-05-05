@@ -11,9 +11,9 @@
 
 IMPLEMENT_DYNAMIC(CEDITOR, CDialogEx)
 
-CEDITOR::CEDITOR(CWnd* pParent /*=nullptr*/)
+CEDITOR::CEDITOR(CRESOURCE* currentRes, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_EDITOR, pParent),
-	myDisplay(NULL), myMap(NULL),
+	myDisplay(NULL), myMap(NULL), myRes(currentRes),
 	m_filePath(_T("")), m_mode(-1)
 {
 
@@ -48,7 +48,7 @@ BOOL CEDITOR::OnInitDialog()
 	GetDlgItem(IDC_EDITOR_CLOSEBUTTON)->MoveWindow(4 * BUTTON_WIDTH, DIALOG_HEIGHT - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
 
 	// 创建Display
-	myDisplay = new CEDITOR_Display(CRect(0, (int)(DIALOG_HEIGHT * 0.1), DIALOG_WIDTH, (int)(DIALOG_HEIGHT * 0.9)));
+	myDisplay = new CEDITOR_Display(CRect(0, (int)(DIALOG_HEIGHT * 0.1), DIALOG_WIDTH, (int)(DIALOG_HEIGHT * 0.9)), myRes);
 	myDisplay->Create(IDD_DISPLAY, this);
 
 	// 创建Map
@@ -270,7 +270,7 @@ void CEDITOR::OnBnClickedEditorSaveasbutton()
 	// TODO: 在此添加控件通知处理程序代码
 	CString filter;
 	filter = _T("地图文件(*.txm)|*.txm||");
-	CFileDialog openFileDlg(FALSE, NULL, NULL, OFN_HIDEREADONLY | OFN_PATHMUSTEXIST, filter);
+	CFileDialog openFileDlg(FALSE, NULL, NULL, OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT, filter);
 	if (openFileDlg.DoModal() == IDOK)
 	{
 		CString filepath = openFileDlg.GetPathName();

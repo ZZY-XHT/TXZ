@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "CBASE_Map.h"
+#include "CRESOURCE.h"
 
 // CSELECTION 对话框
 
@@ -8,7 +9,7 @@ class CSELECTION : public CDialogEx
 	DECLARE_DYNAMIC(CSELECTION)
 
 public:
-	CSELECTION(CWnd* pParent = nullptr);   // 标准构造函数
+	CSELECTION(CRESOURCE* currentRes, CWnd* pParent = nullptr);   // 标准构造函数
 	virtual ~CSELECTION();
 
 // 对话框数据
@@ -30,6 +31,7 @@ private:
 	CFont m_buttonFont, m_listFont;
 	CBASE_Map* myMap;
 	CBASE_Display* myDisplay;
+	CRESOURCE* myRes;
 public:
 	afx_msg void OnLbnSelchangeSelectionMaplist();
 };

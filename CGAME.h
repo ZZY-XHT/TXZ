@@ -2,6 +2,7 @@
 
 #include "CGAME_Display.h"
 #include "CGAME_Map.h"
+#include "CRESOURCE.h"
 
 /*
 #define DIR_UP 0
@@ -22,7 +23,7 @@ class CGAME : public CDialogEx
 	DECLARE_DYNAMIC(CGAME)
 
 public:
-	CGAME(CWnd* pParent = nullptr);   // 标准构造函数
+	CGAME(CRESOURCE* currentRes, CWnd* pParent = nullptr);   // 标准构造函数
 	virtual ~CGAME();
 
 // 对话框数据
@@ -52,6 +53,7 @@ private:
 	UINT_PTR m_Timer;
 	CGAME_Display* myDisplay;
 	CGAME_Map* myMap;
+	CRESOURCE* myRes;
 public:
 	
 };

@@ -10,7 +10,7 @@ class CEDITOR : public CDialogEx
 	DECLARE_DYNAMIC(CEDITOR)
 
 public:
-	CEDITOR(CWnd* pParent = nullptr);   // standard constructor
+	CEDITOR(CRESOURCE* currentRes, CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CEDITOR();
 
 	// Dialog Data
@@ -27,6 +27,7 @@ private:
 	CFont m_font;
 	CEDITOR_Display* myDisplay;
 	CEDITOR_Map* myMap;
+	CRESOURCE* myRes;
 	CString m_filePath;
 	/*mode{-1:没有打开的地图;0:编辑地图元素中;1:编辑人物位置中}*/
 	int m_mode;

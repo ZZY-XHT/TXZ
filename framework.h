@@ -61,6 +61,7 @@
 #define PIC_FINISH 3
 #define PIC_WALL 4
 #define PIC_PLAYER 5
+#define PIC_PREVIEW_FAIL 6
 
 #ifdef _UNICODE
 #if defined _M_IX86

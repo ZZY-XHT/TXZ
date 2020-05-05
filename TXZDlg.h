@@ -5,6 +5,7 @@
 #include "CGAME.h"
 #include "CSELECTION.h"
 #include "CEDITOR.h"
+#include "CRESOURCE.h"
 #pragma once
 
 
@@ -41,4 +42,10 @@ public:
 	afx_msg LRESULT ToSelection(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT ToEditor(WPARAM wParam, LPARAM lParam);
 	virtual BOOL DestroyWindow();
+private:
+	CHOMEPAGE* myHomepage;
+	CGAME* myGame;
+	CSELECTION* mySelection;
+	CEDITOR* myEditor;
+	CRESOURCE* myRes;
 };

@@ -53,8 +53,14 @@ BOOL CNEWMAP::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化
 
-	// const int DIALOG_HEIGHT = 300;
-	// const int DIALOG_WIDTH = 500;
+	// 实际大小 DIALOG_HEIGHT * DIALOG_WEIGHT
+	const int DIALOG_HEIGHT = 300;
+	const int DIALOG_WIDTH = 500;
+	MoveWindow(0, 0, DIALOG_WIDTH, DIALOG_HEIGHT); // 初始大小
+	CRect selfRect;
+	this->GetClientRect(selfRect);
+	MoveWindow(0, 0, DIALOG_WIDTH + DIALOG_WIDTH - selfRect.Width(), DIALOG_HEIGHT + DIALOG_HEIGHT - selfRect.Height()); // 修正大小
+	CenterWindow(); // 居中
 
 	this->SetBackgroundColor(RGB(255, 255, 0), TRUE);
 	/*
@@ -64,13 +70,21 @@ BOOL CNEWMAP::OnInitDialog()
 	*/
 
 	// 设置控件大小、位置
-	// const int BUTTON_HEIGHT = (int)(DIALOG_HEIGHT * 0.1);
-	// const int BUTTON_WIDTH = BUTTON_HEIGHT * 2;
-	// GetDlgItem(IDOK)->MoveWindow((int)(DIALOG_WIDTH * 0.2), (int)(DIALOG_HEIGHT * 0.6), BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
-	// GetDlgItem(IDCANCEL)->MoveWindow((int)(DIALOG_WIDTH * 0.8) - BUTTON_WIDTH, (int)(DIALOG_HEIGHT * 0.6), BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	const int BUTTON_HEIGHT = (int)(DIALOG_HEIGHT * 0.2);
+	const int BUTTON_WIDTH = BUTTON_HEIGHT * 2;
+	GetDlgItem(IDOK)->MoveWindow((int)(DIALOG_WIDTH * 0.2), (int)(DIALOG_HEIGHT * 0.6), BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	GetDlgItem(IDCANCEL)->MoveWindow((int)(DIALOG_WIDTH * 0.8) - BUTTON_WIDTH, (int)(DIALOG_HEIGHT * 0.6), BUTTON_WIDTH, BUTTON_HEIGHT, TRUE);
+	const int TEXT_HEIGHT = BUTTON_HEIGHT;
+	const int TEXT_WIDTH = TEXT_HEIGHT;
+	const int COMBO_HEIGHT = TEXT_HEIGHT;
+	const int COMBO_WIDTH = COMBO_HEIGHT * 1.5;
+	GetDlgItem(IDC_NEWMAP_ROW_STATIC)->MoveWindow((int)(DIALOG_WIDTH * 0.45) - COMBO_WIDTH - TEXT_WIDTH, (int)(DIALOG_HEIGHT * 0.2), TEXT_WIDTH, TEXT_HEIGHT, TRUE);
+	GetDlgItem(IDC_NEWMAP_COLUMN_STATIC)->MoveWindow((int)(DIALOG_WIDTH * 0.55), (int)(DIALOG_HEIGHT * 0.2), TEXT_WIDTH, TEXT_HEIGHT, TRUE);
+	GetDlgItem(IDC_NEWMAP_ROW_COMBO)->MoveWindow((int)(DIALOG_WIDTH * 0.45) - COMBO_WIDTH, (int)(DIALOG_HEIGHT * 0.2), COMBO_WIDTH, COMBO_HEIGHT, TRUE);
+	GetDlgItem(IDC_NEWMAP_COLUMN_COMBO)->MoveWindow((int)(DIALOG_WIDTH * 0.55) + TEXT_WIDTH, (int)(DIALOG_HEIGHT * 0.2), COMBO_WIDTH, COMBO_HEIGHT, TRUE);
 
 	// 字体、文字大小、文字内容
-	/*m_font.CreateFont(
+	m_font.CreateFont(
 		(int)(BUTTON_HEIGHT * 0.6), // nHeight 
 		0, // nWidth 
 		0, // nEscapement 
@@ -88,17 +102,22 @@ BOOL CNEWMAP::OnInitDialog()
 		DEFAULT_PITCH | FF_SWISS, // nPitchAndFamily 
 		_T("隶书")
 	); // lpszFac 
-	*/
 	/*
 	字符集：
 	中文用GB2312_CHARSET，或谨慎地使用DEFAULT_CHARSET
 	建议字体：
 	中文用黑体、隶书、华文琥珀、华文行楷
 	*/
-	//GetDlgItem(IDOK)->SetFont(&m_font);
-	//GetDlgItem(IDOK)->SetWindowText(_T("确定"));
-	//GetDlgItem(IDCANCEL)->SetFont(&m_font);
-	//GetDlgItem(IDCANCEL)->SetWindowText(_T("取消"));
+	GetDlgItem(IDOK)->SetFont(&m_font);
+	GetDlgItem(IDOK)->SetWindowText(_T("确定"));
+	GetDlgItem(IDCANCEL)->SetFont(&m_font);
+	GetDlgItem(IDCANCEL)->SetWindowText(_T("取消"));
+	GetDlgItem(IDC_NEWMAP_ROW_STATIC)->SetFont(&m_font);
+	GetDlgItem(IDC_NEWMAP_ROW_STATIC)->SetWindowText(_T("行"));
+	GetDlgItem(IDC_NEWMAP_COLUMN_STATIC)->SetFont(&m_font);
+	GetDlgItem(IDC_NEWMAP_COLUMN_STATIC)->SetWindowText(_T("列"));
+	GetDlgItem(IDC_NEWMAP_ROW_COMBO)->SetFont(&m_font);
+	GetDlgItem(IDC_NEWMAP_COLUMN_COMBO)->SetFont(&m_font);
 
 	m_row_str = _T("8");
 	m_column_str = _T("8");

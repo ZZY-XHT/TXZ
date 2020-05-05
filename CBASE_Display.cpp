@@ -11,12 +11,11 @@
 
 IMPLEMENT_DYNAMIC(CBASE_Display, CDialogEx)
 
-CBASE_Display::CBASE_Display(CRect area, CWnd* pParent /*=nullptr*/)
+CBASE_Display::CBASE_Display(CRect area, CRESOURCE* currentRes, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DISPLAY, pParent),
-	m_size(1), m_area(area)
+	m_size(1), m_area(area), myRes(currentRes)
 {
 	Clear();
-	myRes = new CRESOURCE();
 }
 
 CBASE_Display::~CBASE_Display()

@@ -15,7 +15,7 @@ public:
 private:
 	/*picTag对应的文件名*/
 	static const CString m_idToFilename[10];
-	static const int m_picCount = 6;
+	static const int m_picCount = 7;
 	CString m_dir = _T("./Resource/");
 	HBITMAP m_bitmap[10];
 

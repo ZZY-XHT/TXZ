@@ -10,10 +10,10 @@
 
 IMPLEMENT_DYNAMIC(CGAME, CDialogEx)
 
-CGAME::CGAME(CWnd* pParent /*=nullptr*/)
+CGAME::CGAME(CRESOURCE* currentRes, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_GAME, pParent),
 	m_step(0), m_ss(0), m_mm(0), m_Timer(NULL),
-	myDisplay(NULL), myMap(NULL)
+	myDisplay(NULL), myMap(NULL), myRes(currentRes)
 {
 
 }
@@ -111,7 +111,7 @@ BOOL CGAME::OnInitDialog()
 	GetDlgItem(IDC_GAME_TEXT_STEP)->MoveWindow((int)(2 * BUTTON_WIDTH), 0, (int)(1.5 * BUTTON_WIDTH), BUTTON_HEIGHT, TRUE);
 	GetDlgItem(IDC_GAME_TEXT_TIME)->MoveWindow((int)(3.5 *BUTTON_WIDTH), 0, (int)(1.5 * BUTTON_WIDTH), BUTTON_HEIGHT, TRUE);
 	// 创建Display
-	myDisplay = new CGAME_Display(CRect(0, (int)(DIALOG_HEIGHT * 0.1), DIALOG_WIDTH, DIALOG_HEIGHT));
+	myDisplay = new CGAME_Display(CRect(0, (int)(DIALOG_HEIGHT * 0.1), DIALOG_WIDTH, DIALOG_HEIGHT), myRes);
 	myDisplay->Create(IDD_DISPLAY, this);
 
 	// 创建Map

@@ -12,11 +12,6 @@
 #define new DEBUG_NEW
 #endif
 
-CHOMEPAGE* myHomepage;
-CGAME* myGame;
-CSELECTION* mySelection;
-CEDITOR* myEditor;
-
 CString mapPath;
 CString resPath;
 CString appPath;
@@ -60,7 +55,10 @@ END_MESSAGE_MAP()
 
 
 CTXZDlg::CTXZDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_TXZ_DIALOG, pParent)
+	: CDialogEx(IDD_TXZ_DIALOG, pParent),
+	myHomepage(NULL), mySelection(NULL),
+	myGame(NULL), myEditor(NULL),
+	myRes(NULL)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -134,6 +132,9 @@ BOOL CTXZDlg::OnInitDialog()
 		CreateDirectory(resPath, NULL);
 	}
 
+	myRes = new CRESOURCE;
+
+
 	/*
 	// 全屏代码
 	int cx, cy;
@@ -176,15 +177,15 @@ BOOL CTXZDlg::OnInitDialog()
 	myHomepage->Create(IDD_HOMEPAGE, this);
 	myHomepage->ShowWindow(SW_SHOW);
 
-	myGame = new CGAME;
+	myGame = new CGAME(myRes);
 	myGame->Create(IDD_GAME, this);
 	myGame->ShowWindow(SW_HIDE);
 
-	mySelection = new CSELECTION;
+	mySelection = new CSELECTION(myRes);
 	mySelection->Create(IDD_SELECTION, this);
 	mySelection->ShowWindow(SW_HIDE);
 
-	myEditor = new CEDITOR;
+	myEditor = new CEDITOR(myRes);
 	myEditor->Create(IDD_EDITOR, this);
 	myEditor->ShowWindow(SW_HIDE);
 
