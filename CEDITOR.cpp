@@ -132,10 +132,10 @@ BOOL CEDITOR::PreTranslateMessage(MSG* pMsg)
 			switch (pMsg->wParam)
 			{
 			case 'Z':
-				myMap->Undo();
+				OnBnClickedEditorUndobutton();
 				return TRUE;
 			case 'Y':
-				myMap->Redo();
+				OnBnClickedEditorRedobutton();
 				return TRUE;
 			}
 		switch (pMsg->wParam)
@@ -150,6 +150,7 @@ BOOL CEDITOR::PreTranslateMessage(MSG* pMsg)
 		if (m_mode == 0)
 		{
 			myMap->Change(myDisplay->GetLastClicked());
+			myMap->ClearRedoHistory();
 			UpdateUndoRedoButton();
 		}
 		else if(m_mode == 1)
@@ -271,6 +272,10 @@ void CEDITOR::OnBnClickedEditorSavebutton()
 		{
 			OnBnClickedEditorSaveasbutton();
 		}
+		else
+		{
+			myMap->doBackup();
+		}
 	}
 }
 
@@ -289,6 +294,7 @@ void CEDITOR::OnBnClickedEditorSaveasbutton()
 		if (myMap->WriteMap(filepath))
 		{
 			m_filePath = filepath;
+			myMap->doBackup();
 		}
 #ifdef MYDEBUG
 		MessageBox(_T("777"), _T("From xht"));

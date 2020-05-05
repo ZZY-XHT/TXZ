@@ -34,7 +34,7 @@ public:
 	/*返回是否可以撤销*/
 	virtual BOOL CanUndo();
 
-	/*返回是否九二一重做*/
+	/*返回是否可以重做*/
 	virtual BOOL CanRedo();
 
 	/*改变人物初始位置*/
@@ -48,9 +48,15 @@ public:
 
 	/*返回地图是否被修改*/
 	virtual BOOL Modified();
+
+	/*清空redoHistory*/
+	virtual void ClearRedoHistory();
+
+	/*做备份*/
+	virtual void doBackup();
 private:
 	std::stack<int> undoHistory, redoHistory;
-	int m_mapChangesMade,m_bk_playerX,m_bk_playerY;
-	
+	int m_bk_map[MAXMAPSIZE + 2][MAXMAPSIZE + 2];
+	int m_bk_playerX, m_bk_playerY;
 };
 

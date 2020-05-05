@@ -2,7 +2,9 @@
 #include "CEDITOR_Map.h"
 
 CEDITOR_Map::CEDITOR_Map(CEDITOR_Display* currentDisplay) :
-	CBASE_Map(currentDisplay), m_bk_playerX(-1), m_bk_playerY(-1)
+	CBASE_Map(currentDisplay),
+	m_bk_map(),
+	m_bk_playerX(-1), m_bk_playerY(-1)
 {
 
 }
@@ -16,8 +18,7 @@ BOOL CEDITOR_Map::SetMap(CString path, BOOL checkValidity)
 {
 	if (CBASE_Map::SetMap(path, checkValidity))
 	{
-		m_bk_playerX = m_playerX;
-		m_bk_playerY = m_playerY;
+		doBackup();
 		return TRUE;
 	}
 	else return FALSE;
@@ -33,6 +34,8 @@ void CEDITOR_Map::NewMap(int n, int m)
 		for (int j = 1; j <= m; j++)
 			m_map[i][j] = PIC_NULL;
 	m_playerX = 1; m_playerY = 1;
+	doBackup();
+	m_bk_playerX = -1; m_bk_playerY = -1;
 	doRedraw();
 }
 
@@ -44,14 +47,12 @@ void CEDITOR_Map::ChangeMap(int r, int c, int delta)
 
 void CEDITOR_Map::Change(int r, int c)
 {
-	m_mapChangesMade++;
 	ChangeMap(r, c, 1);
 	undoHistory.push(1024 * r + c);
 }
 
 void CEDITOR_Map::Change(int rc)
 {
-	m_mapChangesMade++;
 	ChangeMap(rc / 1024, rc % 1024, 1);
 	undoHistory.push(rc);
 }
@@ -64,7 +65,6 @@ void CEDITOR_Map::Undo()
 		undoHistory.pop();
 		redoHistory.push(rc);
 		ChangeMap(rc / 1024, rc % 1024, -1);
-		m_mapChangesMade--;
 	}
 	else
 	{
@@ -117,5 +117,22 @@ void CEDITOR_Map::HidePlayer()
 BOOL CEDITOR_Map::Modified()
 {
 	//新建的地图bk_playerX,Y会是-1，所以被算是被修改的
-	return (m_playerX != m_bk_playerX) || (m_playerY != m_bk_playerY) || (m_mapChangesMade > 0);
+	for (int i = 1; i <= m_mapSizeX; i++)
+		for (int j = 1; j <= m_mapSizeY; j++)
+			if (m_map[i][j] != m_bk_map[i][j]) return TRUE;
+	return (m_playerX != m_bk_playerX) || (m_playerY != m_bk_playerY);
+}
+
+void CEDITOR_Map::ClearRedoHistory()
+{
+	while (!redoHistory.empty()) redoHistory.pop();
+}
+
+void CEDITOR_Map::doBackup()
+{
+	for (int i = 1; i <= m_mapSizeX; i++)
+		for (int j = 1; j <= m_mapSizeY; j++)
+			m_bk_map[i][j] = m_map[i][j];
+	m_bk_playerX = m_playerX;
+	m_bk_playerY = m_playerY;
 }
