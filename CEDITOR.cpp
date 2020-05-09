@@ -72,7 +72,25 @@ BOOL CEDITOR::OnInitDialog()
 		DEFAULT_QUALITY, // nQuality 
 		DEFAULT_PITCH | FF_SWISS, // nPitchAndFamily 
 		_T("隶书")
-	); // lpszFac 
+	); // lpszFac
+	m_font2.CreateFont(
+		(int)(BUTTON_HEIGHT * 0.4), // nHeight 
+		0, // nWidth 
+		0, // nEscapement 
+		0, // nOrientation 
+		//FW_BOLD, // nWeight 
+		FW_NORMAL, // nWeight 
+		FALSE, // bItalic 
+		FALSE, // bUnderline 
+		FALSE, // cStrikeOut 
+		//ANSI_CHARSET, // nCharSet 
+		GB2312_CHARSET, // nCharSet 
+		OUT_DEFAULT_PRECIS, // nOutPrecision 
+		CLIP_DEFAULT_PRECIS, // nClipPrecision 
+		DEFAULT_QUALITY, // nQuality 
+		DEFAULT_PITCH | FF_SWISS, // nPitchAndFamily 
+		_T("隶书")
+	); // lpszFac
 	/*
 	字符集：
 	中文用GB2312_CHARSET，或谨慎地使用DEFAULT_CHARSET
@@ -93,8 +111,8 @@ BOOL CEDITOR::OnInitDialog()
 	GetDlgItem(IDC_EDITOR_UNDOBUTTON)->SetWindowText(_T("撤销"));
 	GetDlgItem(IDC_EDITOR_REDOBUTTON)->SetFont(&m_font);
 	GetDlgItem(IDC_EDITOR_REDOBUTTON)->SetWindowText(_T("重做"));
-	GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->SetFont(&m_font);
-	GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->SetWindowText(_T("编辑人物位置"));
+	GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->SetFont(&m_font2);
+	GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->SetWindowText(_T("切换至编辑人物位置"));
 	GetDlgItem(IDC_EDITOR_CLOSEBUTTON)->SetFont(&m_font);
 	GetDlgItem(IDC_EDITOR_CLOSEBUTTON)->SetWindowText(_T("关闭"));
 
@@ -210,7 +228,7 @@ void CEDITOR::OnBnClickedEditorNewbutton()
 		myMap->NewMap(myDlg.getRow(), myDlg.getColumn());
 		m_filePath = _T("");
 		m_mode = 1;
-		GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->SetWindowText(_T("编辑地图元素"));
+		GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->SetWindowText(_T("切换至编辑地图元素"));
 
 		GetDlgItem(IDC_EDITOR_SAVEBUTTON)->EnableWindow(TRUE);
 		GetDlgItem(IDC_EDITOR_SAVEASBUTTON)->EnableWindow(TRUE);
@@ -242,7 +260,7 @@ void CEDITOR::OnBnClickedEditorOpenbutton()
 		{
 			m_filePath = filepath;
 			m_mode = 1;
-			GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->SetWindowText(_T("编辑地图元素"));
+			GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->SetWindowText(_T("切换至编辑地图元素"));
 
 			GetDlgItem(IDC_EDITOR_SAVEBUTTON)->EnableWindow(TRUE);
 			GetDlgItem(IDC_EDITOR_SAVEASBUTTON)->EnableWindow(TRUE);
@@ -338,7 +356,7 @@ void CEDITOR::OnBnClickedEditorSwitchbutton()
 	{
 		m_mode = 1;
 		myMap->ShowPlayer();
-		GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->SetWindowText(_T("编辑地图元素"));
+		GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->SetWindowText(_T("切换至编辑地图元素"));
 		GetDlgItem(IDC_EDITOR_UNDOBUTTON)->EnableWindow(FALSE);
 		GetDlgItem(IDC_EDITOR_REDOBUTTON)->EnableWindow(FALSE);
 	}
@@ -346,7 +364,7 @@ void CEDITOR::OnBnClickedEditorSwitchbutton()
 	{
 		m_mode = 0;
 		myMap->HidePlayer();
-		GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->SetWindowText(_T("编辑人物位置"));
+		GetDlgItem(IDC_EDITOR_SWITCHBUTTON)->SetWindowText(_T("切换至编辑人物位置"));
 		//GetDlgItem(IDC_EDITOR_UNDOBUTTON)->EnableWindow(TRUE);
 		//GetDlgItem(IDC_EDITOR_REDOBUTTON)->EnableWindow(TRUE);
 		UpdateUndoRedoButton();

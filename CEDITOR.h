@@ -24,7 +24,7 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	DECLARE_MESSAGE_MAP()
 private:
-	CFont m_font;
+	CFont m_font, m_font2;
 	CEDITOR_Display* myDisplay;
 	CEDITOR_Map* myMap;
 	CRESOURCE* myRes;
