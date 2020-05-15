@@ -6,6 +6,7 @@
 #include "CEDITOR.h"
 #include "afxdialogex.h"
 #include "CNEWMAP.h"
+#include <assert.h>
 
 // CEDITOR dialog
 
