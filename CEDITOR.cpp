@@ -401,7 +401,7 @@ void CEDITOR::Clear()
 
 void CEDITOR::UpdateUndoRedoButton()
 {
-	assert(m_mode == 0);
+	assert(m_mode == 0); // 用assert不include差点出事。。。
 	GetDlgItem(IDC_EDITOR_UNDOBUTTON)->EnableWindow(myMap->CanUndo());
 	GetDlgItem(IDC_EDITOR_REDOBUTTON)->EnableWindow(myMap->CanRedo());
 }
