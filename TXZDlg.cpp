@@ -338,5 +338,8 @@ BOOL CTXZDlg::DestroyWindow()
 	delete myGame;
 	mySelection->DestroyWindow();
 	delete mySelection;
+	myEditor->DestroyWindow();
+	delete myEditor;
+	delete myRes;
 	return CDialogEx::DestroyWindow();
 }

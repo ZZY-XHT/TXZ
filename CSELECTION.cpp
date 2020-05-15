@@ -283,3 +283,14 @@ void CSELECTION::OnLbnSelchangeSelectionMaplist()
 	myList->GetText(myList->GetCurSel(), tempStr);
 	UpdatePreview(tempStr);
 }
+
+
+BOOL CSELECTION::DestroyWindow()
+{
+	// TODO: 在此添加专用代码和/或调用基类
+	myDisplay->DestroyWindow();
+	delete myDisplay;
+	delete myMap;
+
+	return CDialogEx::DestroyWindow();
+}

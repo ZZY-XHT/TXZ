@@ -34,4 +34,5 @@ private:
 	CRESOURCE* myRes;
 public:
 	afx_msg void OnLbnSelchangeSelectionMaplist();
+	virtual BOOL DestroyWindow();
 };
